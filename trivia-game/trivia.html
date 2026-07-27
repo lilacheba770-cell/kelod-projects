@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>חידון יום ההולדת - מדע וטבע</title>
+<style>
+  :root {
+    --purple: #6c3ec9;
+    --purple-dark: #4a2a8f;
+    --pink: #ff5da2;
+    --gold: #ffc93c;
+    --green: #2ecc71;
+    --red: #ff5252;
+    --card-bg: #ffffff;
+    --text-dark: #2b2140;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Segoe UI", "Arial Hebrew", Arial, sans-serif;
+    background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 50%, var(--gold) 100%);
+    background-attachment: fixed;
+    color: var(--text-dark);
+    direction: rtl;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  h1 { text-align: center; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.25); margin: 10px 0 4px; font-size: 2.1rem; }
+  .subtitle { color: #fff; opacity: .9; margin-bottom: 20px; text-align: center; font-size: 1rem; }
+  .screen { width: 100%; max-width: 780px; display: none; flex-direction: column; align-items: center; }
+  .screen.active { display: flex; }
+  .card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.25);
+    padding: 32px;
+    width: 100%;
+  }
+
+  /* Setup screen */
+  .team-input-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .team-swatch { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; }
+  input[type="text"] {
+    flex: 1; padding: 12px 14px; font-size: 1.05rem; border-radius: 12px;
+    border: 2px solid #e0d6f5; outline: none; text-align: right;
+  }
+  input[type="text"]:focus { border-color: var(--purple); }
+  .remove-btn {
+    background: #f1f1f1; border: none; color: #999; width: 32px; height: 32px;
+    border-radius: 50%; font-size: 1.1rem; cursor: pointer; flex-shrink: 0;
+  }
+  .setup-actions { display: flex; justify-content: space-between; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+
+  button { font-family: inherit; cursor: pointer; }
+  .btn {
+    border: none; border-radius: 14px; padding: 13px 22px; font-size: 1rem;
+    font-weight: 600; transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary { background: var(--purple); color: #fff; box-shadow: 0 6px 14px rgba(108,62,201,.35); }
+  .btn-secondary { background: #f1ecfb; color: var(--purple-dark); }
+  .btn-gold { background: var(--gold); color: #5a4200; box-shadow: 0 6px 14px rgba(255,201,60,.4); }
+  .btn-block { width: 100%; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+  /* Score bar */
+  .score-bar {
+    display: flex; gap: 10px; flex-wrap: wrap; width: 100%; max-width: 780px;
+    margin-bottom: 16px; justify-content: center;
+  }
+  .score-chip {
+    background: rgba(255,255,255,.92); border-radius: 16px; padding: 10px 18px;
+    text-align: center; min-width: 110px; box-shadow: 0 4px 10px rgba(0,0,0,.15);
+    border: 3px solid transparent;
+  }
+  .score-chip.leading { border-color: var(--gold); }
+  .score-chip .t-name { font-size: .85rem; color: #6b6280; font-weight: 600; }
+  .score-chip .t-score { font-size: 1.6rem; font-weight: 800; color: var(--purple-dark); }
+
+  /* Game screen */
+  .progress { text-align: center; color: #8a7fa8; font-weight: 600; margin-bottom: 6px; }
+  .badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 18px; }
+  .badge {
+    padding: 6px 16px; border-radius: 999px; font-weight: 700; font-size: .9rem; color: #fff;
+  }
+  .badge.easy { background: var(--green); }
+  .badge.hard { background: var(--red); }
+  .badge.cat { background: var(--purple); }
+  .question-text {
+    font-size: 1.5rem; font-weight: 700; text-align: center; line-height: 1.5;
+    margin-bottom: 20px; min-height: 90px; display: flex; align-items: center; justify-content: center;
+  }
+  .options-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;
+  }
+  .option-item {
+    display: flex; align-items: center; gap: 10px; background: #f8f5ff;
+    border: 2px solid #e0d6f5; border-radius: 14px; padding: 14px 16px;
+    font-weight: 600; font-size: 1.05rem; transition: background .2s ease, border-color .2s ease;
+  }
+  .option-letter {
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    width: 28px; height: 28px; border-radius: 50%; background: var(--purple);
+    color: #fff; font-weight: 800; font-size: .9rem;
+  }
+  .option-item.correct {
+    background: var(--green); border-color: var(--green); color: #fff;
+  }
+  .option-item.correct .option-letter { background: #fff; color: var(--green); }
+  .answer-box {
+    display: none; background: #eafaf1; border: 2px solid var(--green); border-radius: 14px;
+    padding: 16px; text-align: center; font-size: 1.25rem; font-weight: 700; color: #1e7f4a;
+    margin-bottom: 20px;
+  }
+  .answer-box.show { display: block; }
+  .team-award-grid { display: none; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 16px; }
+  .team-award-grid.show { display: flex; }
+  .award-btn {
+    background: #f1ecfb; color: var(--purple-dark); border: 2px solid #ddcffa;
+    border-radius: 14px; padding: 12px 18px; font-weight: 700; font-size: .95rem;
+  }
+  .award-btn.none-btn { background: #f3f3f3; color: #888; border-color: #ddd; }
+  .award-btn.chosen { background: var(--green); color: #fff; border-color: var(--green); }
+  .award-btn:disabled:not(.chosen) { opacity: .4; }
+  .next-wrap { text-align: center; }
+
+  /* End screen */
+  #canvas-confetti { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+  .winner-banner {
+    text-align: center; font-size: 1.6rem; font-weight: 800; color: var(--purple-dark);
+    margin-bottom: 18px;
+  }
+  .leaderboard { list-style: none; padding: 0; margin: 0 0 22px; }
+  .leaderboard li {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #f8f5ff; border-radius: 14px; padding: 14px 18px; margin-bottom: 10px;
+    font-size: 1.1rem; font-weight: 700;
+  }
+  .leaderboard li.first { background: linear-gradient(90deg, #fff6dd, #ffe9ad); border: 2px solid var(--gold); }
+  .medal { margin-left: 10px; }
+
+  @media (max-width: 480px) {
+    .card { padding: 20px; border-radius: 18px; }
+    h1 { font-size: 1.5rem; }
+    .question-text { font-size: 1.2rem; }
+    .options-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>🎉 חידון יום ההולדת 🎂</h1>
+<div class="subtitle">🔬 קטגוריה: מדע וטבע — תחרות קבוצות</div>
+
+<canvas id="canvas-confetti"></canvas>
+
+<!-- SETUP SCREEN -->
+<div id="screen-setup" class="screen active">
+  <div class="card">
+    <h2 style="margin-top:0; text-align:center;">מי משחק היום?</h2>
+    <div id="team-inputs"></div>
+    <div class="setup-actions">
+      <button class="btn btn-secondary" id="add-team-btn">➕ הוסיפו קבוצה</button>
+      <button class="btn btn-primary" id="start-btn" style="flex:1;">🚀 התחילו לשחק!</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="screen-game" class="screen">
+  <div class="score-bar" id="score-bar"></div>
+  <div class="card">
+    <div class="progress" id="progress-text"></div>
+    <div class="badges">
+      <span class="badge cat">🔬 מדע וטבע</span>
+      <span class="badge" id="difficulty-badge"></span>
+    </div>
+    <div class="question-text" id="question-text"></div>
+    <div class="options-grid" id="options-grid"></div>
+    <div class="answer-box" id="answer-box"></div>
+
+    <div style="text-align:center; margin-bottom:16px;">
+      <button class="btn btn-gold" id="reveal-btn">🔍 הצג תשובה</button>
+    </div>
+
+    <div class="team-award-grid" id="team-award-grid"></div>
+
+    <div class="next-wrap">
+      <button class="btn btn-primary" id="next-btn" style="display:none;">▶ השאלה הבאה</button>
+    </div>
+  </div>
+</div>
+
+<!-- END SCREEN -->
+<div id="screen-end" class="screen">
+  <div class="card">
+    <div class="winner-banner" id="winner-banner"></div>
+    <ol class="leaderboard" id="leaderboard"></ol>
+    <button class="btn btn-primary btn-block" id="restart-btn">🔁 משחק חדש</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Question bank ----------
+  // options: 4 choices; correctIndex points to the correct one within options
+  const QUESTIONS = [
+    { q: "איזו חיה היא המהירה ביותר ביבשה?", options: ["האריה", "הברדלס (הצ'יטה)", "הסוס", "הנמר"], correctIndex: 1, level: "easy" },
+    { q: "מהו היסוד הכימי הנפוץ ביותר ביקום?", options: ["חמצן", "הליום", "מימן", "פחמן"], correctIndex: 2, level: "hard" },
+    { q: "כמה רגליים יש לעכביש?", options: ["6", "8", "10", "4"], correctIndex: 1, level: "easy" },
+    { q: "מהי מהירות האור בריק (בקירוב)?", options: ["כ-150,000 ק\"מ בשנייה", "כ-300 ק\"מ בשנייה", "כ-1,000,000 ק\"מ בשנייה", "כ-300,000 ק\"מ בשנייה"], correctIndex: 3, level: "hard" },
+    { q: "מהו הכוכב הקרוב ביותר לשמש?", options: ["נוגה (ונוס)", "כדור הארץ", "כוכב חמה (מרקורי)", "מאדים"], correctIndex: 2, level: "easy" },
+    { q: "מי ניסח את חוקי הכבידה הקלאסיים?", options: ["אלברט איינשטיין", "גלילאו גלילי", "אייזק ניוטון", "צ'רלס דרווין"], correctIndex: 2, level: "hard" },
+    { q: "איזה איבר בגוף שואב את הדם דרך הגוף?", options: ["הריאות", "הלב", "הכבד", "המוח"], correctIndex: 1, level: "easy" },
+    { q: "איזה איבר בגוף מייצר אינסולין?", options: ["הכבד", "הכליות", "הלבלב", "הטחול"], correctIndex: 2, level: "hard" },
+    { q: "איזו חיה מכונה 'מלך החיות'?", options: ["הנמר", "הפיל", "האריה", "הדוב"], correctIndex: 2, level: "easy" },
+    { q: "מהו הגז המרכיב את רוב האטמוספירה של כדור הארץ?", options: ["חמצן", "חנקן", "פחמן דו-חמצני", "מימן"], correctIndex: 1, level: "hard" },
+    { q: "מאיזה חומר עשוי היהלום?", options: ["זכוכית", "כסף", "פחמן", "קוורץ"], correctIndex: 2, level: "easy" },
+    { q: "מהו שם התהליך שבו צמחים הופכים אור שמש לאנרגיה?", options: ["נשימה תאית", "פוטוסינתזה", "אידוי", "תסיסה"], correctIndex: 1, level: "hard" },
+    { q: "כמה עצמות יש בגוף האדם הבוגר (בקירוב)?", options: ["150", "206", "300", "120"], correctIndex: 1, level: "easy" },
+    { q: "כמה כרומוזומים יש בתא אנושי רגיל?", options: ["23", "44", "46", "48"], correctIndex: 2, level: "hard" },
+    { q: "איזה כוכב לכת מכונה 'כוכב הלכת האדום'?", options: ["צדק", "שבתאי", "נוגה", "מאדים"], correctIndex: 3, level: "easy" },
+    { q: "מי ניסח את תורת האבולוציה בברירה טבעית?", options: ["גרגור מנדל", "לואי פסטר", "צ'רלס דרווין", "אייזק ניוטון"], correctIndex: 2, level: "hard" },
+    { q: "מהי החיה הגדולה ביותר בעולם?", options: ["הפיל האפריקאי", "הלוויתן הכחול", "הג'ירפה", "כריש הלבן הגדול"], correctIndex: 1, level: "easy" },
+    { q: "מהי התופעה הגורמת להיווצרות צבעי הקשת?", options: ["קיטוב מגנטי", "יינון האוויר", "שבירה ופיזור של אור לבן", "החזרת קרינה קוסמית"], correctIndex: 2, level: "hard" },
+    { q: "כמה לבבות יש לתמנון?", options: ["1", "2", "3", "4"], correctIndex: 2, level: "easy" },
+    { q: "מהו קוטרו של כדור הארץ בקירוב?", options: ["כ-6,371 ק\"מ", "כ-12,742 ק\"מ", "כ-40,000 ק\"מ", "כ-150,000,000 ק\"מ"], correctIndex: 1, level: "hard" },
+    { q: "מהו הגז שאנו נושמים כדי לחיות?", options: ["חנקן", "פחמן דו-חמצני", "חמצן", "הליום"], correctIndex: 2, level: "easy" },
+    { q: "מהי היחידה הבסיסית ביותר של כל חומר?", options: ["התא", "המולקולה", "האלקטרון", "האטום"], correctIndex: 3, level: "hard" },
+    { q: "כמה זמן לוקח לכדור הארץ להקיף פעם אחת את השמש?", options: ["כחודש", "כשנה אחת (כ-365 ימים)", "כיממה אחת", "כעשר שנים"], correctIndex: 1, level: "easy" },
+    { q: "מהו שמה של התיאוריה שפרסם איינשטיין על מרחב, זמן וכבידה?", options: ["תורת הקוונטים", "תורת האבולוציה", "תורת המיתרים", "תורת היחסות"], correctIndex: 3, level: "hard" },
+    { q: "כמה שיניים יש בממוצע לכריש?", options: ["32 שיניים", "20 שיניים", "מאות שיניים (הן מתחלפות כל הזמן)", "אין לכריש שיניים"], correctIndex: 2, level: "easy" },
+    { q: "מהו שם הכוח המחזיק את האלקטרונים סביב גרעין האטום?", options: ["כוח הכבידה", "הכוח הגרעיני החזק", "הכוח הגרעיני החלש", "הכוח האלקטרומגנטי"], correctIndex: 3, level: "hard" }
+  ];
+  const OPTION_LETTERS = ["א׳", "ב׳", "ג׳", "ד׳"];
+
+  const POINTS = { easy: 10, hard: 20 };
+  const TEAM_COLORS = ["#ff5da2", "#3ec9a7", "#6c3ec9", "#ffb020"];
+
+  // ---------- State ----------
+  let teams = [];
+  let currentIndex = 0;
+  let awarded = false;
+  let confettiRunning = false;
+
+  // ---------- Elements ----------
+  const screens = {
+    setup: document.getElementById("screen-setup"),
+    game: document.getElementById("screen-game"),
+    end: document.getElementById("screen-end")
+  };
+  const teamInputsEl = document.getElementById("team-inputs");
+  const addTeamBtn = document.getElementById("add-team-btn");
+  const startBtn = document.getElementById("start-btn");
+  const scoreBarEl = document.getElementById("score-bar");
+  const progressText = document.getElementById("progress-text");
+  const difficultyBadge = document.getElementById("difficulty-badge");
+  const questionText = document.getElementById("question-text");
+  const optionsGrid = document.getElementById("options-grid");
+  const answerBox = document.getElementById("answer-box");
+  const revealBtn = document.getElementById("reveal-btn");
+  const teamAwardGrid = document.getElementById("team-award-grid");
+  const nextBtn = document.getElementById("next-btn");
+  const winnerBanner = document.getElementById("winner-banner");
+  const leaderboardEl = document.getElementById("leaderboard");
+  const restartBtn = document.getElementById("restart-btn");
+
+  function showScreen(name) {
+    Object.values(screens).forEach(s => s.classList.remove("active"));
+    screens[name].classList.add("active");
+  }
+
+  // ---------- Setup screen ----------
+  function renderTeamInputs() {
+    teamInputsEl.innerHTML = "";
+    const count = teamInputsEl.dataset.count ? Number(teamInputsEl.dataset.count) : 2;
+    for (let i = 0; i < count; i++) {
+      const row = document.createElement("div");
+      row.className = "team-input-row";
+      row.innerHTML = `
+        <span class="team-swatch" style="background:${TEAM_COLORS[i]}"></span>
+        <input type="text" placeholder="שם קבוצה ${i + 1}" maxlength="20" value="">
+        ${count > 2 ? '<button type="button" class="remove-btn" data-idx="' + i + '">✕</button>' : ''}
+      `;
+      teamInputsEl.appendChild(row);
+    }
+    teamInputsEl.dataset.count = count;
+    addTeamBtn.disabled = count >= 4;
+    teamInputsEl.querySelectorAll(".remove-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        teamInputsEl.dataset.count = Math.max(2, count - 1);
+        renderTeamInputs();
+      });
+    });
+  }
+
+  addTeamBtn.addEventListener("click", () => {
+    const count = Number(teamInputsEl.dataset.count || 2);
+    if (count < 4) {
+      teamInputsEl.dataset.count = count + 1;
+      renderTeamInputs();
+    }
+  });
+
+  startBtn.addEventListener("click", () => {
+    const inputs = teamInputsEl.querySelectorAll("input[type=text]");
+    teams = Array.from(inputs).map((inp, i) => ({
+      name: inp.value.trim() || `קבוצה ${i + 1}`,
+      score: 0,
+      color: TEAM_COLORS[i]
+    }));
+    currentIndex = 0;
+    renderScoreBar();
+    renderQuestion();
+    showScreen("game");
+  });
+
+  // ---------- Score bar ----------
+  function renderScoreBar() {
+    const maxScore = Math.max(...teams.map(t => t.score));
+    scoreBarEl.innerHTML = teams.map(t => `
+      <div class="score-chip ${t.score === maxScore && maxScore > 0 ? 'leading' : ''}">
+        <div class="t-name" style="color:${t.color}">${t.name}</div>
+        <div class="t-score">${t.score}</div>
+      </div>
+    `).join("");
+  }
+
+  // ---------- Game screen ----------
+  function renderQuestion() {
+    const item = QUESTIONS[currentIndex];
+    awarded = false;
+    progressText.textContent = `שאלה ${currentIndex + 1} מתוך ${QUESTIONS.length}`;
+    difficultyBadge.textContent = item.level === "easy" ? `קל (10 נק')` : `קשה (20 נק')`;
+    difficultyBadge.className = "badge " + item.level;
+    questionText.textContent = item.q;
+    optionsGrid.innerHTML = item.options.map((opt, i) => `
+      <div class="option-item" data-idx="${i}">
+        <span class="option-letter">${OPTION_LETTERS[i]}</span>
+        <span>${opt}</span>
+      </div>
+    `).join("");
+    answerBox.textContent = "";
+    answerBox.classList.remove("show");
+    revealBtn.style.display = "inline-block";
+    revealBtn.disabled = false;
+    teamAwardGrid.classList.remove("show");
+    teamAwardGrid.innerHTML = "";
+    nextBtn.style.display = "none";
+  }
+
+  revealBtn.addEventListener("click", () => {
+    const item = QUESTIONS[currentIndex];
+    const correctEl = optionsGrid.querySelector(`.option-item[data-idx="${item.correctIndex}"]`);
+    if (correctEl) correctEl.classList.add("correct");
+    answerBox.textContent = "✅ התשובה הנכונה: " + OPTION_LETTERS[item.correctIndex] + " " + item.options[item.correctIndex];
+    answerBox.classList.add("show");
+    revealBtn.style.display = "none";
+    buildAwardButtons();
+  });
+
+  function buildAwardButtons() {
+    teamAwardGrid.innerHTML = "";
+    teams.forEach((t, idx) => {
+      const b = document.createElement("button");
+      b.className = "award-btn";
+      b.textContent = `${t.name} ענו נכון`;
+      b.addEventListener("click", () => awardPoints(idx, b));
+      teamAwardGrid.appendChild(b);
+    });
+    const noneBtn = document.createElement("button");
+    noneBtn.className = "award-btn none-btn";
+    noneBtn.textContent = "אף אחד לא ידע";
+    noneBtn.addEventListener("click", () => awardPoints(-1, noneBtn));
+    teamAwardGrid.appendChild(noneBtn);
+    teamAwardGrid.classList.add("show");
+  }
+
+  function awardPoints(teamIdx, chosenBtn) {
+    if (awarded) return;
+    awarded = true;
+    const item = QUESTIONS[currentIndex];
+    if (teamIdx >= 0) {
+      teams[teamIdx].score += POINTS[item.level];
+    }
+    teamAwardGrid.querySelectorAll(".award-btn").forEach(btn => {
+      btn.disabled = true;
+      if (btn === chosenBtn) btn.classList.add("chosen");
+    });
+    renderScoreBar();
+    nextBtn.style.display = "inline-block";
+  }
+
+  nextBtn.addEventListener("click", () => {
+    currentIndex++;
+    if (currentIndex >= QUESTIONS.length) {
+      renderEndScreen();
+      showScreen("end");
+    } else {
+      renderQuestion();
+    }
+  });
+
+  // ---------- End screen ----------
+  function renderEndScreen() {
+    const sorted = [...teams].sort((a, b) => b.score - a.score);
+    const topScore = sorted[0].score;
+    const winners = sorted.filter(t => t.score === topScore);
+    const uniqueScores = [...new Set(sorted.map(t => t.score))];
+
+    winnerBanner.innerHTML = winners.length > 1
+      ? `🎉 תיקו מרשים בין ${winners.map(w => w.name).join(" ו-")}! 🎉`
+      : `🏆 מזל טוב, ${winners[0].name} ניצחו! 🏆`;
+
+    leaderboardEl.innerHTML = sorted.map(t => {
+      const rank = uniqueScores.indexOf(t.score);
+      const medal = rank === 0 ? "🥇" : rank === 1 ? "🥈" : rank === 2 ? "🥉" : "🎗️";
+      return `<li class="${rank === 0 ? 'first' : ''}"><span><span class="medal">${medal}</span>${t.name}</span><span>${t.score} נק'</span></li>`;
+    }).join("");
+
+    startConfetti();
+  }
+
+  restartBtn.addEventListener("click", () => {
+    stopConfetti();
+    teamInputsEl.dataset.count = 2;
+    renderTeamInputs();
+    showScreen("setup");
+  });
+
+  // ---------- Confetti ----------
+  const canvas = document.getElementById("canvas-confetti");
+  const ctx = canvas.getContext("2d");
+  let particles = [];
+  let confettiFrame = null;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
+
+  function startConfetti() {
+    particles = Array.from({ length: 140 }, () => ({
+      x: Math.random() * canvas.width,
+      y: -20 - Math.random() * canvas.height,
+      size: 6 + Math.random() * 6,
+      color: TEAM_COLORS[Math.floor(Math.random() * TEAM_COLORS.length)],
+      speed: 2 + Math.random() * 3,
+      drift: (Math.random() - 0.5) * 2,
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 8
+    }));
+    confettiRunning = true;
+    cancelAnimationFrame(confettiFrame);
+    tickConfetti();
+  }
+
+  function stopConfetti() {
+    confettiRunning = false;
+    cancelAnimationFrame(confettiFrame);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function tickConfetti() {
+    if (!confettiRunning) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.y += p.speed;
+      p.x += p.drift;
+      p.rotation += p.rotSpeed;
+      if (p.y > canvas.height + 20) {
+        p.y = -20;
+        p.x = Math.random() * canvas.width;
+      }
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotation * Math.PI) / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+      ctx.restore();
+    });
+    confettiFrame = requestAnimationFrame(tickConfetti);
+  }
+
+  // ---------- Init ----------
+  renderTeamInputs();
+})();
+</script>
+</body>
+</html>

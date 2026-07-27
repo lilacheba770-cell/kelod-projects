@@ -2,7 +2,7 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 
-const ROOT = "/Users/lilachbenahron/Library/Mobile Documents/com~apple~CloudDocs/cluade/projects/game";
+const ROOT = path.join(__dirname, "..", "trivia-game");
 const PORT = 8791;
 
 const MIME = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css" };
