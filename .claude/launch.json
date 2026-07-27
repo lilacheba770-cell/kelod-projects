@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "trivia-game",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["/Users/lilachbenahron/Library/Mobile Documents/com~apple~CloudDocs/קלוד/.claude/serve-trivia.js"],
+      "port": 8791
+    },
+    {
+      "name": "lottie-generator",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["/Users/lilachbenahron/Library/Mobile Documents/com~apple~CloudDocs/קלוד/lottie-generator/server.js"],
+      "port": 3000
+    }
+  ]
+}
