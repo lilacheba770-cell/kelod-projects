@@ -6,7 +6,7 @@
 <title>חידון יום ההולדת - מדע וטבע</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&family=Suez+One&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg-1: #0c0818;
@@ -57,15 +57,27 @@
     z-index: 0;
   }
 
+  .top-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+    position: relative; z-index: 1;
+  }
   .top-badge {
     display: inline-flex; align-items: center; gap: 8px;
     background: var(--panel-strong); border: 1px solid var(--panel-border);
     padding: 7px 18px; border-radius: 999px; font-weight: 700; font-size: .78rem;
     letter-spacing: .06em; color: var(--gold); text-transform: uppercase;
     box-shadow: 0 4px 18px rgba(0,0,0,.25);
-    margin-bottom: 14px; backdrop-filter: blur(8px);
-    position: relative; z-index: 1;
+    backdrop-filter: blur(8px);
   }
+  .sound-toggle {
+    width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--panel-border);
+    background: var(--panel-strong); color: var(--text-dim); font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 18px rgba(0,0,0,.25); backdrop-filter: blur(8px);
+    transition: transform .12s ease, background .15s ease;
+  }
+  .sound-toggle:hover { transform: translateY(-1px); }
+  .sound-toggle.muted { color: var(--text-faint); }
   .top-badge .dot {
     width: 7px; height: 7px; border-radius: 50%; background: var(--gold);
     box-shadow: 0 0 10px 2px var(--gold); animation: pulseDot 1.6s ease-in-out infinite;
@@ -73,7 +85,8 @@
   @keyframes pulseDot { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
 
   h1 {
-    text-align: center; margin: 4px 0 6px; font-size: 2.5rem; font-weight: 900;
+    text-align: center; margin: 4px 0 6px; font-size: 2.7rem;
+    font-family: "Suez One", "Rubik", serif; font-weight: 400;
     position: relative; z-index: 1;
     background: linear-gradient(90deg, #fff 10%, var(--gold) 55%, var(--pink) 100%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -114,7 +127,7 @@
   .card.card--easy { border-color: rgba(34,197,94,.35); box-shadow: 0 24px 60px rgba(34,197,94,.12), inset 0 1px 0 rgba(255,255,255,.06); }
   .card.card--hard { border-color: rgba(255,84,112,.4); box-shadow: 0 24px 60px rgba(255,84,112,.14), inset 0 1px 0 rgba(255,255,255,.06); }
 
-  .card h2 { margin-top: 0; text-align: center; font-size: 1.5rem; font-weight: 800; }
+  .card h2 { margin-top: 0; text-align: center; font-size: 1.6rem; font-family: "Suez One", "Rubik", serif; font-weight: 400; }
 
   /* Setup screen */
   .team-input-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
@@ -254,7 +267,8 @@
   .trophy-hero { text-align: center; font-size: 3.4rem; margin-bottom: 4px; animation: trophyPulse 2.2s ease-in-out infinite; filter: drop-shadow(0 6px 18px rgba(255,209,102,.5)); }
   @keyframes trophyPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
   .winner-banner {
-    text-align: center; font-size: 1.55rem; font-weight: 900;
+    text-align: center; font-size: 1.85rem;
+    font-family: "Suez One", "Rubik", serif; font-weight: 400;
     margin-bottom: 22px;
     background: linear-gradient(90deg, var(--gold), #fff 50%, var(--gold));
     -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -284,7 +298,10 @@
 </head>
 <body>
 
-<div class="top-badge"><span class="dot"></span>תחרות חיה</div>
+<div class="top-bar">
+  <div class="top-badge"><span class="dot"></span>תחרות חיה</div>
+  <button class="sound-toggle" id="sound-toggle" type="button" aria-label="השתקה">🔊</button>
+</div>
 <h1>🎉 חידון יום ההולדת 🎂</h1>
 <div class="subtitle-row">
   <span class="subtitle-chip">🔬 קטגוריה: מדע וטבע</span>
@@ -392,6 +409,43 @@
   let confettiRunning = false;
   let selectedTeamIdxs = new Set();
   let noneChosen = false;
+  let soundOn = true;
+
+  // ---------- Sound engine (synthesized, no external files) ----------
+  const AudioCtor = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+  function ensureAudio() {
+    if (!AudioCtor) return null;
+    if (!audioCtx) audioCtx = new AudioCtor();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    return audioCtx;
+  }
+  function beep(freq, start, dur, type, vol) {
+    if (!soundOn) return;
+    const ctx = ensureAudio();
+    if (!ctx) return;
+    const t0 = ctx.currentTime + start;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type || "sine";
+    osc.frequency.setValueAtTime(freq, t0);
+    gain.gain.setValueAtTime(0, t0);
+    gain.gain.linearRampToValueAtTime(vol || 0.16, t0 + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.03);
+  }
+  const sfx = {
+    click: () => beep(520, 0, 0.08, "triangle", 0.12),
+    start: () => { beep(523.25, 0, 0.1, "sine", 0.15); beep(783.99, 0.09, 0.2, "sine", 0.15); },
+    select: () => beep(680, 0, 0.07, "square", 0.1),
+    reveal: () => { beep(587.33, 0, 0.12, "sine", 0.16); beep(880, 0.1, 0.2, "sine", 0.16); },
+    confirm: () => { beep(659.25, 0, 0.09, "sine", 0.16); beep(987.77, 0.09, 0.2, "sine", 0.16); },
+    none: () => { beep(392, 0, 0.14, "sine", 0.12); beep(311.13, 0.1, 0.22, "sine", 0.12); },
+    next: () => beep(440, 0, 0.07, "triangle", 0.1),
+    win: () => [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => beep(f, i * 0.13, 0.25, "sine", 0.17))
+  };
 
   // ---------- Elements ----------
   const screens = {
@@ -418,6 +472,15 @@
   const winnerBanner = document.getElementById("winner-banner");
   const leaderboardEl = document.getElementById("leaderboard");
   const restartBtn = document.getElementById("restart-btn");
+  const soundToggleBtn = document.getElementById("sound-toggle");
+
+  soundToggleBtn.addEventListener("click", () => {
+    soundOn = !soundOn;
+    soundToggleBtn.textContent = soundOn ? "🔊" : "🔇";
+    soundToggleBtn.classList.toggle("muted", !soundOn);
+    soundToggleBtn.setAttribute("aria-label", soundOn ? "השתקה" : "הפעלת קול");
+    if (soundOn) sfx.click();
+  });
 
   function showScreen(name) {
     Object.values(screens).forEach(s => s.classList.remove("active"));
@@ -442,6 +505,7 @@
     addTeamBtn.disabled = count >= 4;
     teamInputsEl.querySelectorAll(".remove-btn").forEach(btn => {
       btn.addEventListener("click", () => {
+        sfx.click();
         teamInputsEl.dataset.count = Math.max(2, count - 1);
         renderTeamInputs();
       });
@@ -449,6 +513,7 @@
   }
 
   addTeamBtn.addEventListener("click", () => {
+    sfx.click();
     const count = Number(teamInputsEl.dataset.count || 2);
     if (count < 4) {
       teamInputsEl.dataset.count = count + 1;
@@ -457,6 +522,7 @@
   });
 
   startBtn.addEventListener("click", () => {
+    sfx.start();
     const inputs = teamInputsEl.querySelectorAll("input[type=text]");
     teams = Array.from(inputs).map((inp, i) => ({
       name: inp.value.trim() || `קבוצה ${i + 1}`,
@@ -515,6 +581,7 @@
   }
 
   revealBtn.addEventListener("click", () => {
+    sfx.reveal();
     const item = QUESTIONS[currentIndex];
     optionsGrid.querySelectorAll(".option-item").forEach(el => {
       if (Number(el.dataset.idx) === item.correctIndex) {
@@ -553,6 +620,7 @@
 
   function toggleTeamSelection(idx, btn) {
     if (awarded) return;
+    sfx.select();
     noneChosen = false;
     const noneBtnEl = teamAwardGrid.querySelector(".none-btn");
     if (noneBtnEl) noneBtnEl.classList.remove("selected");
@@ -568,6 +636,7 @@
 
   function toggleNoneSelection(btn) {
     if (awarded) return;
+    sfx.select();
     noneChosen = !noneChosen;
     btn.classList.toggle("selected", noneChosen);
     if (noneChosen) {
@@ -584,6 +653,7 @@
   confirmAwardBtn.addEventListener("click", () => {
     if (awarded) return;
     awarded = true;
+    if (selectedTeamIdxs.size > 0) sfx.confirm(); else sfx.none();
     const item = QUESTIONS[currentIndex];
     selectedTeamIdxs.forEach(idx => {
       teams[idx].score += POINTS[item.level];
@@ -599,6 +669,7 @@
   });
 
   nextBtn.addEventListener("click", () => {
+    sfx.next();
     currentIndex++;
     if (currentIndex >= QUESTIONS.length) {
       progressFill.style.width = "100%";
@@ -626,10 +697,12 @@
       return `<li class="${rank === 0 ? 'first' : ''}"><span><span class="medal">${medal}</span>${t.name}</span><span class="t-score-pill">${t.score} נק'</span></li>`;
     }).join("");
 
+    sfx.win();
     startConfetti();
   }
 
   restartBtn.addEventListener("click", () => {
+    sfx.click();
     stopConfetti();
     teamInputsEl.dataset.count = 2;
     renderTeamInputs();
