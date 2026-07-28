@@ -225,15 +225,26 @@
     margin-bottom: 22px; box-shadow: 0 8px 22px rgba(34,197,94,.15);
   }
   .answer-box.show { display: block; animation: qFadeIn .35s ease; }
-  .team-award-grid { display: none; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 18px; }
+  .award-hint { display: none; text-align: center; color: var(--text-faint); font-size: .85rem; margin-bottom: 12px; }
+  .award-hint.show { display: block; }
+  .team-award-grid { display: none; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 6px; }
   .team-award-grid.show { display: flex; }
   .award-btn {
     background: var(--panel-strong); color: var(--text); border: 1.5px solid var(--panel-border);
     border-radius: 14px; padding: 12px 20px; font-weight: 700; font-size: .95rem;
-    transition: transform .12s ease, filter .15s ease;
+    transition: transform .12s ease, filter .15s ease, background .15s ease, border-color .15s ease;
   }
   .award-btn:hover:not(:disabled) { transform: translateY(-2px); }
   .award-btn.none-btn { background: rgba(255,255,255,.04); color: var(--text-faint); }
+  .award-btn.selected {
+    background: rgba(139,92,246,.28); border-color: var(--purple); color: #fff;
+    box-shadow: 0 0 0 1px var(--purple), 0 6px 16px rgba(139,92,246,.3);
+  }
+  .award-btn.selected::before { content: "✓ "; }
+  .award-btn.none-btn.selected {
+    background: rgba(255,255,255,.14); border-color: var(--text-dim); color: #fff;
+    box-shadow: 0 0 0 1px var(--text-dim);
+  }
   .award-btn.chosen { background: linear-gradient(135deg, var(--green), #16a34a); color: #fff; border-color: var(--green); }
   .award-btn:disabled:not(.chosen) { opacity: .35; }
   .next-wrap { text-align: center; }
@@ -312,7 +323,11 @@
       <button class="btn btn-gold" id="reveal-btn">🔍 הצג תשובה</button>
     </div>
 
+    <div class="award-hint" id="award-hint">בחרו את כל הקבוצות שענו נכון (אפשר לבחור כמה קבוצות), ואז אשרו</div>
     <div class="team-award-grid" id="team-award-grid"></div>
+    <div class="next-wrap" style="margin-bottom:12px;">
+      <button class="btn btn-gold" id="confirm-award-btn" style="display:none;">✅ אשרו ניקוד</button>
+    </div>
 
     <div class="next-wrap">
       <button class="btn btn-primary" id="next-btn" style="display:none;">▶ השאלה הבאה</button>
@@ -375,6 +390,8 @@
   let currentIndex = 0;
   let awarded = false;
   let confettiRunning = false;
+  let selectedTeamIdxs = new Set();
+  let noneChosen = false;
 
   // ---------- Elements ----------
   const screens = {
@@ -394,7 +411,9 @@
   const optionsGrid = document.getElementById("options-grid");
   const answerBox = document.getElementById("answer-box");
   const revealBtn = document.getElementById("reveal-btn");
+  const awardHint = document.getElementById("award-hint");
   const teamAwardGrid = document.getElementById("team-award-grid");
+  const confirmAwardBtn = document.getElementById("confirm-award-btn");
   const nextBtn = document.getElementById("next-btn");
   const winnerBanner = document.getElementById("winner-banner");
   const leaderboardEl = document.getElementById("leaderboard");
@@ -488,8 +507,10 @@
     answerBox.classList.remove("show");
     revealBtn.style.display = "inline-block";
     revealBtn.disabled = false;
+    awardHint.classList.remove("show");
     teamAwardGrid.classList.remove("show");
     teamAwardGrid.innerHTML = "";
+    confirmAwardBtn.style.display = "none";
     nextBtn.style.display = "none";
   }
 
@@ -510,36 +531,72 @@
 
   function buildAwardButtons() {
     teamAwardGrid.innerHTML = "";
+    selectedTeamIdxs = new Set();
+    noneChosen = false;
     teams.forEach((t, idx) => {
       const b = document.createElement("button");
       b.className = "award-btn";
       b.style.setProperty("--team-color", t.color);
       b.textContent = `${t.name} ענו נכון`;
-      b.addEventListener("click", () => awardPoints(idx, b));
+      b.addEventListener("click", () => toggleTeamSelection(idx, b));
       teamAwardGrid.appendChild(b);
     });
     const noneBtn = document.createElement("button");
     noneBtn.className = "award-btn none-btn";
     noneBtn.textContent = "אף אחד לא ידע";
-    noneBtn.addEventListener("click", () => awardPoints(-1, noneBtn));
+    noneBtn.addEventListener("click", () => toggleNoneSelection(noneBtn));
     teamAwardGrid.appendChild(noneBtn);
     teamAwardGrid.classList.add("show");
+    awardHint.classList.add("show");
+    confirmAwardBtn.style.display = "none";
   }
 
-  function awardPoints(teamIdx, chosenBtn) {
+  function toggleTeamSelection(idx, btn) {
+    if (awarded) return;
+    noneChosen = false;
+    const noneBtnEl = teamAwardGrid.querySelector(".none-btn");
+    if (noneBtnEl) noneBtnEl.classList.remove("selected");
+    if (selectedTeamIdxs.has(idx)) {
+      selectedTeamIdxs.delete(idx);
+      btn.classList.remove("selected");
+    } else {
+      selectedTeamIdxs.add(idx);
+      btn.classList.add("selected");
+    }
+    updateConfirmVisibility();
+  }
+
+  function toggleNoneSelection(btn) {
+    if (awarded) return;
+    noneChosen = !noneChosen;
+    btn.classList.toggle("selected", noneChosen);
+    if (noneChosen) {
+      selectedTeamIdxs.clear();
+      teamAwardGrid.querySelectorAll(".award-btn:not(.none-btn)").forEach(b => b.classList.remove("selected"));
+    }
+    updateConfirmVisibility();
+  }
+
+  function updateConfirmVisibility() {
+    confirmAwardBtn.style.display = (selectedTeamIdxs.size > 0 || noneChosen) ? "inline-block" : "none";
+  }
+
+  confirmAwardBtn.addEventListener("click", () => {
     if (awarded) return;
     awarded = true;
     const item = QUESTIONS[currentIndex];
-    if (teamIdx >= 0) {
-      teams[teamIdx].score += POINTS[item.level];
-    }
+    selectedTeamIdxs.forEach(idx => {
+      teams[idx].score += POINTS[item.level];
+    });
     teamAwardGrid.querySelectorAll(".award-btn").forEach(btn => {
       btn.disabled = true;
-      if (btn === chosenBtn) btn.classList.add("chosen");
+      if (btn.classList.contains("selected")) btn.classList.add("chosen");
     });
+    awardHint.classList.remove("show");
+    confirmAwardBtn.style.display = "none";
     renderScoreBar();
     nextBtn.style.display = "inline-block";
-  }
+  });
 
   nextBtn.addEventListener("click", () => {
     currentIndex++;
