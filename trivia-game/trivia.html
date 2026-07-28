@@ -166,6 +166,14 @@
   }
   .score-chip.leading { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold), 0 10px 26px rgba(255,209,102,.25); }
   .score-chip .crown { position: absolute; top: -12px; right: 50%; transform: translateX(50%); font-size: 1.1rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,.4)); }
+  .score-chip .rank-badge {
+    position: absolute; top: 8px; inset-inline-start: 9px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: rgba(255,255,255,.08); color: var(--text-faint);
+    font-size: .68rem; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .score-chip.leading .rank-badge { background: var(--gold); color: #3a2703; }
   .score-chip .t-name { font-size: .82rem; color: var(--text-dim); font-weight: 700; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .score-chip .t-score { font-size: 1.7rem; font-weight: 900; color: var(--text); }
 
@@ -445,8 +453,10 @@
   // ---------- Score bar ----------
   function renderScoreBar() {
     const maxScore = Math.max(...teams.map(t => t.score));
-    scoreBarEl.innerHTML = teams.map(t => `
+    const sorted = [...teams].sort((a, b) => b.score - a.score);
+    scoreBarEl.innerHTML = sorted.map((t, i) => `
       <div class="score-chip ${t.score === maxScore && maxScore > 0 ? 'leading' : ''}" style="--chip-color:${t.color}">
+        <span class="rank-badge">${i + 1}</span>
         ${t.score === maxScore && maxScore > 0 ? '<span class="crown">👑</span>' : ''}
         <div class="t-name">${t.name}</div>
         <div class="t-score">${t.score}</div>
