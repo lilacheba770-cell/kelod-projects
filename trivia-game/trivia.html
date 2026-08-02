@@ -6,7 +6,7 @@
 <title>חידון יום ההולדת - מדע וטבע</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&family=Suez+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&family=Secular+One&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg-1: #0c0818;
@@ -86,7 +86,7 @@
 
   h1 {
     text-align: center; margin: 4px 0 6px; font-size: 2.7rem;
-    font-family: "Suez One", "Rubik", serif; font-weight: 400;
+    font-family: "Secular One", "Rubik", sans-serif; font-weight: 400;
     position: relative; z-index: 1;
     background: linear-gradient(90deg, #fff 10%, var(--gold) 55%, var(--pink) 100%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -127,7 +127,7 @@
   .card.card--easy { border-color: rgba(34,197,94,.35); box-shadow: 0 24px 60px rgba(34,197,94,.12), inset 0 1px 0 rgba(255,255,255,.06); }
   .card.card--hard { border-color: rgba(255,84,112,.4); box-shadow: 0 24px 60px rgba(255,84,112,.14), inset 0 1px 0 rgba(255,255,255,.06); }
 
-  .card h2 { margin-top: 0; text-align: center; font-size: 1.6rem; font-family: "Suez One", "Rubik", serif; font-weight: 400; }
+  .card h2 { margin-top: 0; text-align: center; font-size: 1.6rem; font-family: "Secular One", "Rubik", sans-serif; font-weight: 400; }
 
   /* Setup screen */
   .team-input-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
@@ -268,7 +268,7 @@
   @keyframes trophyPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
   .winner-banner {
     text-align: center; font-size: 1.85rem;
-    font-family: "Suez One", "Rubik", serif; font-weight: 400;
+    font-family: "Secular One", "Rubik", sans-serif; font-weight: 400;
     margin-bottom: 22px;
     background: linear-gradient(90deg, var(--gold), #fff 50%, var(--gold));
     -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -437,14 +437,14 @@
     osc.stop(t0 + dur + 0.03);
   }
   const sfx = {
-    click: () => beep(520, 0, 0.08, "triangle", 0.12),
-    start: () => { beep(523.25, 0, 0.1, "sine", 0.15); beep(783.99, 0.09, 0.2, "sine", 0.15); },
-    select: () => beep(680, 0, 0.07, "square", 0.1),
-    reveal: () => { beep(587.33, 0, 0.12, "sine", 0.16); beep(880, 0.1, 0.2, "sine", 0.16); },
-    confirm: () => { beep(659.25, 0, 0.09, "sine", 0.16); beep(987.77, 0.09, 0.2, "sine", 0.16); },
-    none: () => { beep(392, 0, 0.14, "sine", 0.12); beep(311.13, 0.1, 0.22, "sine", 0.12); },
-    next: () => beep(440, 0, 0.07, "triangle", 0.1),
-    win: () => [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => beep(f, i * 0.13, 0.25, "sine", 0.17))
+    click: () => beep(520, 0, 0.14, "triangle", 0.3),
+    start: () => { beep(523.25, 0, 0.16, "square", 0.32); beep(783.99, 0.13, 0.28, "square", 0.32); },
+    select: () => beep(680, 0, 0.12, "square", 0.26),
+    reveal: () => { beep(587.33, 0, 0.18, "sine", 0.34); beep(880, 0.14, 0.3, "sine", 0.34); },
+    confirm: () => { beep(659.25, 0, 0.14, "sine", 0.34); beep(987.77, 0.12, 0.3, "sine", 0.34); },
+    none: () => { beep(392, 0, 0.2, "sine", 0.28); beep(311.13, 0.15, 0.3, "sine", 0.28); },
+    next: () => beep(440, 0, 0.12, "triangle", 0.24),
+    win: () => [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => beep(f, i * 0.14, 0.35, "sine", 0.34))
   };
 
   // ---------- Elements ----------
