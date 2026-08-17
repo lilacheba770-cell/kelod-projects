@@ -60,15 +60,22 @@
   <!-- SCROLL TOUR -->
   <section class="tour" id="tour">
     <div class="tour-sticky">
-      <canvas id="tourCanvas"></canvas>
-      <div class="tour-loading" id="tourLoading">
-        <span>טוען סיור<span class="dots"><span>.</span><span>.</span><span>.</span></span></span>
+      <div class="tour-images">
+        <img class="tour-img" src="images/tour/stop1.jpg" alt="חזית הבניין" loading="eager">
+        <img class="tour-img" src="images/tour/stop2.jpg" alt="הכניסה לבניין" loading="eager">
+        <img class="tour-img" src="images/tour/stop3.jpg" alt="המטבח והסלון" loading="eager">
+        <img class="tour-img" src="images/tour/stop4.jpg" alt="מרפסת עם נוף לעיר" loading="eager">
+        <img class="tour-img" src="images/tour/stop5.jpg" alt="חדר השינה" loading="eager">
       </div>
-      <div class="tour-caption" id="tourCaption">
-        <span class="tour-caption-line" data-phase="0">כניסה לשכונה ולבניין</span>
-        <span class="tour-caption-line" data-phase="1">סיור בדירה</span>
-      </div>
-      <div class="tour-progress"><div class="tour-progress-bar" id="tourProgressBar"></div></div>
+      <div class="tour-overlay"></div>
+      <div class="tour-caption" id="tourCaption">חזית הבניין</div>
+      <nav class="tour-stops" id="tourStops">
+        <button class="tour-stop" data-index="0"><span class="tour-stop-num">01</span><span class="tour-stop-label">חזית הבניין</span></button>
+        <button class="tour-stop" data-index="1"><span class="tour-stop-num">02</span><span class="tour-stop-label">הכניסה</span></button>
+        <button class="tour-stop" data-index="2"><span class="tour-stop-num">03</span><span class="tour-stop-label">המטבח והסלון</span></button>
+        <button class="tour-stop" data-index="3"><span class="tour-stop-num">04</span><span class="tour-stop-label">המרפסת</span></button>
+        <button class="tour-stop" data-index="4"><span class="tour-stop-num">05</span><span class="tour-stop-label">חדר השינה</span></button>
+      </nav>
     </div>
   </section>
 

@@ -118,93 +118,41 @@ if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
   });
 }
 
-// Scroll-scrubbed video tour: a preloaded frame sequence painted to a canvas,
-// where scroll position (not playback time) picks the frame — so scrolling
-// down plays the tour forward and scrolling up rewinds it.
+// Scroll tour: a handful of full-quality photos crossfade as you scroll through
+// a pinned section, with a side step-list for direct navigation to any stop.
 (function initTour() {
   const section = document.getElementById('tour');
   if (!section) return;
-  const canvas = document.getElementById('tourCanvas');
-  const ctx = canvas.getContext('2d');
-  const loadingEl = document.getElementById('tourLoading');
-  const progressBar = document.getElementById('tourProgressBar');
-  const captionLines = [...document.querySelectorAll('.tour-caption-line')];
+  const images = [...section.querySelectorAll('.tour-img')];
+  const stopBtns = [...section.querySelectorAll('.tour-stop')];
+  const captionEl = document.getElementById('tourCaption');
+  const STOPS = images.length;
+  let activeIndex = -1;
 
-  const FRAME_COUNT = 90;
-  const framePath = (i) => `images/tour/f_${String(i).padStart(3, '0')}.jpg`;
-
-  const frames = new Array(FRAME_COUNT);
-  let loadedCount = 0;
-  let currentFrame = -1;
-
-  function resizeCanvas() {
-    const rect = section.querySelector('.tour-sticky').getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    if (currentFrame >= 0) drawFrame(currentFrame, true);
-  }
-
-  function drawFrame(index, force) {
-    if (!force && index === currentFrame) return;
-    const img = frames[index];
-    if (!img || !img.complete || img.naturalWidth === 0) return;
-    currentFrame = index;
-    const cw = canvas.width, ch = canvas.height;
-    const ir = img.naturalWidth / img.naturalHeight;
-    const cr = cw / ch;
-    let dw, dh, dx, dy;
-    if (ir > cr) { dh = ch; dw = ch * ir; dx = (cw - dw) / 2; dy = 0; }
-    else { dw = cw; dh = cw / ir; dx = 0; dy = (ch - dh) / 2; }
-    ctx.drawImage(img, dx, dy, dw, dh);
-  }
-
-  function updateCaption(progress) {
-    const phase = progress < 0.48 ? '0' : '1';
-    captionLines.forEach(el => el.classList.toggle('active', el.dataset.phase === phase));
+  function setActive(index) {
+    if (index === activeIndex) return;
+    activeIndex = index;
+    images.forEach((img, i) => img.classList.toggle('active', i === index));
+    stopBtns.forEach((btn, i) => btn.classList.toggle('active', i === index));
+    captionEl.textContent = stopBtns[index].querySelector('.tour-stop-label').textContent;
   }
 
   function onScroll() {
     const rect = section.getBoundingClientRect();
     const scrollable = rect.height - window.innerHeight;
     const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
-    progressBar.style.width = (progress * 100) + '%';
-    updateCaption(progress);
-    const index = Math.min(FRAME_COUNT - 1, Math.round(progress * (FRAME_COUNT - 1)));
-    drawFrame(index);
+    setActive(Math.min(STOPS - 1, Math.floor(progress * STOPS)));
   }
 
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
+  setActive(0);
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  function loadFrame(i, onDone) {
-    const img = new Image();
-    img.onload = img.onerror = () => { loadedCount++; onDone && onDone(); };
-    img.decoding = 'async';
-    img.src = framePath(i);
-    frames[i - 1] = img;
-  }
-
-  // Load frame 1 immediately (so there's something to show as soon as the
-  // section is reached), reveal on it, then load the rest in the background
-  // after the page's own critical content (hero image, fonts) has settled —
-  // 90 requests competing with everything else at once is what made this feel
-  // heavy.
-  loadFrame(1, () => {
-    drawFrame(0, true);
-    loadingEl.classList.add('hidden');
-    onScroll();
+  stopBtns.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      const rect = section.getBoundingClientRect();
+      const scrollable = rect.height - window.innerHeight;
+      const targetProgress = (i + 0.5) / STOPS; // land solidly inside that stop's zone, not right on the boundary
+      window.scrollTo({ top: window.scrollY + rect.top + targetProgress * scrollable, behavior: 'smooth' });
+    });
   });
-
-  function loadRemaining() {
-    for (let i = 2; i <= FRAME_COUNT; i++) {
-      loadFrame(i, () => { if (loadedCount === FRAME_COUNT) onScroll(); });
-    }
-  }
-  if (document.readyState === 'complete') {
-    setTimeout(loadRemaining, 300);
-  } else {
-    window.addEventListener('load', () => setTimeout(loadRemaining, 300));
-  }
 })();

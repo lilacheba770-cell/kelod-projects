@@ -282,7 +282,7 @@ body.dark-nav .scroll-arrow { color: var(--white); border-color: rgba(255,255,25
 /* ===== SCROLL TOUR ===== */
 .tour {
   position: relative;
-  height: 500vh; /* scroll distance that maps to the frame sequence */
+  height: 500vh; /* 100vh per stop */
   background: var(--ink);
 }
 .tour-sticky {
@@ -290,36 +290,27 @@ body.dark-nav .scroll-arrow { color: var(--white); border-color: rgba(255,255,25
   top: 0;
   height: 100vh;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: var(--ink);
 }
-#tourCanvas {
+.tour-images { position: absolute; inset: 0; }
+.tour-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  opacity: 0;
+  transition: opacity 1s var(--ease);
 }
-.tour-loading {
+.tour-img:first-child { opacity: 1; }
+.tour-img.active { opacity: 1; }
+
+.tour-overlay {
   position: absolute;
   inset: 0;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--white);
-  font-weight: 600;
-  font-size: 14px;
-  letter-spacing: .03em;
-  background: var(--ink);
-  transition: opacity .5s var(--ease);
+  z-index: 1;
+  background: linear-gradient(0deg, rgba(20,14,8,.6) 0%, rgba(20,14,8,0) 30%, rgba(20,14,8,.25) 100%);
 }
-.tour-loading.hidden { opacity: 0; pointer-events: none; }
-.tour-loading .dots span { animation: dotFade 1.4s infinite; opacity: .2; }
-.tour-loading .dots span:nth-child(2) { animation-delay: .2s; }
-.tour-loading .dots span:nth-child(3) { animation-delay: .4s; }
-@keyframes dotFade { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
 
 .tour-caption {
   position: absolute;
@@ -327,33 +318,61 @@ body.dark-nav .scroll-arrow { color: var(--white); border-color: rgba(255,255,25
   right: 6vw;
   z-index: 2;
   color: var(--white);
-}
-.tour-caption-line {
-  display: block;
   font-size: clamp(24px, 3.2vw, 40px);
   font-weight: 700;
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity .5s var(--ease), transform .5s var(--ease);
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  white-space: nowrap;
 }
-.tour-caption-line.active { opacity: 1; transform: translateY(0); position: relative; }
 
-.tour-progress {
+.tour-stops {
   position: absolute;
-  bottom: 0; right: 0; left: 0;
-  height: 3px;
-  background: rgba(255,255,255,.15);
+  top: 50%;
+  left: 6vw;
+  transform: translateY(-50%);
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
 }
-.tour-progress-bar { height: 100%; width: 0%; background: var(--gold); }
+.tour-stop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,.55);
+  text-align: right;
+  transition: color .3s var(--ease);
+}
+.tour-stop:hover { color: rgba(255,255,255,.85); }
+.tour-stop.active { color: var(--white); }
+.tour-stop-num {
+  font-size: 12px;
+  font-weight: 700;
+  width: 20px;
+  transition: color .3s var(--ease);
+}
+.tour-stop.active .tour-stop-num { color: var(--gold); }
+.tour-stop-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transition: max-width .35s var(--ease), opacity .35s var(--ease);
+}
+.tour-stop.active .tour-stop-label,
+.tour-stop:hover .tour-stop-label {
+  max-width: 160px;
+  opacity: 1;
+}
 
 @media (max-width: 900px) {
   .tour { height: 350vh; }
-  .tour-caption { bottom: 36px; }
+  .tour-caption { bottom: 36px; font-size: 26px; }
+  .tour-stops { left: 4vw; gap: 16px; }
+  .tour-stop-label { display: none; }
 }
 
 /* ===== Section head ===== */
