@@ -43,7 +43,7 @@
       <div class="hero-overlay"></div>
     </div>
     <div class="hero-content reveal">
-      <h1 class="hero-title"><span class="mask"><span>אלטו<span class="dot">.</span></span></span></h1>
+      <h1 class="hero-title"><span class="bracket"><span class="mask"><span>אלטו<span class="dot">.</span></span></span></span></h1>
       <p class="hero-tagline">בונים שכונות מגורים<br>שמעוררות השראה</p>
       <a href="#contact" class="btn btn-gold">קבלו הצעת מחיר <span class="arrow">↖</span></a>
     </div>
@@ -54,6 +54,10 @@
         <li>דירות גן</li>
       </ul>
       <span class="hero-script">יזמות ובנייה</span>
+    </div>
+    <div class="hero-badge reveal">
+      <span class="hero-badge-label">פרויקט לדוגמה</span>
+      <span class="hero-badge-value">320 מ"ר · 5 חדרים · קומה 3</span>
     </div>
   </section>
 
@@ -87,37 +91,35 @@
       <span class="brandmark">אלטו<span class="dot">.</span></span>
     </div>
 
-    <div class="service-row reveal">
-      <span class="service-num">01</span>
-      <div class="service-media">
-        <img src="images/service-planning.jpg" alt="תכנון אדריכלי - שרטוטים ומודל תלת מימד">
+    <div class="service-tabs reveal">
+      <div class="service-panels">
+        <div class="service-panel active" data-panel="0">
+          <div class="service-panel-text">
+            <span class="service-panel-word">תכנון</span>
+            <p>אנחנו מתכננים כל פרט בקפידה. אדריכלים מובילים מעצבים שכונות מגורים שמשלבות פונקציונליות עם אסתטיקה מודרנית, ומעניקות ערך אמיתי לכל בית ובית.</p>
+          </div>
+          <div class="service-panel-media"><img src="images/service-planning.jpg" alt="תכנון אדריכלי - שרטוטים ומודל תלת מימד"></div>
+        </div>
+        <div class="service-panel" data-panel="1">
+          <div class="service-panel-text">
+            <span class="service-panel-word">בנייה</span>
+            <p>מערכת ניהול פרויקט מסודרת מאפשרת עמידה בלוחות זמנים וליווי צמוד בכל שלב. אנחנו מבקרים באתר, מפקחים על ההתאמה בין התכנון לביצוע ושומרים על סטנדרט אחיד.</p>
+          </div>
+          <div class="service-panel-media"><img src="images/service-construction.jpg" alt="בנייה ופיקוח באתר הבנייה"></div>
+        </div>
+        <div class="service-panel" data-panel="2">
+          <div class="service-panel-text">
+            <span class="service-panel-word">גימור</span>
+            <p>בחירת חומרים ואלמנטים יחד עם מומחה היא שירות מקיף וחסכוני. כך תוכלו לרכוש פריטים מוצדקים מבחינה סגנונית ופונקציונליים שלא יתפשרו על הבית שלכם.</p>
+          </div>
+          <div class="service-panel-media"><img src="images/service-finishing.jpg" alt="בחירת חומרי גימור יוקרתיים"></div>
+        </div>
       </div>
-      <div class="service-text">
-        <h3>תכנון אדריכלי</h3>
-        <p>אנחנו מתכננים כל פרט בקפידה. אדריכלים מובילים מעצבים שכונות מגורים שמשלבות פונקציונליות עם אסתטיקה מודרנית, ומעניקות ערך אמיתי לכל בית ובית.</p>
-      </div>
-    </div>
-
-    <div class="service-row reverse reveal">
-      <span class="service-num">02</span>
-      <div class="service-media">
-        <img src="images/service-construction.jpg" alt="בנייה ופיקוח באתר הבנייה">
-      </div>
-      <div class="service-text">
-        <h3>בנייה ופיקוח צמוד</h3>
-        <p>מערכת ניהול פרויקט מסודרת מאפשרת עמידה בלוחות זמנים וליווי צמוד בכל שלב. אנחנו מבקרים באתר, מפקחים על ההתאמה בין התכנון לביצוע ושומרים על סטנדרט אחיד.</p>
-      </div>
-    </div>
-
-    <div class="service-row reveal">
-      <span class="service-num">03</span>
-      <div class="service-media">
-        <img src="images/service-finishing.jpg" alt="בחירת חומרי גימור יוקרתיים">
-      </div>
-      <div class="service-text">
-        <h3>גימור יוקרתי</h3>
-        <p>בחירת חומרים ואלמנטים יחד עם מומחה היא שירות מקיף וחסכוני. כך תוכלו לרכוש פריטים מוצדקים מבחינה סגנונית ופונקציונליים שלא יתפשרו על הבית שלכם.</p>
-      </div>
+      <nav class="service-tablist">
+        <button class="service-tab active" data-tab="0">תכנון אדריכלי</button>
+        <button class="service-tab" data-tab="1">בנייה ופיקוח</button>
+        <button class="service-tab" data-tab="2">גימור יוקרתי</button>
+      </nav>
     </div>
   </section>
 
@@ -163,53 +165,72 @@
       <h2 class="section-title"><span class="mask"><span class="thin">הפרויקטים</span></span><span class="mask"><span class="bold">שלנו</span></span></h2>
     </div>
 
-    <article class="project reveal">
-      <div class="project-info">
-        <span class="project-num">01</span>
-        <h3>פארק האלונים</h3>
-        <p>שכונת וילות יוקרה המשלבת אדריכלות ים-תיכונית מודרנית עם חללים ירוקים ופרטיות מרבית. כל וילה תוכננה בקפידה כדי ליצור מרחב מחיה שלם ומחובר לטבע.</p>
-        <div class="project-meta">
-          <div><span>מיקום</span><strong>כפר סבא</strong></div>
-          <div><span>משך ביצוע</span><strong>18 חודשים</strong></div>
+    <div class="portfolio-scroll reveal">
+      <article class="portfolio-card">
+        <img src="images/project1-main.jpg" alt="שורת וילות יוקרה בפארק האלונים">
+        <div class="portfolio-card-overlay"></div>
+        <span class="portfolio-card-badge">18 יח"ד · 320-450 מ"ר</span>
+        <div class="portfolio-card-info">
+          <span class="portfolio-card-num">01</span>
+          <h3>פארק האלונים</h3>
+          <span>כפר סבא</span>
         </div>
-      </div>
-      <div class="project-gallery">
-        <img src="images/project1-main.jpg" alt="שורת וילות יוקרה בפארק האלונים" class="g-main">
-        <img src="images/project1-detail.jpg" alt="מרפסת ובריכת אינסוף בפארק האלונים" class="g-side">
-      </div>
-    </article>
-
-    <article class="project reveal">
-      <div class="project-info">
-        <span class="project-num">02</span>
-        <h3>מגדלי הים</h3>
-        <p>פרויקט פנטהאוזים יוקרתיים עם נוף פתוח לים, מרפסות ענק וחיפויי זכוכית מהמסד ועד הטפחות. עיצוב עכשווי שמדבר בשפה בינלאומית.</p>
-        <div class="project-meta">
-          <div><span>מיקום</span><strong>הרצליה פיתוח</strong></div>
-          <div><span>משך ביצוע</span><strong>24 חודשים</strong></div>
+      </article>
+      <article class="portfolio-card">
+        <img src="images/project1-detail.jpg" alt="מרפסת ובריכת אינסוף בפארק האלונים">
+        <div class="portfolio-card-overlay"></div>
+        <span class="portfolio-card-badge">18 יח"ד · 320-450 מ"ר</span>
+        <div class="portfolio-card-info">
+          <span class="portfolio-card-num">01</span>
+          <h3>פארק האלונים</h3>
+          <span>כפר סבא</span>
         </div>
-      </div>
-      <div class="project-gallery">
-        <img src="images/project2-main.jpg" alt="חזית מגדל פנטהאוזים מול הים" class="g-main">
-        <img src="images/project2-detail.jpg" alt="מרפסת גג עם נוף לים" class="g-side">
-      </div>
-    </article>
-
-    <article class="project reveal">
-      <div class="project-info">
-        <span class="project-num">03</span>
-        <h3>גני הצפון</h3>
-        <p>דירות גן מרווחות עם גינות פרטיות מטופחות, מיקום שקט ונגישות מלאה לכל מוקדי העניין באזור. פתרון מושלם למשפחות המחפשות שילוב של פרטיות ונוחות.</p>
-        <div class="project-meta">
-          <div><span>מיקום</span><strong>רמת השרון</strong></div>
-          <div><span>משך ביצוע</span><strong>14 חודשים</strong></div>
+      </article>
+      <article class="portfolio-card">
+        <img src="images/project2-main.jpg" alt="חזית מגדל פנטהאוזים מול הים">
+        <div class="portfolio-card-overlay"></div>
+        <span class="portfolio-card-badge">24 יח"ד · 180-260 מ"ר</span>
+        <div class="portfolio-card-info">
+          <span class="portfolio-card-num">02</span>
+          <h3>מגדלי הים</h3>
+          <span>הרצליה פיתוח</span>
         </div>
-      </div>
-      <div class="project-gallery">
-        <img src="images/project3-main.jpg" alt="דירות גן מודרניות עם גינה פרטית" class="g-main">
-        <img src="images/project3-detail.jpg" alt="גינה פרטית מטופחת" class="g-side">
-      </div>
-    </article>
+      </article>
+      <article class="portfolio-card">
+        <img src="images/project2-detail.jpg" alt="מרפסת גג עם נוף לים">
+        <div class="portfolio-card-overlay"></div>
+        <span class="portfolio-card-badge">24 יח"ד · 180-260 מ"ר</span>
+        <div class="portfolio-card-info">
+          <span class="portfolio-card-num">02</span>
+          <h3>מגדלי הים</h3>
+          <span>הרצליה פיתוח</span>
+        </div>
+      </article>
+      <article class="portfolio-card">
+        <img src="images/project3-main.jpg" alt="דירות גן מודרניות עם גינה פרטית">
+        <div class="portfolio-card-overlay"></div>
+        <span class="portfolio-card-badge">14 יח"ד · 140-190 מ"ר</span>
+        <div class="portfolio-card-info">
+          <span class="portfolio-card-num">03</span>
+          <h3>גני הצפון</h3>
+          <span>רמת השרון</span>
+        </div>
+      </article>
+      <article class="portfolio-card">
+        <img src="images/project3-detail.jpg" alt="גינה פרטית מטופחת">
+        <div class="portfolio-card-overlay"></div>
+        <span class="portfolio-card-badge">14 יח"ד · 140-190 מ"ר</span>
+        <div class="portfolio-card-info">
+          <span class="portfolio-card-num">03</span>
+          <h3>גני הצפון</h3>
+          <span>רמת השרון</span>
+        </div>
+      </article>
+    </div>
+    <div class="portfolio-arrows">
+      <button class="portfolio-arrow" id="portfolioPrev" aria-label="הקודם">→</button>
+      <button class="portfolio-arrow" id="portfolioNext" aria-label="הבא">←</button>
+    </div>
   </section>
 
   <!-- CONTACT / CTA -->

@@ -1,13 +1,8 @@
-// Sticky nav background + dark/light icon swap over the hero
+// Sticky nav background on scroll
 const topnav = document.getElementById('topnav');
-const heroEl = document.getElementById('hero');
 
 function updateNav() {
-  const scrolled = window.scrollY > 40;
-  topnav.classList.toggle('scrolled', scrolled);
-
-  const heroHeight = heroEl.offsetHeight;
-  document.body.classList.toggle('dark-nav', window.scrollY < heroHeight - 80);
+  topnav.classList.toggle('scrolled', window.scrollY > 40);
 }
 updateNav();
 window.addEventListener('scroll', updateNav, { passive: true });
@@ -155,4 +150,31 @@ if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
       window.scrollTo({ top: window.scrollY + rect.top + targetProgress * scrollable, behavior: 'smooth' });
     });
   });
+})();
+
+// Services tab switcher
+(function initServiceTabs() {
+  const tabs = [...document.querySelectorAll('.service-tab')];
+  const panels = [...document.querySelectorAll('.service-panel')];
+  if (!tabs.length) return;
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      panels[i].classList.add('active');
+    });
+  });
+})();
+
+// Portfolio carousel arrows
+(function initPortfolioArrows() {
+  const track = document.querySelector('.portfolio-scroll');
+  const prev = document.getElementById('portfolioPrev');
+  const next = document.getElementById('portfolioNext');
+  if (!track || !prev || !next) return;
+  const scrollAmount = () => (track.querySelector('.portfolio-card')?.offsetWidth || 320) + 20;
+  // RTL: visually-next content sits toward negative scrollLeft in most browsers
+  prev.addEventListener('click', () => track.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
+  next.addEventListener('click', () => track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
 })();
