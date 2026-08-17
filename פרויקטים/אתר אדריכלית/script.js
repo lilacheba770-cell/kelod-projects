@@ -116,3 +116,78 @@ if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
     });
   });
 }
+
+// Scroll-scrubbed video tour: a preloaded frame sequence painted to a canvas,
+// where scroll position (not playback time) picks the frame — so scrolling
+// down plays the tour forward and scrolling up rewinds it.
+(function initTour() {
+  const section = document.getElementById('tour');
+  if (!section) return;
+  const canvas = document.getElementById('tourCanvas');
+  const ctx = canvas.getContext('2d');
+  const loadingEl = document.getElementById('tourLoading');
+  const progressBar = document.getElementById('tourProgressBar');
+  const captionLines = [...document.querySelectorAll('.tour-caption-line')];
+
+  const FRAME_COUNT = 150;
+  const framePath = (i) => `images/tour/f_${String(i).padStart(3, '0')}.jpg`;
+
+  const frames = new Array(FRAME_COUNT);
+  let loadedCount = 0;
+  let currentFrame = -1;
+
+  function resizeCanvas() {
+    const rect = section.querySelector('.tour-sticky').getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    if (currentFrame >= 0) drawFrame(currentFrame, true);
+  }
+
+  function drawFrame(index, force) {
+    if (!force && index === currentFrame) return;
+    const img = frames[index];
+    if (!img || !img.complete || img.naturalWidth === 0) return;
+    currentFrame = index;
+    const cw = canvas.width, ch = canvas.height;
+    const ir = img.naturalWidth / img.naturalHeight;
+    const cr = cw / ch;
+    let dw, dh, dx, dy;
+    if (ir > cr) { dh = ch; dw = ch * ir; dx = (cw - dw) / 2; dy = 0; }
+    else { dw = cw; dh = cw / ir; dx = 0; dy = (ch - dh) / 2; }
+    ctx.drawImage(img, dx, dy, dw, dh);
+  }
+
+  function updateCaption(progress) {
+    const phase = progress < 0.48 ? '0' : '1';
+    captionLines.forEach(el => el.classList.toggle('active', el.dataset.phase === phase));
+  }
+
+  function onScroll() {
+    const rect = section.getBoundingClientRect();
+    const scrollable = rect.height - window.innerHeight;
+    const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
+    progressBar.style.width = (progress * 100) + '%';
+    updateCaption(progress);
+    const index = Math.min(FRAME_COUNT - 1, Math.round(progress * (FRAME_COUNT - 1)));
+    drawFrame(index);
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  for (let i = 1; i <= FRAME_COUNT; i++) {
+    const img = new Image();
+    img.onload = img.onerror = () => {
+      loadedCount++;
+      if (i === 1) drawFrame(0, true);
+      if (loadedCount === FRAME_COUNT) {
+        loadingEl.classList.add('hidden');
+        onScroll();
+      }
+    };
+    img.src = framePath(i);
+    frames[i - 1] = img;
+  }
+})();
