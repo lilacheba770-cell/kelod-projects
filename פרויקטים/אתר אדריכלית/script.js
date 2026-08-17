@@ -130,7 +130,7 @@ if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
   const progressBar = document.getElementById('tourProgressBar');
   const captionLines = [...document.querySelectorAll('.tour-caption-line')];
 
-  const FRAME_COUNT = 150;
+  const FRAME_COUNT = 90;
   const framePath = (i) => `images/tour/f_${String(i).padStart(3, '0')}.jpg`;
 
   const frames = new Array(FRAME_COUNT);
@@ -178,17 +178,33 @@ if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
   window.addEventListener('resize', resizeCanvas);
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  for (let i = 1; i <= FRAME_COUNT; i++) {
+  function loadFrame(i, onDone) {
     const img = new Image();
-    img.onload = img.onerror = () => {
-      loadedCount++;
-      if (i === 1) drawFrame(0, true);
-      if (loadedCount === FRAME_COUNT) {
-        loadingEl.classList.add('hidden');
-        onScroll();
-      }
-    };
+    img.onload = img.onerror = () => { loadedCount++; onDone && onDone(); };
+    img.decoding = 'async';
     img.src = framePath(i);
     frames[i - 1] = img;
+  }
+
+  // Load frame 1 immediately (so there's something to show as soon as the
+  // section is reached), reveal on it, then load the rest in the background
+  // after the page's own critical content (hero image, fonts) has settled —
+  // 90 requests competing with everything else at once is what made this feel
+  // heavy.
+  loadFrame(1, () => {
+    drawFrame(0, true);
+    loadingEl.classList.add('hidden');
+    onScroll();
+  });
+
+  function loadRemaining() {
+    for (let i = 2; i <= FRAME_COUNT; i++) {
+      loadFrame(i, () => { if (loadedCount === FRAME_COUNT) onScroll(); });
+    }
+  }
+  if (document.readyState === 'complete') {
+    setTimeout(loadRemaining, 300);
+  } else {
+    window.addEventListener('load', () => setTimeout(loadRemaining, 300));
   }
 })();
