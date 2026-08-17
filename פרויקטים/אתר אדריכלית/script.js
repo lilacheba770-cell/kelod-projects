@@ -111,7 +111,8 @@ if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
       if (!el) return;
       e.preventDefault();
       recalcBounds();
-      target = Math.max(0, Math.min(el.getBoundingClientRect().top + window.scrollY, maxScroll));
+      const headerOffset = topnav.offsetHeight;
+      target = Math.max(0, Math.min(el.getBoundingClientRect().top + window.scrollY - headerOffset, maxScroll));
       if (!rafId) rafId = requestAnimationFrame(tick);
     });
   });
