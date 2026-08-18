@@ -99,17 +99,15 @@ ul { list-style: none; }
   html.js-ready .reveal.in-view > *:nth-child(4) { transition-delay: .38s; }
 
   /* Photos settle in from a slight zoom, layered under the fade above */
-  html.js-ready .service-media img,
+  html.js-ready .service-panel-media img,
   html.js-ready .stat-media img,
-  html.js-ready .g-main,
-  html.js-ready .g-side {
+  html.js-ready .portfolio-card img {
     transform: scale(1.1);
     transition: transform 1.2s var(--ease);
   }
-  html.js-ready .reveal.in-view .service-media img,
+  html.js-ready .reveal.in-view .service-panel-media img,
   html.js-ready .reveal.in-view .stat-media img,
-  html.js-ready .reveal.in-view .g-main,
-  html.js-ready .reveal.in-view .g-side {
+  html.js-ready .reveal.in-view .portfolio-card img {
     transform: scale(1);
   }
 
@@ -355,6 +353,17 @@ ul { list-style: none; }
 .tour-img:first-child { opacity: 1; }
 .tour-img.active { opacity: 1; }
 
+/* Slow continuous Ken Burns drift on whichever stop is showing, so the tour never reads as a static photo */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes tourKenBurns {
+    from { transform: scale(1) translate(0, 0); }
+    to { transform: scale(1.13) translate(-1.5%, -1%); }
+  }
+  html.js-ready .tour-img.active {
+    animation: tourKenBurns 20s var(--ease) forwards;
+  }
+}
+
 .tour-overlay {
   position: absolute;
   inset: 0;
@@ -473,12 +482,20 @@ ul { list-style: none; }
   margin-bottom: 24px;
 }
 .service-panel-text p { font-size: 15px; line-height: 1.8; color: var(--ink-soft); max-width: 420px; }
+.service-panel-media { overflow: hidden; border-radius: 8px; }
 .service-panel-media img {
   width: 100%;
   aspect-ratio: 4/3;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 30px 80px -20px rgba(0,0,0,.7), 0 0 0 1px var(--line);
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* scoped to .reveal.in-view so it starts once the section is actually on screen,
+     not the moment the page loads (the first tab is .active before any scrolling) */
+  html.js-ready .reveal.in-view .service-panel.active .service-panel-media img {
+    animation: tourKenBurns 16s var(--ease) forwards;
+  }
 }
 .service-tablist {
   display: flex;
@@ -554,7 +571,8 @@ ul { list-style: none; }
   overflow: hidden;
   scroll-snap-align: start;
 }
-.portfolio-card img { width: 100%; height: 100%; object-fit: cover; }
+.portfolio-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+html.js-ready .reveal.in-view .portfolio-card:hover img { transform: scale(1.08); }
 .portfolio-card-overlay {
   position: absolute;
   inset: 0;
