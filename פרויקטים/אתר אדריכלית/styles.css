@@ -330,7 +330,7 @@ ul { list-style: none; }
 /* ===== SCROLL TOUR ===== */
 .tour {
   position: relative;
-  height: 500vh; /* 100vh per stop */
+  height: 800vh; /* 100vh per stop, 8 stops */
   background: var(--bg);
 }
 .tour-sticky {
@@ -340,7 +340,12 @@ ul { list-style: none; }
   overflow: hidden;
   background: var(--bg);
 }
-.tour-images { position: absolute; inset: 0; }
+.tour-images {
+  position: absolute;
+  inset: -4%; /* overscan so the mouse-parallax shift never reveals an edge */
+  transition: transform .25s ease-out;
+  will-change: transform;
+}
 .tour-img {
   position: absolute;
   inset: 0;
@@ -363,6 +368,29 @@ ul { list-style: none; }
     animation: tourKenBurns 20s var(--ease) forwards;
   }
 }
+
+.tour-hint {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(20,16,12,.55);
+  border: 1px solid rgba(244,239,230,.15);
+  backdrop-filter: blur(10px);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity .6s var(--ease);
+  pointer-events: none;
+}
+.tour-hint.visible { opacity: 1; }
 
 .tour-overlay {
   position: absolute;
@@ -428,8 +456,9 @@ ul { list-style: none; }
 }
 
 @media (max-width: 900px) {
-  .tour { height: 350vh; }
+  .tour { height: 480vh; }
   .tour-caption { bottom: 36px; font-size: 26px; }
+  .tour-hint { display: none; }
   .tour-stops { left: 4vw; gap: 16px; }
   .tour-stop-label { display: none; }
 }

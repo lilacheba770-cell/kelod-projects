@@ -63,22 +63,32 @@
 
   <!-- SCROLL TOUR -->
   <section class="tour" id="tour">
-    <div class="tour-sticky">
-      <div class="tour-images">
+    <div class="tour-sticky" id="tourSticky">
+      <div class="tour-images" id="tourImages">
         <img class="tour-img" src="images/tour/stop1.jpg" alt="חזית הבניין" loading="eager">
         <img class="tour-img" src="images/tour/stop2.jpg" alt="הכניסה לבניין" loading="eager">
-        <img class="tour-img" src="images/tour/stop3.jpg" alt="המטבח והסלון" loading="eager">
+        <img class="tour-img" src="images/tour/stop-lobby.jpg" alt="לובי הבניין" loading="eager">
+        <img class="tour-img" src="images/tour/stop3.jpg" alt="הסלון" loading="eager">
+        <img class="tour-img" src="images/tour/stop-kitchen.jpg" alt="המטבח" loading="eager">
         <img class="tour-img" src="images/tour/stop4.jpg" alt="מרפסת עם נוף לעיר" loading="eager">
         <img class="tour-img" src="images/tour/stop5.jpg" alt="חדר השינה" loading="eager">
+        <img class="tour-img" src="images/tour/stop-bath.jpg" alt="חדר האמבטיה" loading="eager">
       </div>
       <div class="tour-overlay"></div>
+      <div class="tour-hint" id="tourHint">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 3 5 7l4 4M5 7h14M15 21l4-4-4-4M19 17H5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>הזיזו את העכבר כדי להסתכל מסביב</span>
+      </div>
       <div class="tour-caption" id="tourCaption">חזית הבניין</div>
       <nav class="tour-stops" id="tourStops">
         <button class="tour-stop" data-index="0"><span class="tour-stop-num">01</span><span class="tour-stop-label">חזית הבניין</span></button>
         <button class="tour-stop" data-index="1"><span class="tour-stop-num">02</span><span class="tour-stop-label">הכניסה</span></button>
-        <button class="tour-stop" data-index="2"><span class="tour-stop-num">03</span><span class="tour-stop-label">המטבח והסלון</span></button>
-        <button class="tour-stop" data-index="3"><span class="tour-stop-num">04</span><span class="tour-stop-label">המרפסת</span></button>
-        <button class="tour-stop" data-index="4"><span class="tour-stop-num">05</span><span class="tour-stop-label">חדר השינה</span></button>
+        <button class="tour-stop" data-index="2"><span class="tour-stop-num">03</span><span class="tour-stop-label">הלובי</span></button>
+        <button class="tour-stop" data-index="3"><span class="tour-stop-num">04</span><span class="tour-stop-label">הסלון</span></button>
+        <button class="tour-stop" data-index="4"><span class="tour-stop-num">05</span><span class="tour-stop-label">המטבח</span></button>
+        <button class="tour-stop" data-index="5"><span class="tour-stop-num">06</span><span class="tour-stop-label">המרפסת</span></button>
+        <button class="tour-stop" data-index="6"><span class="tour-stop-num">07</span><span class="tour-stop-label">חדר השינה</span></button>
+        <button class="tour-stop" data-index="7"><span class="tour-stop-num">08</span><span class="tour-stop-label">חדר האמבטיה</span></button>
       </nav>
     </div>
   </section>

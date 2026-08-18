@@ -150,6 +150,50 @@ if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
       window.scrollTo({ top: window.scrollY + rect.top + targetProgress * scrollable, behavior: 'smooth' });
     });
   });
+
+  // Mouse-parallax "look around" — desktop pointer only, and only once the section is
+  // actually on screen (an IntersectionObserver hint, dismissed on first real interaction).
+  const stickyEl = document.getElementById('tourSticky');
+  const imagesEl = document.getElementById('tourImages');
+  const hintEl = document.getElementById('tourHint');
+  const canParallax = window.matchMedia('(pointer: fine)').matches
+    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (canParallax && stickyEl && imagesEl && hintEl) {
+    let hintShown = false;
+    let hintTimeout = null;
+
+    function dismissHint() {
+      hintEl.classList.remove('visible');
+      if (hintTimeout) clearTimeout(hintTimeout);
+    }
+
+    if ('IntersectionObserver' in window) {
+      const hintObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hintShown) {
+            hintShown = true;
+            hintEl.classList.add('visible');
+            hintTimeout = setTimeout(dismissHint, 4500);
+            hintObserver.disconnect();
+          }
+        });
+      }, { threshold: 0.6 });
+      hintObserver.observe(section);
+    }
+
+    stickyEl.addEventListener('mousemove', (e) => {
+      dismissHint();
+      const rect = stickyEl.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      const maxShift = 22;
+      imagesEl.style.transform = `translate(${(-px * maxShift).toFixed(1)}px, ${(-py * maxShift).toFixed(1)}px)`;
+    });
+    stickyEl.addEventListener('mouseleave', () => {
+      imagesEl.style.transform = '';
+    });
+  }
 })();
 
 // Services tab switcher
