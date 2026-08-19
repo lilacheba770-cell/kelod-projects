@@ -342,10 +342,12 @@ ul { list-style: none; }
 }
 .tour-images {
   position: absolute;
-  inset: -4%; /* overscan so the mouse-parallax shift never reveals an edge */
-  transition: transform .25s ease-out;
-  will-change: transform;
+  inset: 0;
+  cursor: zoom-in;
+  transition: transform .2s linear;
 }
+.tour-images.zoomed { cursor: grab; }
+.tour-images.dragging { cursor: grabbing; transition: none; }
 .tour-img {
   position: absolute;
   inset: 0;
@@ -358,16 +360,35 @@ ul { list-style: none; }
 .tour-img:first-child { opacity: 1; }
 .tour-img.active { opacity: 1; }
 
-/* Slow continuous Ken Burns drift on whichever stop is showing, so the tour never reads as a static photo */
-@media (prefers-reduced-motion: no-preference) {
-  @keyframes tourKenBurns {
-    from { transform: scale(1) translate(0, 0); }
-    to { transform: scale(1.13) translate(-1.5%, -1%); }
-  }
-  html.js-ready .tour-img.active {
-    animation: tourKenBurns 20s var(--ease) forwards;
-  }
+@keyframes tourKenBurns {
+  from { transform: scale(1) translate(0, 0); }
+  to { transform: scale(1.13) translate(-1.5%, -1%); }
 }
+
+.tour-zoom {
+  position: absolute;
+  bottom: 30px;
+  left: 6vw;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tour-zoom button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(244,239,230,.2);
+  background: rgba(20,16,12,.55);
+  backdrop-filter: blur(10px);
+  color: var(--white);
+  font-size: 18px;
+  font-family: var(--font);
+  line-height: 1;
+  cursor: pointer;
+  transition: background .3s var(--ease), border-color .3s var(--ease);
+}
+.tour-zoom button:hover { background: rgba(20,16,12,.8); border-color: rgba(244,239,230,.4); }
 
 .tour-hint {
   position: absolute;
@@ -461,6 +482,7 @@ ul { list-style: none; }
   .tour-hint { display: none; }
   .tour-stops { left: 4vw; gap: 16px; }
   .tour-stop-label { display: none; }
+  .tour-zoom { left: 4vw; bottom: 24px; }
 }
 
 /* ===== Section head ===== */

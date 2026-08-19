@@ -66,18 +66,22 @@
     <div class="tour-sticky" id="tourSticky">
       <div class="tour-images" id="tourImages">
         <img class="tour-img" src="images/tour/stop1.jpg" alt="חזית הבניין" loading="eager">
-        <img class="tour-img" src="images/tour/stop2.jpg" alt="הכניסה לבניין" loading="eager">
-        <img class="tour-img" src="images/tour/stop-lobby.jpg" alt="לובי הבניין" loading="eager">
-        <img class="tour-img" src="images/tour/stop3.jpg" alt="הסלון" loading="eager">
-        <img class="tour-img" src="images/tour/stop-kitchen.jpg" alt="המטבח" loading="eager">
-        <img class="tour-img" src="images/tour/stop4.jpg" alt="מרפסת עם נוף לעיר" loading="eager">
-        <img class="tour-img" src="images/tour/stop5.jpg" alt="חדר השינה" loading="eager">
-        <img class="tour-img" src="images/tour/stop-bath.jpg" alt="חדר האמבטיה" loading="eager">
+        <img class="tour-img" src="images/tour/stop2.jpg" alt="הכניסה לבניין" loading="lazy">
+        <img class="tour-img" src="images/tour/stop-lobby.jpg" alt="לובי הבניין" loading="lazy">
+        <img class="tour-img" src="images/tour/stop3.jpg" alt="הסלון" loading="lazy">
+        <img class="tour-img" src="images/tour/stop-kitchen.jpg" alt="המטבח" loading="lazy">
+        <img class="tour-img" src="images/tour/stop4.jpg" alt="מרפסת עם נוף לעיר" loading="lazy">
+        <img class="tour-img" src="images/tour/stop5.jpg" alt="חדר השינה" loading="lazy">
+        <img class="tour-img" src="images/tour/stop-bath.jpg" alt="חדר האמבטיה" loading="lazy">
       </div>
       <div class="tour-overlay"></div>
       <div class="tour-hint" id="tourHint">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 3 5 7l4 4M5 7h14M15 21l4-4-4-4M19 17H5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>הזיזו את העכבר כדי להסתכל מסביב</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>הגדילו וגררו כדי להסתכל מקרוב</span>
+      </div>
+      <div class="tour-zoom">
+        <button id="tourZoomIn" aria-label="הגדלה">+</button>
+        <button id="tourZoomOut" aria-label="הקטנה">−</button>
       </div>
       <div class="tour-caption" id="tourCaption">חזית הבניין</div>
       <nav class="tour-stops" id="tourStops">

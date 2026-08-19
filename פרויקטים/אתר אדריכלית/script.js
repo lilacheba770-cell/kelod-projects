@@ -114,15 +114,41 @@ if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
 }
 
 // Scroll tour: a handful of full-quality photos crossfade as you scroll through
-// a pinned section, with a side step-list for direct navigation to any stop.
+// a pinned section, with a side step-list for direct navigation to any stop,
+// and zoom + drag-to-pan to inspect the active photo up close.
 (function initTour() {
   const section = document.getElementById('tour');
   if (!section) return;
   const images = [...section.querySelectorAll('.tour-img')];
   const stopBtns = [...section.querySelectorAll('.tour-stop')];
   const captionEl = document.getElementById('tourCaption');
+  const imagesEl = document.getElementById('tourImages');
+  const hintEl = document.getElementById('tourHint');
+  const zoomInBtn = document.getElementById('tourZoomIn');
+  const zoomOutBtn = document.getElementById('tourZoomOut');
   const STOPS = images.length;
   let activeIndex = -1;
+
+  // Zoom / pan state
+  const MIN_SCALE = 1, MAX_SCALE = 2.5, ZOOM_STEP = 0.5;
+  let scale = 1, panX = 0, panY = 0;
+
+  function applyTransform() {
+    imagesEl.style.transform = `translate(${panX.toFixed(1)}px, ${panY.toFixed(1)}px) scale(${scale.toFixed(2)})`;
+    imagesEl.classList.toggle('zoomed', scale > 1);
+  }
+
+  function clampPan() {
+    const rect = imagesEl.getBoundingClientRect();
+    const maxPan = (scale - 1) * (rect.width / scale) * 0.5;
+    panX = Math.max(-maxPan, Math.min(maxPan, panX));
+    panY = Math.max(-maxPan, Math.min(maxPan, panY));
+  }
+
+  function resetZoom() {
+    scale = 1; panX = 0; panY = 0;
+    applyTransform();
+  }
 
   function setActive(index) {
     if (index === activeIndex) return;
@@ -130,6 +156,7 @@ if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
     images.forEach((img, i) => img.classList.toggle('active', i === index));
     stopBtns.forEach((btn, i) => btn.classList.toggle('active', i === index));
     captionEl.textContent = stopBtns[index].querySelector('.tour-stop-label').textContent;
+    resetZoom();
   }
 
   function onScroll() {
@@ -151,49 +178,63 @@ if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
     });
   });
 
-  // Mouse-parallax "look around" — desktop pointer only, and only once the section is
-  // actually on screen (an IntersectionObserver hint, dismissed on first real interaction).
-  const stickyEl = document.getElementById('tourSticky');
-  const imagesEl = document.getElementById('tourImages');
-  const hintEl = document.getElementById('tourHint');
-  const canParallax = window.matchMedia('(pointer: fine)').matches
-    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Hint: shown once the section is actually on screen, dismissed on first zoom/drag
+  let hintShown = false, hintTimeout = null;
+  function dismissHint() {
+    hintEl.classList.remove('visible');
+    if (hintTimeout) clearTimeout(hintTimeout);
+  }
+  if (hintEl && 'IntersectionObserver' in window) {
+    const hintObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !hintShown) {
+          hintShown = true;
+          hintEl.classList.add('visible');
+          hintTimeout = setTimeout(dismissHint, 5000);
+          hintObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.6 });
+    hintObserver.observe(section);
+  }
 
-  if (canParallax && stickyEl && imagesEl && hintEl) {
-    let hintShown = false;
-    let hintTimeout = null;
-
-    function dismissHint() {
-      hintEl.classList.remove('visible');
-      if (hintTimeout) clearTimeout(hintTimeout);
-    }
-
-    if ('IntersectionObserver' in window) {
-      const hintObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !hintShown) {
-            hintShown = true;
-            hintEl.classList.add('visible');
-            hintTimeout = setTimeout(dismissHint, 4500);
-            hintObserver.disconnect();
-          }
-        });
-      }, { threshold: 0.6 });
-      hintObserver.observe(section);
-    }
-
-    stickyEl.addEventListener('mousemove', (e) => {
+  // Zoom buttons
+  if (zoomInBtn && zoomOutBtn) {
+    zoomInBtn.addEventListener('click', () => {
       dismissHint();
-      const rect = stickyEl.getBoundingClientRect();
-      const px = (e.clientX - rect.left) / rect.width - 0.5;
-      const py = (e.clientY - rect.top) / rect.height - 0.5;
-      const maxShift = 22;
-      imagesEl.style.transform = `translate(${(-px * maxShift).toFixed(1)}px, ${(-py * maxShift).toFixed(1)}px)`;
+      scale = Math.min(MAX_SCALE, scale + ZOOM_STEP);
+      clampPan();
+      applyTransform();
     });
-    stickyEl.addEventListener('mouseleave', () => {
-      imagesEl.style.transform = '';
+    zoomOutBtn.addEventListener('click', () => {
+      scale = Math.max(MIN_SCALE, scale - ZOOM_STEP);
+      clampPan();
+      applyTransform();
     });
   }
+
+  // Drag-to-pan (only meaningful once zoomed in)
+  let dragging = false, dragStartX = 0, dragStartY = 0, panStartX = 0, panStartY = 0;
+  imagesEl.addEventListener('mousedown', (e) => {
+    if (scale <= 1) return;
+    dismissHint();
+    dragging = true;
+    dragStartX = e.clientX; dragStartY = e.clientY;
+    panStartX = panX; panStartY = panY;
+    imagesEl.classList.add('dragging');
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    panX = panStartX + (e.clientX - dragStartX);
+    panY = panStartY + (e.clientY - dragStartY);
+    clampPan();
+    applyTransform();
+  });
+  window.addEventListener('mouseup', () => {
+    dragging = false;
+    imagesEl.classList.remove('dragging');
+  });
 })();
 
 // Services tab switcher
