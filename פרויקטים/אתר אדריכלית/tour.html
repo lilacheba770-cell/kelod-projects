@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>סיור בפרויקט | אלטו</title>
+<meta name="description" content="סיור וידאו בפרויקט של אלטו — מהשכונה ועד חדרי הדירה.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="tour-page">
+
+<header class="nav">
+  <a href="index.html" class="nav-logo">אלטו<span class="dot">.</span></a>
+  <nav class="nav-pill">
+    <a href="index.html">בית</a>
+    <a href="tour.html" class="active">סיור</a>
+    <a href="index.html#services">שירותים</a>
+    <a href="index.html#projects">פרויקטים</a>
+    <a href="index.html#contact">צור קשר</a>
+  </nav>
+  <a href="tel:039876543" class="nav-cta">03-987-6543</a>
+  <button class="nav-burger" id="burger" aria-label="תפריט"><span></span><span></span></button>
+</header>
+
+<section class="tour" id="tour">
+  <div class="tour-pin">
+    <div class="tour-stage" id="tourStage">
+      <video class="tour-clip" data-i="0" src="media/tour/aerial.mp4"   poster="media/tour/aerial.jpg"   muted loop playsinline preload="auto"></video>
+      <video class="tour-clip" data-i="1" src="media/tour/exterior.mp4" poster="media/tour/exterior.jpg" muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="2" src="media/tour/entrance.mp4" poster="media/tour/entrance.jpg" muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="3" src="media/tour/lobby.mp4"    poster="media/tour/lobby.jpg"    muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="4" src="media/tour/elevator.mp4" poster="media/tour/elevator.jpg" muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="5" src="media/tour/aptdoor.mp4"  poster="media/tour/aptdoor.jpg"  muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="6" src="media/tour/living.mp4"   poster="media/tour/living.jpg"   muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="7" src="media/tour/kitchen.mp4"  poster="media/tour/kitchen.jpg"  muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="8" src="media/tour/terrace.mp4"  poster="media/tour/terrace.jpg"  muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="9" src="media/tour/bedroom.mp4"  poster="media/tour/bedroom.jpg"  muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="10" src="media/tour/bathroom.mp4" poster="media/tour/bathroom.jpg" muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="11" src="media/tour/kidsroom.mp4" poster="media/tour/kidsroom.jpg" muted loop playsinline preload="none"></video>
+    </div>
+    <div class="tour-scrim"></div>
+
+    <span class="tour-eyebrow">סיור בפרויקט</span>
+    <h1 class="tour-caption" id="tourCaption">שכונת אלטו</h1>
+
+    <div class="tour-rail" id="tourRail">
+      <button class="tour-dot active" data-i="0"><b>01</b><span>שכונת אלטו</span></button>
+      <button class="tour-dot" data-i="1"><b>02</b><span>חזית הבניין</span></button>
+      <button class="tour-dot" data-i="2"><b>03</b><span>הכניסה לבניין</span></button>
+      <button class="tour-dot" data-i="3"><b>04</b><span>הלובי</span></button>
+      <button class="tour-dot" data-i="4"><b>05</b><span>המעלית</span></button>
+      <button class="tour-dot" data-i="5"><b>06</b><span>הכניסה לדירה</span></button>
+      <button class="tour-dot" data-i="6"><b>07</b><span>הסלון</span></button>
+      <button class="tour-dot" data-i="7"><b>08</b><span>המטבח</span></button>
+      <button class="tour-dot" data-i="8"><b>09</b><span>המרפסת</span></button>
+      <button class="tour-dot" data-i="9"><b>10</b><span>חדר השינה</span></button>
+      <button class="tour-dot" data-i="10"><b>11</b><span>חדר הרחצה</span></button>
+      <button class="tour-dot" data-i="11"><b>12</b><span>חדר ילדים</span></button>
+    </div>
+
+    <div class="tour-progress"><i id="tourBar"></i></div>
+    <span class="tour-scrollcue" id="tourCue">גללו כדי להתקדם בסיור</span>
+  </div>
+</section>
+
+<footer class="foot">
+  <a href="index.html" class="nav-logo">אלטו<span class="dot">.</span></a>
+  <nav>
+    <a href="index.html">בית</a>
+    <a href="index.html#services">שירותים</a>
+    <a href="index.html#projects">פרויקטים</a>
+    <a href="index.html#contact">צור קשר</a>
+  </nav>
+  <span class="foot-note">תוכן והדמיות לדוגמה</span>
+</footer>
+
+<script src="tour.js"></script>
+</body>
+</html>
