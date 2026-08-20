@@ -1,265 +1,173 @@
-// Sticky nav background on scroll
-const topnav = document.getElementById('topnav');
+document.documentElement.classList.add('js');
 
-function updateNav() {
-  topnav.classList.toggle('scrolled', window.scrollY > 40);
-}
-updateNav();
-window.addEventListener('scroll', updateNav, { passive: true });
+/* ---------- Nav: active link + mobile menu ---------- */
+(function initNav() {
+  const pill = document.getElementById('navPill');
+  const burger = document.getElementById('burger');
+  const links = [...pill.querySelectorAll('a')];
 
-// Mobile menu toggle
-const burger = document.getElementById('burger');
-const navLinks = document.getElementById('navLinks');
-burger.addEventListener('click', () => {
-  navLinks.classList.toggle('open');
-  burger.classList.toggle('active');
-});
-navLinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => navLinks.classList.remove('open'));
-});
+  burger.addEventListener('click', () => pill.classList.toggle('open'));
+  links.forEach(a => a.addEventListener('click', () => pill.classList.remove('open')));
 
-// Scroll reveal (only hide content once the observer is armed, so a JS failure never leaves sections invisible)
-if ('IntersectionObserver' in window) {
-  document.documentElement.classList.add('js-ready');
-  const revealEls = document.querySelectorAll('.reveal');
+  const sections = links
+    .map(a => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean);
+
+  if (!('IntersectionObserver' in window)) return;
+  // Track which section owns the middle of the viewport, so the pill highlight
+  // follows the reader rather than firing on every partial overlap.
+  const seen = new Map();
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        io.unobserve(entry.target);
-      }
+    entries.forEach(e => seen.set(e.target, e.intersectionRatio));
+    let best = null, bestRatio = 0;
+    seen.forEach((ratio, el) => { if (ratio > bestRatio) { bestRatio = ratio; best = el; } });
+    if (!best) return;
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + best.id));
+  }, { threshold: [0, .25, .5, .75, 1], rootMargin: '-45% 0px -45% 0px' });
+  sections.forEach(s => io.observe(s));
+})();
+
+/* ---------- Scroll reveal ---------- */
+(function initReveal() {
+  if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     });
-  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
-  revealEls.forEach(el => io.observe(el));
-}
+  }, { threshold: .2, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
 
-// Parallax on the hero/contact background photos
-const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (!prefersReduced) {
-  const parallaxImgs = [...document.querySelectorAll('.hero-bg img, .contact-bg img')];
-  function updateParallax() {
-    parallaxImgs.forEach(img => {
-      const top = img.parentElement.getBoundingClientRect().top;
-      const offset = Math.max(-70, Math.min(70, top * 0.12));
-      img.style.transform = `translateY(${offset}px) scale(1.18)`;
-    });
-  }
-  updateParallax();
-  window.addEventListener('scroll', updateParallax, { passive: true });
-  window.addEventListener('resize', updateParallax);
-}
-
-// Smooth inertial scroll on desktop (mouse) only — touch devices keep native scrolling,
-// and it's skipped entirely for prefers-reduced-motion.
-if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
-  document.documentElement.classList.add('smooth-scroll');
-  let current = window.scrollY;
-  let target = window.scrollY;
-  let maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-  let rafId = null;
-
-  function recalcBounds() {
-    maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    target = Math.min(target, maxScroll);
-  }
-  recalcBounds();
-  window.addEventListener('resize', recalcBounds);
-  document.querySelectorAll('img').forEach(img => {
-    if (!img.complete) img.addEventListener('load', recalcBounds, { once: true });
-  });
-
-  // Force instant jumps here — CSS has `scroll-behavior: smooth` on <html> for the
-  // touch/reduced-motion fallback path, and without this every per-frame scrollTo()
-  // would itself be smoothed by the browser, fighting our own lerp and freezing the scroll.
-  function jumpTo(y) {
-    window.scrollTo({ top: y, left: 0, behavior: 'instant' });
-  }
-
-  function tick() {
-    current += (target - current) * 0.1;
-    if (Math.abs(target - current) < 0.4) {
-      current = target;
-      jumpTo(current);
-      rafId = null;
-      return;
-    }
-    jumpTo(current);
-    rafId = requestAnimationFrame(tick);
-  }
-
-  window.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    recalcBounds();
-    target = Math.max(0, Math.min(target + e.deltaY, maxScroll));
-    if (!rafId) rafId = requestAnimationFrame(tick);
-  }, { passive: false });
-
-  // Keep target in sync with scrollbar drag / keyboard scrolling (native, outside our loop)
-  window.addEventListener('scroll', () => {
-    if (!rafId) { current = window.scrollY; target = window.scrollY; }
-  }, { passive: true });
-
-  // Route in-page nav links through the same smooth system
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const el = document.getElementById(link.getAttribute('href').slice(1));
-      if (!el) return;
-      e.preventDefault();
-      recalcBounds();
-      const headerOffset = topnav.offsetHeight;
-      target = Math.max(0, Math.min(el.getBoundingClientRect().top + window.scrollY - headerOffset, maxScroll));
-      if (!rafId) rafId = requestAnimationFrame(tick);
-    });
-  });
-}
-
-// Scroll tour: a handful of full-quality photos crossfade as you scroll through
-// a pinned section, with a side step-list for direct navigation to any stop,
-// and zoom + drag-to-pan to inspect the active photo up close.
+/* ---------- Tour: scroll-driven stops + zoom/drag ---------- */
 (function initTour() {
   const section = document.getElementById('tour');
   if (!section) return;
-  const images = [...section.querySelectorAll('.tour-img')];
-  const stopBtns = [...section.querySelectorAll('.tour-stop')];
-  const captionEl = document.getElementById('tourCaption');
-  const imagesEl = document.getElementById('tourImages');
-  const hintEl = document.getElementById('tourHint');
-  const zoomInBtn = document.getElementById('tourZoomIn');
-  const zoomOutBtn = document.getElementById('tourZoomOut');
-  const STOPS = images.length;
-  let activeIndex = -1;
+  const stage = document.getElementById('tourStage');
+  const imgs = [...section.querySelectorAll('.tour-img')];
+  const dots = [...section.querySelectorAll('.tour-dot')];
+  const caption = document.getElementById('tourCaption');
+  const hint = document.getElementById('tourHint');
+  const zoomIn = document.getElementById('zoomIn');
+  const zoomOut = document.getElementById('zoomOut');
+  const N = imgs.length;
 
-  // Zoom / pan state
-  const MIN_SCALE = 1, MAX_SCALE = 2.5, ZOOM_STEP = 0.5;
-  let scale = 1, panX = 0, panY = 0;
+  const MIN = 1, MAX = 2.5, STEP = .5;
+  let scale = 1, panX = 0, panY = 0, active = -1;
 
-  function applyTransform() {
-    imagesEl.style.transform = `translate(${panX.toFixed(1)}px, ${panY.toFixed(1)}px) scale(${scale.toFixed(2)})`;
-    imagesEl.classList.toggle('zoomed', scale > 1);
+  function apply() {
+    stage.style.transform = `translate(${panX.toFixed(1)}px, ${panY.toFixed(1)}px) scale(${scale.toFixed(2)})`;
+    stage.classList.toggle('zoomed', scale > 1);
   }
-
-  function clampPan() {
-    const rect = imagesEl.getBoundingClientRect();
-    const maxPan = (scale - 1) * (rect.width / scale) * 0.5;
-    panX = Math.max(-maxPan, Math.min(maxPan, panX));
-    panY = Math.max(-maxPan, Math.min(maxPan, panY));
+  function clamp() {
+    const r = stage.getBoundingClientRect();
+    const maxX = (scale - 1) * (r.width / scale) * .5;
+    const maxY = (scale - 1) * (r.height / scale) * .5;
+    panX = Math.max(-maxX, Math.min(maxX, panX));
+    panY = Math.max(-maxY, Math.min(maxY, panY));
   }
+  function reset() { scale = 1; panX = 0; panY = 0; apply(); }
 
-  function resetZoom() {
-    scale = 1; panX = 0; panY = 0;
-    applyTransform();
-  }
-
-  function setActive(index) {
-    if (index === activeIndex) return;
-    activeIndex = index;
-    images.forEach((img, i) => img.classList.toggle('active', i === index));
-    stopBtns.forEach((btn, i) => btn.classList.toggle('active', i === index));
-    captionEl.textContent = stopBtns[index].querySelector('.tour-stop-label').textContent;
-    resetZoom();
+  function setActive(i) {
+    if (i === active) return;
+    active = i;
+    imgs.forEach((im, k) => im.classList.toggle('active', k === i));
+    dots.forEach((d, k) => d.classList.toggle('active', k === i));
+    caption.textContent = dots[i].querySelector('span').textContent;
+    reset();
   }
 
   function onScroll() {
-    const rect = section.getBoundingClientRect();
-    const scrollable = rect.height - window.innerHeight;
-    const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
-    setActive(Math.min(STOPS - 1, Math.floor(progress * STOPS)));
+    const r = section.getBoundingClientRect();
+    const scrollable = r.height - window.innerHeight;
+    const p = Math.min(1, Math.max(0, -r.top / scrollable));
+    setActive(Math.min(N - 1, Math.floor(p * N)));
   }
-
   setActive(0);
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  stopBtns.forEach((btn, i) => {
-    btn.addEventListener('click', () => {
-      const rect = section.getBoundingClientRect();
-      const scrollable = rect.height - window.innerHeight;
-      const targetProgress = (i + 0.5) / STOPS; // land solidly inside that stop's zone, not right on the boundary
-      window.scrollTo({ top: window.scrollY + rect.top + targetProgress * scrollable, behavior: 'smooth' });
-    });
-  });
+  dots.forEach((d, i) => d.addEventListener('click', () => {
+    const r = section.getBoundingClientRect();
+    const scrollable = r.height - window.innerHeight;
+    // aim at the middle of that stop's band so we don't land on a boundary
+    const top = window.scrollY + r.top + ((i + .5) / N) * scrollable;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }));
 
-  // Hint: shown once the section is actually on screen, dismissed on first zoom/drag
-  let hintShown = false, hintTimeout = null;
-  function dismissHint() {
-    hintEl.classList.remove('visible');
-    if (hintTimeout) clearTimeout(hintTimeout);
-  }
-  if (hintEl && 'IntersectionObserver' in window) {
-    const hintObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !hintShown) {
-          hintShown = true;
-          hintEl.classList.add('visible');
-          hintTimeout = setTimeout(dismissHint, 5000);
-          hintObserver.disconnect();
+  /* hint shown once the tour fills the screen, gone on first interaction */
+  let hintTimer = null;
+  function dropHint() { hint.classList.remove('on'); clearTimeout(hintTimer); }
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          hint.classList.add('on');
+          hintTimer = setTimeout(dropHint, 4200);
+          io.disconnect();
         }
       });
-    }, { threshold: 0.6 });
-    hintObserver.observe(section);
+    }, { threshold: .55 });
+    io.observe(section);
   }
 
-  // Zoom buttons
-  if (zoomInBtn && zoomOutBtn) {
-    zoomInBtn.addEventListener('click', () => {
-      dismissHint();
-      scale = Math.min(MAX_SCALE, scale + ZOOM_STEP);
-      clampPan();
-      applyTransform();
-    });
-    zoomOutBtn.addEventListener('click', () => {
-      scale = Math.max(MIN_SCALE, scale - ZOOM_STEP);
-      clampPan();
-      applyTransform();
-    });
-  }
+  zoomIn.addEventListener('click', () => { dropHint(); scale = Math.min(MAX, scale + STEP); clamp(); apply(); });
+  zoomOut.addEventListener('click', () => { scale = Math.max(MIN, scale - STEP); clamp(); apply(); });
 
-  // Drag-to-pan (only meaningful once zoomed in)
-  let dragging = false, dragStartX = 0, dragStartY = 0, panStartX = 0, panStartY = 0;
-  imagesEl.addEventListener('mousedown', (e) => {
+  let dragging = false, sx = 0, sy = 0, px = 0, py = 0;
+  stage.addEventListener('mousedown', (e) => {
     if (scale <= 1) return;
-    dismissHint();
-    dragging = true;
-    dragStartX = e.clientX; dragStartY = e.clientY;
-    panStartX = panX; panStartY = panY;
-    imagesEl.classList.add('dragging');
+    dropHint();
+    dragging = true; sx = e.clientX; sy = e.clientY; px = panX; py = panY;
+    stage.classList.add('dragging');
     e.preventDefault();
   });
   window.addEventListener('mousemove', (e) => {
     if (!dragging) return;
-    panX = panStartX + (e.clientX - dragStartX);
-    panY = panStartY + (e.clientY - dragStartY);
-    clampPan();
-    applyTransform();
+    panX = px + (e.clientX - sx);
+    panY = py + (e.clientY - sy);
+    clamp(); apply();
   });
   window.addEventListener('mouseup', () => {
     dragging = false;
-    imagesEl.classList.remove('dragging');
+    stage.classList.remove('dragging');
   });
 })();
 
-// Services tab switcher
-(function initServiceTabs() {
-  const tabs = [...document.querySelectorAll('.service-tab')];
-  const panels = [...document.querySelectorAll('.service-panel')];
-  if (!tabs.length) return;
-  tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      panels.forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      panels[i].classList.add('active');
-    });
-  });
+/* ---------- Services tabs ---------- */
+(function initServices() {
+  const rail = document.getElementById('svcRail');
+  if (!rail) return;
+  const tabs = [...rail.querySelectorAll('button')];
+  const panels = [...document.querySelectorAll('.svc-panel')];
+  tabs.forEach((t, i) => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    t.classList.add('active');
+    panels[i].classList.add('active');
+  }));
 })();
 
-// Portfolio carousel arrows
-(function initPortfolioArrows() {
-  const track = document.querySelector('.portfolio-scroll');
-  const prev = document.getElementById('portfolioPrev');
-  const next = document.getElementById('portfolioNext');
-  if (!track || !prev || !next) return;
-  const scrollAmount = () => (track.querySelector('.portfolio-card')?.offsetWidth || 320) + 20;
-  // RTL: visually-next content sits toward negative scrollLeft in most browsers
-  prev.addEventListener('click', () => track.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
-  next.addEventListener('click', () => track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
+/* ---------- Projects marquee ---------- */
+(function initMarquee() {
+  const track = document.getElementById('projTrack');
+  if (!track) return;
+  // duplicate the row so the -50% keyframe loops seamlessly
+  track.innerHTML += track.innerHTML;
+
+  // Cards drift through view continuously, so lazy-loading makes them pop in
+  // blank mid-scroll. Once the section is near, load the whole row up front.
+  // Plain scroll check rather than IntersectionObserver: the row is a wide,
+  // continuously-transformed element, which makes IO's intersection reporting
+  // unreliable here.
+  const imgs = [...track.querySelectorAll('img')];
+  let loaded = false;
+  function maybeLoad() {
+    if (loaded) return;
+    const top = track.getBoundingClientRect().top;
+    if (top > window.innerHeight + 600) return;
+    loaded = true;
+    imgs.forEach(i => { i.loading = 'eager'; if (!i.complete) i.src = i.src; });
+    window.removeEventListener('scroll', maybeLoad);
+  }
+  maybeLoad();
+  window.addEventListener('scroll', maybeLoad, { passive: true });
 })();

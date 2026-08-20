@@ -3,69 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>אלטו | בנייה יזמות בשכונות יוקרה</title>
+<title>אלטו | יזמות ובנייה בשכונות יוקרה</title>
 <meta name="description" content="אלטו — יזמות ובנייה של שכונות מגורים יוקרתיות. מהתכנון האדריכלי ועד מסירת המפתח.">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<div class="scroll-arrow" aria-hidden="true">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M12 20l-6-6M12 20l6-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</div>
-
-<header class="topnav" id="topnav">
-  <a href="#hero" class="logo">
-    <span class="logo-mark" aria-hidden="true">
-      <svg width="30" height="30" viewBox="0 0 40 40" fill="none"><path d="M20 3 36 12v16L20 37 4 28V12L20 3Z" stroke="currentColor" stroke-width="1.3"/><path d="M20 3v34M4 12l16 9 16-9M4 28l16-9 16 9" stroke="currentColor" stroke-width="1.1"/></svg>
-    </span>
-    <span class="logo-text">אלטו<span class="dot">.</span></span>
-  </a>
-  <nav class="nav-links" id="navLinks">
-    <a href="#hero">בית</a>
+<header class="nav" id="nav">
+  <a href="#hero" class="nav-logo">אלטו<span class="dot">.</span></a>
+  <nav class="nav-pill" id="navPill">
+    <a href="#hero" class="active">בית</a>
     <a href="#tour">סיור</a>
     <a href="#services">שירותים</a>
-    <a href="#about">אודות</a>
-    <a href="#portfolio">פרויקטים</a>
+    <a href="#projects">פרויקטים</a>
     <a href="#contact">צור קשר</a>
   </nav>
-  <a href="tel:039876543" class="nav-phone">03-987-6543</a>
-  <button class="burger" id="burger" aria-label="תפריט">
-    <span></span><span></span><span></span>
-  </button>
+  <a href="tel:039876543" class="nav-cta">03-987-6543</a>
+  <button class="nav-burger" id="burger" aria-label="תפריט"><span></span><span></span></button>
 </header>
 
 <main>
 
   <!-- HERO -->
-  <section class="section hero" id="hero">
-    <div class="hero-bg">
-      <img src="images/hero.jpg" alt="וילת יוקרה עם בריכת אינסוף בשעת שקיעה" loading="eager">
-      <div class="hero-overlay"></div>
+  <section class="hero" id="hero">
+    <div class="hero-media" id="heroMedia">
+      <img src="images/hero.jpg" alt="וילת יוקרה בשכונת אלטו">
+      <div class="hero-scrim"></div>
     </div>
-    <div class="hero-content reveal">
-      <h1 class="hero-title"><span class="bracket"><span class="mask"><span>אלטו<span class="dot">.</span></span></span></span></h1>
-      <p class="hero-tagline">בונים שכונות מגורים<br>שמעוררות השראה</p>
-      <a href="#contact" class="btn btn-gold">קבלו הצעת מחיר <span class="arrow">↖</span></a>
+
+    <div class="hero-title-wrap">
+      <h1 class="hero-title"><span class="bracket">אלטו<span class="dot">.</span></span></h1>
     </div>
-    <div class="hero-side reveal">
-      <ul class="hero-categories">
-        <li>וילות</li>
-        <li>פנטהאוזים</li>
-        <li>דירות גן</li>
-      </ul>
-      <span class="hero-script">יזמות ובנייה</span>
+
+    <p class="hero-lede fade-late">
+      אנחנו בונים שכונות מגורים שמעוררות השראה — מהתכנון
+      האדריכלי הראשון ועד מסירת המפתח, בסטנדרט אחד שלא מתפשר.
+    </p>
+
+    <div class="hero-widget fade-late">
+      <span class="hero-widget-top">פרויקט לדוגמה</span>
+      <span class="hero-widget-big">320 מ״ר</span>
+      <span class="hero-widget-sub">5 חדרים · קומה 3 · מרפסת 24 מ״ר</span>
     </div>
-    <div class="hero-badge reveal">
-      <span class="hero-badge-label">פרויקט לדוגמה</span>
-      <span class="hero-badge-value">320 מ"ר · 5 חדרים · קומה 3</span>
-    </div>
+
+    <a href="#contact" class="hero-cta fade-late">קבלו הצעת מחיר</a>
   </section>
 
-  <!-- SCROLL TOUR -->
+  <!-- TOUR -->
   <section class="tour" id="tour">
-    <div class="tour-sticky" id="tourSticky">
-      <div class="tour-images" id="tourImages">
-        <img class="tour-img" src="images/tour/stop1.jpg" alt="חזית הבניין" loading="eager">
+    <div class="tour-pin" id="tourPin">
+      <div class="tour-stage" id="tourStage">
+        <img class="tour-img" src="images/tour/stop1.jpg" alt="חזית הבניין">
         <img class="tour-img" src="images/tour/stop2.jpg" alt="הכניסה לבניין" loading="lazy">
         <img class="tour-img" src="images/tour/stop-lobby.jpg" alt="לובי הבניין" loading="lazy">
         <img class="tour-img" src="images/tour/stop3.jpg" alt="הסלון" loading="lazy">
@@ -74,215 +62,127 @@
         <img class="tour-img" src="images/tour/stop5.jpg" alt="חדר השינה" loading="lazy">
         <img class="tour-img" src="images/tour/stop-bath.jpg" alt="חדר האמבטיה" loading="lazy">
       </div>
-      <div class="tour-overlay"></div>
-      <div class="tour-hint" id="tourHint">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <span>הגדילו וגררו כדי להסתכל מקרוב</span>
+      <div class="tour-scrim"></div>
+
+      <span class="tour-eyebrow">סיור בפרויקט</span>
+      <h2 class="tour-caption" id="tourCaption">חזית הבניין</h2>
+
+      <div class="tour-rail" id="tourRail">
+        <button class="tour-dot active" data-i="0"><i></i><span>חזית הבניין</span></button>
+        <button class="tour-dot" data-i="1"><i></i><span>הכניסה</span></button>
+        <button class="tour-dot" data-i="2"><i></i><span>הלובי</span></button>
+        <button class="tour-dot" data-i="3"><i></i><span>הסלון</span></button>
+        <button class="tour-dot" data-i="4"><i></i><span>המטבח</span></button>
+        <button class="tour-dot" data-i="5"><i></i><span>המרפסת</span></button>
+        <button class="tour-dot" data-i="6"><i></i><span>חדר השינה</span></button>
+        <button class="tour-dot" data-i="7"><i></i><span>חדר האמבטיה</span></button>
       </div>
+
       <div class="tour-zoom">
-        <button id="tourZoomIn" aria-label="הגדלה">+</button>
-        <button id="tourZoomOut" aria-label="הקטנה">−</button>
+        <button id="zoomIn" aria-label="הגדלה">+</button>
+        <button id="zoomOut" aria-label="הקטנה">−</button>
       </div>
-      <div class="tour-caption" id="tourCaption">חזית הבניין</div>
-      <nav class="tour-stops" id="tourStops">
-        <button class="tour-stop" data-index="0"><span class="tour-stop-num">01</span><span class="tour-stop-label">חזית הבניין</span></button>
-        <button class="tour-stop" data-index="1"><span class="tour-stop-num">02</span><span class="tour-stop-label">הכניסה</span></button>
-        <button class="tour-stop" data-index="2"><span class="tour-stop-num">03</span><span class="tour-stop-label">הלובי</span></button>
-        <button class="tour-stop" data-index="3"><span class="tour-stop-num">04</span><span class="tour-stop-label">הסלון</span></button>
-        <button class="tour-stop" data-index="4"><span class="tour-stop-num">05</span><span class="tour-stop-label">המטבח</span></button>
-        <button class="tour-stop" data-index="5"><span class="tour-stop-num">06</span><span class="tour-stop-label">המרפסת</span></button>
-        <button class="tour-stop" data-index="6"><span class="tour-stop-num">07</span><span class="tour-stop-label">חדר השינה</span></button>
-        <button class="tour-stop" data-index="7"><span class="tour-stop-num">08</span><span class="tour-stop-label">חדר האמבטיה</span></button>
-      </nav>
+      <span class="tour-hint" id="tourHint">הגדילו וגררו כדי להתקרב</span>
     </div>
   </section>
 
   <!-- SERVICES -->
-  <section class="section services" id="services">
-    <div class="section-head reveal">
-      <p class="kicker">עובדים מכל הלב,<br>מהיסוד ועד המפתח</p>
-      <h2 class="section-title"><span class="mask"><span class="thin">השירותים</span></span><span class="mask"><span class="bold">שלנו</span></span></h2>
-      <span class="brandmark">אלטו<span class="dot">.</span></span>
-    </div>
-
-    <div class="service-tabs reveal">
-      <div class="service-panels">
-        <div class="service-panel active" data-panel="0">
-          <div class="service-panel-text">
-            <span class="service-panel-word">תכנון</span>
-            <p>אנחנו מתכננים כל פרט בקפידה. אדריכלים מובילים מעצבים שכונות מגורים שמשלבות פונקציונליות עם אסתטיקה מודרנית, ומעניקות ערך אמיתי לכל בית ובית.</p>
+  <section class="svc" id="services">
+    <div class="svc-stage">
+      <div class="svc-panel active" data-p="0">
+        <span class="svc-word">תכנון</span>
+        <div class="svc-media">
+          <img src="images/service-planning.jpg" alt="תכנון אדריכלי">
+          <div class="svc-chip">
+            <span>תכנון אדריכלי</span>
+            <p>אדריכלים מובילים מתכננים כל פרט — שכונה שמשלבת פונקציונליות עם אסתטיקה מודרנית.</p>
           </div>
-          <div class="service-panel-media"><img src="images/service-planning.jpg" alt="תכנון אדריכלי - שרטוטים ומודל תלת מימד"></div>
-        </div>
-        <div class="service-panel" data-panel="1">
-          <div class="service-panel-text">
-            <span class="service-panel-word">בנייה</span>
-            <p>מערכת ניהול פרויקט מסודרת מאפשרת עמידה בלוחות זמנים וליווי צמוד בכל שלב. אנחנו מבקרים באתר, מפקחים על ההתאמה בין התכנון לביצוע ושומרים על סטנדרט אחיד.</p>
-          </div>
-          <div class="service-panel-media"><img src="images/service-construction.jpg" alt="בנייה ופיקוח באתר הבנייה"></div>
-        </div>
-        <div class="service-panel" data-panel="2">
-          <div class="service-panel-text">
-            <span class="service-panel-word">גימור</span>
-            <p>בחירת חומרים ואלמנטים יחד עם מומחה היא שירות מקיף וחסכוני. כך תוכלו לרכוש פריטים מוצדקים מבחינה סגנונית ופונקציונליים שלא יתפשרו על הבית שלכם.</p>
-          </div>
-          <div class="service-panel-media"><img src="images/service-finishing.jpg" alt="בחירת חומרי גימור יוקרתיים"></div>
         </div>
       </div>
-      <nav class="service-tablist">
-        <button class="service-tab active" data-tab="0">תכנון אדריכלי</button>
-        <button class="service-tab" data-tab="1">בנייה ופיקוח</button>
-        <button class="service-tab" data-tab="2">גימור יוקרתי</button>
-      </nav>
+      <div class="svc-panel" data-p="1">
+        <span class="svc-word">בנייה</span>
+        <div class="svc-media">
+          <img src="images/service-construction.jpg" alt="בנייה ופיקוח" loading="lazy">
+          <div class="svc-chip">
+            <span>בנייה ופיקוח</span>
+            <p>ניהול פרויקט מסודר, עמידה בלוחות זמנים ופיקוח צמוד על ההתאמה בין התכנון לביצוע.</p>
+          </div>
+        </div>
+      </div>
+      <div class="svc-panel" data-p="2">
+        <span class="svc-word">גימור</span>
+        <div class="svc-media">
+          <img src="images/service-finishing.jpg" alt="גימור יוקרתי" loading="lazy">
+          <div class="svc-chip">
+            <span>גימור יוקרתי</span>
+            <p>בחירת חומרים ואלמנטים יחד עם מומחה — פריטים מוצדקים סגנונית ופונקציונליים לאורך שנים.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="svc-rail" id="svcRail">
+      <button data-t="0" class="active">תכנון</button>
+      <button data-t="1">בנייה</button>
+      <button data-t="2">גימור</button>
+    </nav>
+  </section>
+
+  <!-- NUMBERS -->
+  <section class="nums" id="about">
+    <div class="nums-grid">
+      <div class="num reveal"><span>120<i>+</i></span><p>יחידות דיור נמסרו</p></div>
+      <div class="num reveal"><span>35<i>+</i></span><p>אנשי מקצוע בצוות</p></div>
+      <div class="num reveal"><span>150<i>+</i></span><p>קבלני משנה מובילים</p></div>
     </div>
   </section>
 
-  <!-- ABOUT -->
-  <section class="section about" id="about">
-    <span class="about-bg-text" aria-hidden="true">אלטו</span>
-    <div class="section-head reveal">
-      <p class="kicker">קצת עלינו</p>
-      <h2 class="section-title"><span class="mask"><span class="thin">אודות</span></span><span class="mask"><span class="bold">החברה</span></span></h2>
-    </div>
-
-    <div class="stat-row reveal">
-      <div class="stat-media"><img src="images/about-aerial.jpg" alt="צילום אווירי של שכונת וילות יוקרה"></div>
-      <div class="stat-text">
-        <span class="stat-number">120+</span>
-        <h3>יחידות דיור נבנו</h3>
-        <p>מוכיחות שבעלי קרקעות ומשקיעים סומכים עלינו. נשמח לספק לכם דוגמאות מפרויקטים אמיתיים שכבר נמסרו.</p>
+  <!-- PROJECTS -->
+  <section class="proj" id="projects">
+    <div class="proj-marquee">
+      <div class="proj-track" id="projTrack">
+        <article class="proj-card"><img src="images/project1-main.jpg" alt="פארק האלונים" loading="lazy"><span>פארק האלונים · כפר סבא</span></article>
+        <article class="proj-card is-story">
+          <img src="images/project1-detail.jpg" alt="פארק האלונים" loading="lazy">
+          <div class="proj-story">
+            <strong>משפחת לוי</strong>
+            <p>״ליווי צמוד מהיום הראשון. נכנסנו לבית בדיוק בתאריך שהובטח, בלי הפתעות.״</p>
+          </div>
+        </article>
+        <article class="proj-card"><img src="images/project2-main.jpg" alt="מגדלי הים" loading="lazy"><span>מגדלי הים · הרצליה פיתוח</span></article>
+        <article class="proj-card"><img src="images/project2-detail.jpg" alt="מגדלי הים" loading="lazy"><span>מגדלי הים · הרצליה פיתוח</span></article>
+        <article class="proj-card"><img src="images/project3-main.jpg" alt="גני הצפון" loading="lazy"><span>גני הצפון · רמת השרון</span></article>
+        <article class="proj-card"><img src="images/project3-detail.jpg" alt="גני הצפון" loading="lazy"><span>גני הצפון · רמת השרון</span></article>
       </div>
     </div>
-
-    <div class="stat-row reverse reveal">
-      <div class="stat-media"><img src="images/about-team.jpg" alt="צוות אדריכלים ומהנדסים"></div>
-      <div class="stat-text">
-        <span class="stat-number">35+</span>
-        <h3>אנשי מקצוע בצוות</h3>
-        <p>תמיד זמינים לענות על שאלותיכם, וחוסכים לכם זמן יקר בחיפוש מידע ואנשי מקצוע נוספים.</p>
-      </div>
-    </div>
-
-    <div class="stat-row reveal">
-      <div class="stat-media"><img src="images/about-craftsman.jpg" alt="בעל מקצוע מתקין חיפוי עץ יוקרתי"></div>
-      <div class="stat-text">
-        <span class="stat-number">150+</span>
-        <h3>קבלני משנה מובילים</h3>
-        <p>מבטיחים עמידה בזמנים, ליווי אישי ובקרת איכות יסודית בכל שלבי הבנייה, מהיסודות ועד הגימור.</p>
-      </div>
-    </div>
+    <h2 class="proj-title"><span class="bracket">הפרויקטים שלנו</span></h2>
   </section>
 
-  <!-- PORTFOLIO -->
-  <section class="section portfolio" id="portfolio">
-    <div class="section-head reveal">
-      <h2 class="section-title"><span class="mask"><span class="thin">הפרויקטים</span></span><span class="mask"><span class="bold">שלנו</span></span></h2>
+  <!-- CONTACT -->
+  <section class="cta" id="contact">
+    <div class="cta-media">
+      <img src="images/contact-bg.jpg" alt="סלון יוקרתי" loading="lazy">
+      <div class="cta-scrim"></div>
     </div>
-
-    <div class="portfolio-scroll reveal">
-      <article class="portfolio-card">
-        <img src="images/project1-main.jpg" alt="שורת וילות יוקרה בפארק האלונים">
-        <div class="portfolio-card-overlay"></div>
-        <span class="portfolio-card-badge">18 יח"ד · 320-450 מ"ר</span>
-        <div class="portfolio-card-info">
-          <span class="portfolio-card-num">01</span>
-          <h3>פארק האלונים</h3>
-          <span>כפר סבא</span>
-        </div>
-      </article>
-      <article class="portfolio-card">
-        <img src="images/project1-detail.jpg" alt="מרפסת ובריכת אינסוף בפארק האלונים">
-        <div class="portfolio-card-overlay"></div>
-        <span class="portfolio-card-badge">18 יח"ד · 320-450 מ"ר</span>
-        <div class="portfolio-card-info">
-          <span class="portfolio-card-num">01</span>
-          <h3>פארק האלונים</h3>
-          <span>כפר סבא</span>
-        </div>
-      </article>
-      <article class="portfolio-card">
-        <img src="images/project2-main.jpg" alt="חזית מגדל פנטהאוזים מול הים">
-        <div class="portfolio-card-overlay"></div>
-        <span class="portfolio-card-badge">24 יח"ד · 180-260 מ"ר</span>
-        <div class="portfolio-card-info">
-          <span class="portfolio-card-num">02</span>
-          <h3>מגדלי הים</h3>
-          <span>הרצליה פיתוח</span>
-        </div>
-      </article>
-      <article class="portfolio-card">
-        <img src="images/project2-detail.jpg" alt="מרפסת גג עם נוף לים">
-        <div class="portfolio-card-overlay"></div>
-        <span class="portfolio-card-badge">24 יח"ד · 180-260 מ"ר</span>
-        <div class="portfolio-card-info">
-          <span class="portfolio-card-num">02</span>
-          <h3>מגדלי הים</h3>
-          <span>הרצליה פיתוח</span>
-        </div>
-      </article>
-      <article class="portfolio-card">
-        <img src="images/project3-main.jpg" alt="דירות גן מודרניות עם גינה פרטית">
-        <div class="portfolio-card-overlay"></div>
-        <span class="portfolio-card-badge">14 יח"ד · 140-190 מ"ר</span>
-        <div class="portfolio-card-info">
-          <span class="portfolio-card-num">03</span>
-          <h3>גני הצפון</h3>
-          <span>רמת השרון</span>
-        </div>
-      </article>
-      <article class="portfolio-card">
-        <img src="images/project3-detail.jpg" alt="גינה פרטית מטופחת">
-        <div class="portfolio-card-overlay"></div>
-        <span class="portfolio-card-badge">14 יח"ד · 140-190 מ"ר</span>
-        <div class="portfolio-card-info">
-          <span class="portfolio-card-num">03</span>
-          <h3>גני הצפון</h3>
-          <span>רמת השרון</span>
-        </div>
-      </article>
+    <div class="cta-body reveal">
+      <h2>בונים את הבית<br>שתמיד דמיינתם</h2>
+      <a href="tel:039876543" class="cta-phone">03-987-6543</a>
+      <a href="tel:039876543" class="hero-cta">דברו איתנו</a>
     </div>
-    <div class="portfolio-arrows">
-      <button class="portfolio-arrow" id="portfolioPrev" aria-label="הקודם">→</button>
-      <button class="portfolio-arrow" id="portfolioNext" aria-label="הבא">←</button>
-    </div>
-  </section>
-
-  <!-- CONTACT / CTA -->
-  <section class="section contact" id="contact">
-    <div class="contact-bg">
-      <img src="images/contact-bg.jpg" alt="סלון יוקרתי בשעת בין ערביים">
-      <div class="hero-overlay"></div>
-    </div>
-    <div class="contact-label reveal">
-      <span>צרו קשר</span>
-      <span>ספרו לנו על הפרויקט הבא שלכם</span>
-    </div>
-    <div class="contact-content reveal">
-      <h2 class="contact-title"><span class="mask"><span>בונים את הבית</span></span><span class="mask"><span>שתמיד דמיינתם</span></span></h2>
-      <a href="tel:039876543" class="contact-phone">03-987-6543</a>
-      <a href="#contact-form" class="btn btn-gold">השאירו פרטים <span class="arrow">↖</span></a>
-    </div>
-    <p class="contact-note reveal">בטוחים שאלטו יהפכו את הקרקע שלכם למקום מיוחד, מלא ביופי ובאיכות חיים.</p>
   </section>
 
 </main>
 
-<footer class="footer">
-  <a href="#hero" class="logo footer-logo">
-    <span class="logo-mark" aria-hidden="true">
-      <svg width="26" height="26" viewBox="0 0 40 40" fill="none"><path d="M20 3 36 12v16L20 37 4 28V12L20 3Z" stroke="currentColor" stroke-width="1.3"/><path d="M20 3v34M4 12l16 9 16-9M4 28l16-9 16 9" stroke="currentColor" stroke-width="1.1"/></svg>
-    </span>
-    <span class="logo-text">אלטו<span class="dot">.</span></span>
-  </a>
-  <nav class="footer-nav">
+<footer class="foot">
+  <span class="nav-logo">אלטו<span class="dot">.</span></span>
+  <nav>
     <a href="#hero">בית</a>
     <a href="#tour">סיור</a>
     <a href="#services">שירותים</a>
-    <a href="#about">אודות</a>
-    <a href="#portfolio">פרויקטים</a>
+    <a href="#projects">פרויקטים</a>
     <a href="#contact">צור קשר</a>
   </nav>
-  <p class="footer-credit">נבנה באמצעות Claude · תוכן והדמיות לדוגמה</p>
+  <span class="foot-note">תוכן והדמיות לדוגמה</span>
 </footer>
 
 <script src="script.js"></script>
