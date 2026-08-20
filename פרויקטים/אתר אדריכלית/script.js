@@ -92,3 +92,42 @@ document.documentElement.classList.add('js');
   maybeLoad();
   window.addEventListener('scroll', maybeLoad, { passive: true });
 })();
+
+/* ---------- Lead form ----------
+   No backend here, so a valid submission hands the details to the visitor's
+   mail client. Swap this for a real endpoint (Formspree/Netlify/etc.) before
+   the site goes live. */
+(function initLeadForm() {
+  const form = document.getElementById('leadForm');
+  if (!form) return;
+  const note = document.getElementById('formNote');
+  const TO = 'info@alto-example.co.il';
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const el = form.elements;
+    const name = el.name.value.trim();
+    const phone = el.phone.value.trim();
+    const digits = phone.replace(/\D/g, '');
+
+    if (name.length < 2) return fail('נשמח לשם מלא כדי שנדע למי לחזור.', el.name);
+    if (digits.length < 9) return fail('מספר הטלפון נראה קצר מדי — בדקו אותו שוב.', el.phone);
+
+    const body =
+      `שם: ${name}\n` +
+      `טלפון: ${phone}\n` +
+      `מתעניין ב: ${el.interest.value}\n` +
+      `הערה: ${el.note.value.trim() || '—'}`;
+    window.location.href =
+      `mailto:${TO}?subject=${encodeURIComponent('פנייה מהאתר — ' + name)}&body=${encodeURIComponent(body)}`;
+
+    note.className = 'cta-note ok';
+    note.textContent = 'נפתח אצלכם חלון מייל עם הפרטים — רק לשלוח, ונחזור אליכם.';
+  });
+
+  function fail(msg, field) {
+    note.className = 'cta-note err';
+    note.textContent = msg;
+    field.focus();
+  }
+})();
