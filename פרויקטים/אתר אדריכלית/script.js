@@ -6,6 +6,16 @@ document.documentElement.classList.add('js');
   const burger = document.getElementById('burger');
   const links = [...pill.querySelectorAll('a')];
 
+  // The logo/phone ride over the hero video (light) and then over cream (dark),
+  // so flip them once the hero has scrolled past.
+  const nav = document.getElementById('nav');
+  const hero = document.getElementById('hero');
+  if (nav && hero) {
+    const flip = () => nav.classList.toggle('solid', window.scrollY > hero.offsetHeight - 90);
+    flip();
+    window.addEventListener('scroll', flip, { passive: true });
+  }
+
   burger.addEventListener('click', () => pill.classList.toggle('open'));
   links.forEach(a => a.addEventListener('click', () => pill.classList.remove('open')));
 
