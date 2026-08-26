@@ -37,15 +37,60 @@ document.documentElement.classList.add('js');
   sections.forEach(s => io.observe(s));
 })();
 
-/* ---------- Scroll reveal ---------- */
+/* ---------- Scroll reveal + count-up ----------
+   Driven by scroll position rather than IntersectionObserver: IO silently
+   never firing would leave every section below the hero stuck at opacity 0.
+   The hiding styles are also only armed here (html.anim), so if this script
+   fails to run the page still renders fully, just without animation. */
 (function initReveal() {
-  if (!('IntersectionObserver' in window)) return;
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const groups = [...document.querySelectorAll('.reveal, .stagger')];
+  if (reduce || !groups.length) return;
+
+  document.documentElement.classList.add('anim');
+
+  function countUp(el) {
+    const target = parseInt(el.dataset.count, 10);
+    if (!target) return;
+    const suffix = el.querySelector('i');
+    const started = performance.now();
+    const dur = 1100;
+    (function step(now) {
+      const t = Math.min(1, (now - started) / dur);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.firstChild.nodeValue = String(Math.round(target * eased));
+      if (t < 1) requestAnimationFrame(step);
+      else if (suffix) el.firstChild.nodeValue = String(target);
+    })(started);
+  }
+
+  function show(el) {
+    if (el.classList.contains('in')) return;
+    el.classList.add('in');
+    el.querySelectorAll('[data-count]').forEach(countUp);
+  }
+
+  function check() {
+    // A viewport height of 0 (some embedded/headless surfaces report this)
+    // would make the trigger 0 and strand every section hidden, so fall back
+    // and, failing that, just show everything.
+    const vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    if (!vh) { groups.forEach(show); window.removeEventListener('scroll', check); return; }
+    const trigger = vh * 0.88;
+    let remaining = false;
+    groups.forEach(el => {
+      if (el.classList.contains('in')) return;
+      if (el.getBoundingClientRect().top < trigger) show(el);
+      else remaining = true;
     });
-  }, { threshold: .2, rootMargin: '0px 0px -50px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    if (!remaining) window.removeEventListener('scroll', check);
+  }
+
+  check();
+  window.addEventListener('scroll', check, { passive: true });
+  window.addEventListener('resize', check);
+  // Safety net: never let anything stay hidden if the maths above misses it.
+  window.addEventListener('load', () => setTimeout(check, 200));
 })();
 
 /* ---------- Tour teaser: clip plays while the card is on screen ---------- */
@@ -63,18 +108,33 @@ document.documentElement.classList.add('js');
   io.observe(clip);
 })();
 
-/* ---------- Services tabs ---------- */
+/* ---------- Services: tab switch + sliding rail ---------- */
 (function initServices() {
   const rail = document.getElementById('svcRail');
-  if (!rail) return;
-  const tabs = [...rail.querySelectorAll('button')];
+  const track = document.getElementById('svcTrack');
+  if (!rail || !track) return;
+  const tabs = [...track.querySelectorAll('button')];
   const panels = [...document.querySelectorAll('.svc-panel')];
-  tabs.forEach((t, i) => t.addEventListener('click', () => {
-    tabs.forEach(x => x.classList.remove('active'));
-    panels.forEach(p => p.classList.remove('active'));
-    t.classList.add('active');
-    panels[i].classList.add('active');
-  }));
+
+  // Slide the rail so the active label sits in the middle, like the reference.
+  function centre(i) {
+    const t = tabs[i];
+    const shift = (rail.clientWidth / 2) - (t.offsetLeft + t.offsetWidth / 2);
+    track.style.transform = `translateX(${shift.toFixed(1)}px)`;
+  }
+
+  function select(i) {
+    tabs.forEach((x, k) => x.classList.toggle('active', k === i));
+    panels.forEach((p, k) => p.classList.toggle('active', k === i));
+    centre(i);
+  }
+
+  tabs.forEach((t, i) => t.addEventListener('click', () => select(i)));
+  select(0);
+  window.addEventListener('resize', () => {
+    const i = tabs.findIndex(t => t.classList.contains('active'));
+    if (i > -1) centre(i);
+  });
 })();
 
 /* ---------- Projects marquee ---------- */

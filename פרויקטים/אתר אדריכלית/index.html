@@ -67,43 +67,60 @@
 
   <!-- SERVICES -->
   <section class="svc" id="services">
-    <div class="svc-stage">
-      <div class="svc-panel active" data-p="0">
-        <span class="svc-word">תכנון</span>
-        <div class="svc-media">
-          <img src="images/service-planning.jpg" alt="תכנון אדריכלי">
-          <div class="svc-chip">
-            <span>תכנון אדריכלי</span>
-            <p>אדריכלים מובילים מתכננים כל פרט — שכונה שמשלבת פונקציונליות עם אסתטיקה מודרנית.</p>
+    <div class="svc-frame">
+      <div class="svc-stage">
+
+        <article class="svc-panel active" data-p="0">
+          <div class="svc-side">
+            <span class="svc-word">תכנון</span>
+            <p class="svc-text">אדריכלים מובילים מתכננים כל פרט — שכונה שמשלבת פונקציונליות עם אסתטיקה מודרנית.</p>
           </div>
-        </div>
-      </div>
-      <div class="svc-panel" data-p="1">
-        <span class="svc-word">בנייה</span>
-        <div class="svc-media">
-          <img src="images/service-construction.jpg" alt="בנייה ופיקוח" loading="lazy">
-          <div class="svc-chip">
-            <span>בנייה ופיקוח</span>
-            <p>ניהול פרויקט מסודר, עמידה בלוחות זמנים ופיקוח צמוד על ההתאמה בין התכנון לביצוע.</p>
+          <div class="svc-media">
+            <img src="images/service-planning.jpg" alt="תכנון אדריכלי">
+            <span class="svc-label">תכנון אדריכלי</span>
+            <div class="svc-chip c1"><b>320</b><span>מ״ר בנוי</span></div>
+            <div class="svc-chip c2"><b>5</b><span>חדרים</span></div>
+            <div class="svc-chip c3"><b>24</b><span>מ״ר מרפסת</span></div>
           </div>
-        </div>
-      </div>
-      <div class="svc-panel" data-p="2">
-        <span class="svc-word">גימור</span>
-        <div class="svc-media">
-          <img src="images/service-finishing.jpg" alt="גימור יוקרתי" loading="lazy">
-          <div class="svc-chip">
-            <span>גימור יוקרתי</span>
-            <p>בחירת חומרים ואלמנטים יחד עם מומחה — פריטים מוצדקים סגנונית ופונקציונליים לאורך שנים.</p>
+        </article>
+
+        <article class="svc-panel" data-p="1">
+          <div class="svc-side">
+            <span class="svc-word">בנייה</span>
+            <p class="svc-text">ניהול פרויקט מסודר, עמידה בלוחות זמנים ופיקוח צמוד על ההתאמה בין התכנון לביצוע.</p>
           </div>
-        </div>
+          <div class="svc-media">
+            <img src="images/service-construction.jpg" alt="בנייה ופיקוח" loading="lazy">
+            <span class="svc-label">בנייה ופיקוח</span>
+            <div class="svc-chip c1"><b>18</b><span>חודשי ביצוע</span></div>
+            <div class="svc-chip c2"><b>12</b><span>דוחות התקדמות</span></div>
+            <div class="svc-chip c3"><b>1</b><span>איש קשר צמוד</span></div>
+          </div>
+        </article>
+
+        <article class="svc-panel" data-p="2">
+          <div class="svc-side">
+            <span class="svc-word">גימור</span>
+            <p class="svc-text">בחירת חומרים ואלמנטים יחד עם מומחה — פריטים מוצדקים סגנונית ופונקציונליים לאורך שנים.</p>
+          </div>
+          <div class="svc-media">
+            <img src="images/service-finishing.jpg" alt="גימור יוקרתי" loading="lazy">
+            <span class="svc-label">גימור יוקרתי</span>
+            <div class="svc-chip c1"><b>40+</b><span>פריטי מפרט</span></div>
+            <div class="svc-chip c2"><b>3</b><span>סבבי בחירה</span></div>
+            <div class="svc-chip c3"><b>12</b><span>חודשי בדק</span></div>
+          </div>
+        </article>
+
       </div>
     </div>
 
     <nav class="svc-rail" id="svcRail">
-      <button data-t="0" class="active">תכנון</button>
-      <button data-t="1">בנייה</button>
-      <button data-t="2">גימור</button>
+      <div class="svc-rail-track" id="svcTrack">
+        <button data-t="0" class="active">תכנון</button>
+        <button data-t="1">בנייה</button>
+        <button data-t="2">גימור</button>
+      </div>
     </nav>
   </section>
 
@@ -123,10 +140,10 @@
       </div>
     </div>
 
-    <div class="nums-grid">
-      <div class="num reveal"><span>120<i>+</i></span><p>יחידות דיור נמסרו</p></div>
-      <div class="num reveal"><span>35<i>+</i></span><p>אנשי מקצוע בצוות</p></div>
-      <div class="num reveal"><span>150<i>+</i></span><p>קבלני משנה מובילים</p></div>
+    <div class="nums-grid stagger">
+      <div class="num"><span data-count="120">0<i>+</i></span><p>יחידות דיור נמסרו</p></div>
+      <div class="num"><span data-count="35">0<i>+</i></span><p>אנשי מקצוע בצוות</p></div>
+      <div class="num"><span data-count="150">0<i>+</i></span><p>קבלני משנה מובילים</p></div>
     </div>
   </section>
 
@@ -136,11 +153,11 @@
       <span class="eyebrow">איך זה עובד</span>
       <h2>ארבעה שלבים,<br>בלי הפתעות באמצע</h2>
     </div>
-    <ol class="proc-list">
-      <li class="reveal"><b>01</b><h3>תכנון</h3><p>אדריכל צמוד, תוכניות מפורטות ובחירת מפרט. בסוף השלב אתם יודעים בדיוק איך הבית ייראה.</p></li>
-      <li class="reveal"><b>02</b><h3>אישורים</h3><p>היתרי בנייה, ליווי משפטי ובנקאי וחתימת חוזה עם לוח תשלומים ברור וצמוד לקצב הבנייה.</p></li>
-      <li class="reveal"><b>03</b><h3>בנייה</h3><p>דוח התקדמות אחת לחודש, ביקורי אתר מתואמים ואיש קשר אחד שזמין לכם לאורך כל הדרך.</p></li>
-      <li class="reveal"><b>04</b><h3>מסירה</h3><p>מסירה מסודרת עם פרוטוקול, תיקון ליקויים ושנת בדק מלאה. גם אחריה אנחנו נשארים זמינים.</p></li>
+    <ol class="proc-list stagger">
+      <li><b>01</b><h3>תכנון</h3><p>אדריכל צמוד, תוכניות מפורטות ובחירת מפרט. בסוף השלב אתם יודעים בדיוק איך הבית ייראה.</p></li>
+      <li><b>02</b><h3>אישורים</h3><p>היתרי בנייה, ליווי משפטי ובנקאי וחתימת חוזה עם לוח תשלומים ברור וצמוד לקצב הבנייה.</p></li>
+      <li><b>03</b><h3>בנייה</h3><p>דוח התקדמות אחת לחודש, ביקורי אתר מתואמים ואיש קשר אחד שזמין לכם לאורך כל הדרך.</p></li>
+      <li><b>04</b><h3>מסירה</h3><p>מסירה מסודרת עם פרוטוקול, תיקון ליקויים ושנת בדק מלאה. גם אחריה אנחנו נשארים זמינים.</p></li>
     </ol>
   </section>
 
@@ -171,26 +188,26 @@
       <span class="eyebrow">שאלות נפוצות</span>
       <h2>מה שלקוחות<br>שואלים אותנו</h2>
     </div>
-    <div class="faq-list reveal">
+    <div class="faq-list stagger">
       <details>
         <summary>כמה זמן לוקח מרכישה ועד כניסה?</summary>
-        <p>בפרויקטים שלנו הטווח הוא 14–24 חודשים, תלוי בגודל הפרויקט ובשלב שבו הצטרפתם. התאריך נקבע בחוזה ואנחנו מתחייבים אליו — עד היום עמדנו בו בכל הפרויקטים שמסרנו.</p>
+        <div class="faq-body"><div><p>בפרויקטים שלנו הטווח הוא 14–24 חודשים, תלוי בגודל הפרויקט ובשלב שבו הצטרפתם. התאריך נקבע בחוזה ואנחנו מתחייבים אליו — עד היום עמדנו בו בכל הפרויקטים שמסרנו.</p></div></div>
       </details>
       <details>
         <summary>איך בנוי לוח התשלומים?</summary>
-        <p>התשלומים צמודים לקצב הבנייה בפועל, לא לתאריכים קבועים: מקדמה בחתימה, ואז תשלומים בשלבי שלד, מעטפת, גימור ומסירה. כל תשלום מגובה בערבות חוק מכר.</p>
+        <div class="faq-body"><div><p>התשלומים צמודים לקצב הבנייה בפועל, לא לתאריכים קבועים: מקדמה בחתימה, ואז תשלומים בשלבי שלד, מעטפת, גימור ומסירה. כל תשלום מגובה בערבות חוק מכר.</p></div></div>
       </details>
       <details>
         <summary>אפשר לעשות שינויי דייר?</summary>
-        <p>כן. עד סוף שלב השלד אפשר לשנות חלוקה פנימית, נקודות חשמל ואינסטלציה ומפרט גימור. אנחנו נותנים תמחור מסודר מראש לכל שינוי, בלי הפתעות בחשבון הסופי.</p>
+        <div class="faq-body"><div><p>כן. עד סוף שלב השלד אפשר לשנות חלוקה פנימית, נקודות חשמל ואינסטלציה ומפרט גימור. אנחנו נותנים תמחור מסודר מראש לכל שינוי, בלי הפתעות בחשבון הסופי.</p></div></div>
       </details>
       <details>
         <summary>מה קורה אם מתגלים ליקויים אחרי המסירה?</summary>
-        <p>כל דירה מקבלת שנת בדק מלאה ואחריות על מערכות ואיטום לפי חוק המכר. פונים לאיש הקשר שליווה אתכם בפרויקט — לא למוקד חיצוני.</p>
+        <div class="faq-body"><div><p>כל דירה מקבלת שנת בדק מלאה ואחריות על מערכות ואיטום לפי חוק המכר. פונים לאיש הקשר שליווה אתכם בפרויקט — לא למוקד חיצוני.</p></div></div>
       </details>
       <details>
         <summary>אפשר לראות פרויקט שנמסר?</summary>
-        <p>בהחלט, וזה מה שאנחנו הכי ממליצים עליו. נשמח לתאם לכם ביקור בפרויקט מאוכלס ולחבר אתכם לדיירים שגרים בו כבר כמה שנים.</p>
+        <div class="faq-body"><div><p>בהחלט, וזה מה שאנחנו הכי ממליצים עליו. נשמח לתאם לכם ביקור בפרויקט מאוכלס ולחבר אתכם לדיירים שגרים בו כבר כמה שנים.</p></div></div>
       </details>
     </div>
   </section>

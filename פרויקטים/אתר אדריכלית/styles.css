@@ -219,44 +219,81 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 }
 .tour-scrollcue.gone{opacity:0;}
 
-/* ===== SERVICES ===== */
+/* ===== SERVICES — dark feature band, mirrors the reference ===== */
 .svc{
-  position:relative;min-height:100vh;
-  padding:16vh 6vw 9vh;
-  display:flex;flex-direction:column;justify-content:center;gap:7vh;
-  background:var(--bg-2);
+  position:relative;padding:15vh 6vw 11vh;
+  background:#14100c;color:#f6f2ea;
+  overflow:hidden;
 }
-.svc-stage{position:relative;}
+/* corner-bracket frame around the stage */
+.svc-frame{position:relative;padding:5vh 0;}
+.svc-frame::before,.svc-frame::after{
+  content:'';position:absolute;top:0;bottom:0;width:46px;
+  border:1px solid rgba(246,242,234,.22);pointer-events:none;
+}
+.svc-frame::before{right:-1.5vw;border-left:none;}
+.svc-frame::after{left:-1.5vw;border-right:none;}
+
+.svc-stage{position:relative;min-height:430px;}
 .svc-panel{
-  display:none;
-  grid-template-columns:1fr 1fr;align-items:center;gap:5vw;
+  position:absolute;inset:0;
+  display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:center;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .5s var(--ease);
 }
-.svc-panel.active{display:grid;animation:svcIn .7s var(--ease);}
-@keyframes svcIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+.svc-panel.active{opacity:1;visibility:visible;pointer-events:auto;position:relative;}
+
 .svc-word{
-  font-size:clamp(58px,10vw,150px);font-weight:900;line-height:.95;
-  color:transparent;-webkit-text-stroke:1px var(--gold);
+  display:block;
+  font-size:clamp(56px,9.5vw,140px);font-weight:900;line-height:.95;
+  color:transparent;-webkit-text-stroke:1px var(--gold-lite);
 }
-.svc-media{position:relative;}
-.svc-media img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;}
+.svc-text{margin-top:26px;font-size:14px;line-height:1.9;color:var(--mut-lite);max-width:40ch;}
+
+.svc-media{position:relative;border-radius:12px;overflow:hidden;}
+.svc-media img{width:100%;aspect-ratio:4/3;object-fit:cover;}
+.svc-label{
+  position:absolute;top:20px;right:22px;
+  font-size:12px;font-weight:700;letter-spacing:.02em;
+  text-shadow:0 2px 14px rgba(0,0,0,.7);
+}
+
+/* floating data chips over the photo, like the reference's device cards */
 .svc-chip{
-  position:absolute;bottom:22px;right:22px;left:22px;
-  padding:20px 24px;border-radius:14px;
-  background:rgba(24,19,14,.72);border:1px solid var(--glass-line);
-  backdrop-filter:blur(20px);color:#f6f2ea;
+  position:absolute;display:flex;flex-direction:column;gap:2px;
+  padding:12px 16px;border-radius:12px;
+  background:rgba(20,16,12,.62);border:1px solid rgba(246,242,234,.18);
+  backdrop-filter:blur(14px);
+  opacity:0;transform:translateY(14px) scale(.96);
 }
-.svc-chip span{display:block;font-size:15px;font-weight:700;margin-bottom:7px;}
-.svc-chip p{font-size:12.5px;line-height:1.7;color:var(--mut);}
+.svc-chip b{font-size:20px;font-weight:900;line-height:1;color:#fff;}
+.svc-chip span{font-size:10.5px;font-weight:600;color:var(--mut-lite);white-space:nowrap;}
+.svc-chip.c1{top:22%;left:6%;}
+.svc-chip.c2{top:48%;left:22%;}
+.svc-chip.c3{bottom:12%;left:8%;}
+.svc-panel.active .svc-chip{animation:chipIn .6s var(--ease) forwards;}
+.svc-panel.active .svc-chip.c1{animation-delay:.18s;}
+.svc-panel.active .svc-chip.c2{animation-delay:.30s;}
+.svc-panel.active .svc-chip.c3{animation-delay:.42s;}
+@keyframes chipIn{to{opacity:1;transform:translateY(0) scale(1);}}
+
+/* sliding tab rail — the active label travels to the centre */
 .svc-rail{
-  display:flex;justify-content:center;gap:38px;
-  padding-top:5vh;border-top:1px solid var(--line);
+  margin-top:6vh;padding-top:4vh;
+  border-top:1px solid rgba(246,242,234,.14);
+  overflow:hidden;
+}
+.svc-rail-track{
+  display:flex;justify-content:center;gap:clamp(28px,6vw,86px);
+  transition:transform .6s var(--ease);will-change:transform;
 }
 .svc-rail button{
-  font-size:14px;font-weight:600;color:var(--mut);
+  font-size:14px;font-weight:600;color:rgba(246,242,234,.45);
+  white-space:nowrap;
   transition:color .35s var(--ease);
 }
-.svc-rail button:hover{color:var(--ink);}
-.svc-rail button.active{color:var(--gold);}
+.svc-rail button:hover{color:#f6f2ea;}
+.svc-rail button.active{color:var(--gold-lite);font-style:italic;}
 
 /* ===== Shared section bits ===== */
 .eyebrow{
@@ -403,13 +440,47 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 .foot nav a:hover{color:var(--ink);}
 .foot-note{font-size:11px;color:var(--mut);}
 
-/* ===== Reveal ===== */
+/* ===== Reveal =====
+   Only armed once JS confirms it can drive the reveal (html.anim), so a
+   scripting failure can never leave the page permanently invisible. */
 @media (prefers-reduced-motion:no-preference){
-  html.js .reveal{opacity:0;transform:translateY(22px);transition:opacity .85s var(--ease),transform .85s var(--ease);}
-  html.js .reveal.in{opacity:1;transform:none;}
-  html.js .nums-grid .reveal:nth-child(2){transition-delay:.12s;}
-  html.js .nums-grid .reveal:nth-child(3){transition-delay:.24s;}
+  html.anim .reveal{opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease);}
+  html.anim .reveal.in{opacity:1;transform:none;}
+
+  /* a .stagger group animates its own children in sequence */
+  html.anim .stagger > *{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+  html.anim .stagger.in > *{opacity:1;transform:none;}
+  html.anim .stagger.in > *:nth-child(1){transition-delay:.04s;}
+  html.anim .stagger.in > *:nth-child(2){transition-delay:.14s;}
+  html.anim .stagger.in > *:nth-child(3){transition-delay:.24s;}
+  html.anim .stagger.in > *:nth-child(4){transition-delay:.34s;}
+  html.anim .stagger.in > *:nth-child(5){transition-delay:.44s;}
+
+  /* about collage pieces drift in from slightly different places */
+  html.anim .about-shots img{opacity:0;transform:translateY(30px) scale(1.04);transition:opacity .9s var(--ease),transform .9s var(--ease);}
+  html.anim .about-shots.in .shot-a{opacity:1;transform:none;transition-delay:.05s;}
+  html.anim .about-shots.in .shot-b{opacity:1;transform:translateY(-26px);transition-delay:.2s;}
+  html.anim .about-shots.in .shot-c{opacity:1;transform:none;transition-delay:.32s;}
+
+  /* process steps also draw a rule across as they land */
+  html.anim .proc-list.in > li{position:relative;}
+  html.anim .proc-list.in > li::after{
+    content:'';position:absolute;top:-1px;right:0;height:1px;
+    background:var(--gold);width:0;
+    animation:procRule .8s var(--ease) forwards;
+  }
+  html.anim .proc-list.in > li:nth-child(1)::after{animation-delay:.15s;}
+  html.anim .proc-list.in > li:nth-child(2)::after{animation-delay:.25s;}
+  html.anim .proc-list.in > li:nth-child(3)::after{animation-delay:.35s;}
+  html.anim .proc-list.in > li:nth-child(4)::after{animation-delay:.45s;}
+  @keyframes procRule{to{width:100%;}}
 }
+
+/* FAQ open/close needs an animatable wrapper — <details> alone can't tween height */
+.faq-list details{overflow:hidden;}
+.faq-list .faq-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease);}
+.faq-list details[open] .faq-body{grid-template-rows:1fr;}
+.faq-list .faq-body > div{overflow:hidden;}
 
 /* ===== Mobile ===== */
 @media (max-width:900px){
@@ -442,9 +513,18 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   .tour-dot span{display:none;}
   .tour-scrollcue{display:none;}
 
-  .svc-panel.active{grid-template-columns:1fr;gap:26px;}
-  .svc-word{order:-1;}
-  .svc-rail{gap:22px;}
+  .svc{padding:11vh 6vw 8vh;}
+  .svc-frame{padding:3vh 0;}
+  .svc-frame::before,.svc-frame::after{width:20px;}
+  .svc-stage{min-height:0;}
+  .svc-panel{position:relative;}
+  .svc-panel:not(.active){display:none;}
+  .svc-panel.active{grid-template-columns:1fr;gap:24px;}
+  .svc-side{order:-1;}
+  .svc-chip.c2{display:none;}
+  .svc-chip.c1{top:auto;bottom:56px;left:6%;}
+  .svc-chip.c3{bottom:12px;left:6%;}
+  .svc-rail-track{gap:26px;}
 
   .about{padding:10vh 6vw;}
   .about-top{grid-template-columns:1fr;gap:38px;padding-bottom:8vh;}
