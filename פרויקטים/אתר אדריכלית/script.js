@@ -70,12 +70,17 @@ document.documentElement.classList.add('js');
     el.querySelectorAll('[data-count]').forEach(countUp);
   }
 
+  function revealAll() {
+    groups.forEach(show);
+    window.removeEventListener('scroll', check);
+  }
+
   function check() {
-    // A viewport height of 0 (some embedded/headless surfaces report this)
-    // would make the trigger 0 and strand every section hidden, so fall back
-    // and, failing that, just show everything.
+    // A viewport height of 0 can happen transiently before first layout. Waiting
+    // it out is right; revealing everything here would fire every section at
+    // once and leave nothing to animate on scroll.
     const vh = window.innerHeight || document.documentElement.clientHeight || 0;
-    if (!vh) { groups.forEach(show); window.removeEventListener('scroll', check); return; }
+    if (!vh) return;
     const trigger = vh * 0.88;
     let remaining = false;
     groups.forEach(el => {
@@ -86,11 +91,16 @@ document.documentElement.classList.add('js');
     if (!remaining) window.removeEventListener('scroll', check);
   }
 
-  check();
+  // Wait for first layout before the initial pass, so nothing reveals early.
+  requestAnimationFrame(check);
   window.addEventListener('scroll', check, { passive: true });
   window.addEventListener('resize', check);
-  // Safety net: never let anything stay hidden if the maths above misses it.
   window.addEventListener('load', () => setTimeout(check, 200));
+  // Last resort: if the viewport never reports a height, show everything rather
+  // than leave the page blank.
+  setTimeout(() => {
+    if (!(window.innerHeight || document.documentElement.clientHeight)) revealAll();
+  }, 3000);
 })();
 
 /* ---------- Tour teaser: clip plays while the card is on screen ---------- */
