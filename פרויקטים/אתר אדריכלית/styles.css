@@ -16,6 +16,10 @@
   --glass-line:rgba(255,255,255,.16);
   --gold-lite:#d9a94a;   /* gold that still reads on dark media */
   --mut-lite:rgba(246,242,234,.66);
+  /* one vertical rhythm and one gutter for every section */
+  --sec-y:15vh;
+  --gutter:6vw;
+  --head-gap:8vh;
   --font:'Talent FS','Heebo',sans-serif;
   --ease:cubic-bezier(.16,.84,.44,1);
   --swing:cubic-bezier(.7,0,.2,1);
@@ -135,7 +139,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 .hero-cta:hover{background:#a0761f;transform:translateY(-2px);}
 
 /* ===== TOUR TEASER (home page) ===== */
-.teaser{padding:12vh 6vw;background:var(--bg);}
+.teaser{padding:var(--sec-y) var(--gutter);background:var(--bg);}
 .teaser-card{
   position:relative;display:block;height:62vh;min-height:380px;
   border-radius:16px;overflow:hidden;border:1px solid var(--line);
@@ -220,8 +224,8 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 .tour-scrollcue.gone{opacity:0;}
 
 /* ===== SERVICES — numbered columns that fill with their photo on hover ===== */
-.svc{padding:15vh 6vw 0;background:var(--bg);}
-.svc-head{margin-bottom:8vh;}
+.svc{padding:var(--sec-y) var(--gutter);background:var(--bg);}
+.svc-head{margin-bottom:var(--head-gap);}
 .svc-head h2{font-size:clamp(28px,3.9vw,52px);font-weight:900;line-height:1.18;}
 
 .svc-cols{
@@ -311,7 +315,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 .about{
   position:relative;min-height:96vh;
   display:grid;place-items:center;
-  padding:11vh 5vw;overflow:hidden;color:#f6f2ea;
+  padding:var(--sec-y) var(--gutter);overflow:hidden;color:#f6f2ea;
 }
 .about-bg{position:absolute;inset:0;}
 .about-bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(.5) contrast(1.05);}
@@ -365,8 +369,8 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 .about-contact b{font-size:10px;font-weight:700;letter-spacing:.16em;color:var(--gold-lite);}
 
 /* ===== PROCESS — index page, after the INDICE reference ===== */
-.proc{padding:15vh 6vw;background:var(--bg);}
-.proc-head{margin-bottom:8vh;}
+.proc{padding:var(--sec-y) var(--gutter);background:var(--bg);}
+.proc-head{margin-bottom:var(--head-gap);}
 .proc-head h2{font-size:clamp(28px,3.9vw,52px);font-weight:900;line-height:1.18;}
 
 .proc-index{list-style:none;border-top:1px solid var(--line);}
@@ -395,8 +399,8 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 
 /* ===== FAQ ===== */
 .faq{
-  padding:15vh 6vw;background:var(--bg);
-  display:grid;grid-template-columns:.85fr 1.15fr;gap:6vw;align-items:start;
+  padding:var(--sec-y) var(--gutter);background:var(--bg);
+  display:grid;grid-template-columns:.85fr 1.15fr;gap:var(--gutter);align-items:start;
 }
 .faq-head h2{font-size:clamp(28px,3.9vw,52px);font-weight:900;line-height:1.18;}
 .faq-list details{border-bottom:1px solid var(--line);}
@@ -416,7 +420,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 .faq-list p{padding:0 0 26px;font-size:13.5px;line-height:1.9;color:var(--mut);max-width:60ch;}
 
 /* ===== PROJECTS ===== */
-.proj{position:relative;padding:0 0 13vh;background:var(--bg-2);overflow:hidden;}
+.proj{position:relative;padding:var(--sec-y) 0;background:var(--bg-2);overflow:hidden;}
 
 /* cinematic opener: the photo widens out of a slit, the bracketed title
    rides on top, then both settle and hand over to the row below */
@@ -500,7 +504,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 }
 
 /* ===== CONTACT ===== */
-.cta{position:relative;min-height:92vh;display:flex;align-items:center;padding:14vh 6vw;overflow:hidden;}
+.cta{position:relative;min-height:92vh;display:flex;align-items:center;padding:var(--sec-y) var(--gutter);overflow:hidden;}
 .cta-media{position:absolute;inset:0;}
 .cta-media img{width:100%;height:100%;object-fit:cover;}
 .cta-scrim{position:absolute;inset:0;background:linear-gradient(-90deg,rgba(245,240,232,.96) 32%,rgba(245,240,232,.62) 100%);}
@@ -609,7 +613,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   .hero-title-wrap{bottom:16vh;justify-content:flex-start;}
   .hero-cta{left:auto;right:6vw;bottom:7vh;}
 
-  .teaser{padding:8vh 6vw;}
+  :root{--sec-y:10vh;--head-gap:5vh;}
   .teaser-card{height:52vh;}
   .teaser-scrim{background:linear-gradient(0deg,rgba(10,9,8,.92) 12%,rgba(10,9,8,.2) 75%);}
   .teaser-body{top:auto;bottom:26px;right:26px;left:26px;transform:none;gap:11px;}
@@ -624,8 +628,8 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   .tour-dot span{display:none;}
   .tour-scrollcue{display:none;}
 
-  .svc{padding:11vh 6vw 0;}
-  .svc-head{margin-bottom:5vh;}
+
+
   .svc-cols{grid-template-columns:1fr;}
   .svc-col{
     min-height:340px;padding:32px 26px 28px;
@@ -634,15 +638,15 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   .svc-col:first-child{border-right:none;}
   .svc-num{font-size:clamp(110px,34vw,180px);}
 
-  .about{padding:9vh 5vw;min-height:0;}
+  .about{min-height:0;}
   .about-frame{padding:24px 20px;}
   .about-inner{max-width:100%;}
   /* no room for a side-by-side split on a phone: shade from the bottom instead */
   .about-scrim{background:linear-gradient(0deg,rgba(9,8,6,.95) 42%,rgba(9,8,6,.55) 100%);}
   .about-cols{grid-template-columns:1fr 1fr;gap:22px 18px;}
 
-  .proc{padding:10vh 6vw;}
-  .proc-head{margin-bottom:6vh;}
+
+
   .proc-index li{
     grid-template-columns:auto 1fr;grid-template-areas:'n when' 'body body';
     gap:14px 18px;align-items:start;
@@ -651,12 +655,12 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   .proc-when{grid-area:when;justify-self:end;align-self:center;}
   .proc-body{grid-area:body;}
 
-  .faq{grid-template-columns:1fr;gap:38px;padding:10vh 6vw;}
+  .faq{grid-template-columns:1fr;gap:38px;}
 
   .proj-intro{height:clamp(300px,52vh,420px);margin-bottom:6vh;}
   .proj-card{flex:0 0 250px;height:380px;}
   .proj-story{padding:20px 18px;}
 
-  .cta{padding:10vh 6vw;}
+
   .cta-inner{grid-template-columns:1fr;gap:40px;}
 }
