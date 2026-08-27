@@ -45,7 +45,7 @@ document.documentElement.classList.add('js');
   });
 
   function setActive(i) {
-    if (i === active) return;
+    if (!Number.isFinite(i) || !dots[i] || i === active) return;
     active = i;
     warm(i);
     clips.forEach((v, k) => {
@@ -60,11 +60,14 @@ document.documentElement.classList.add('js');
 
   function onScroll() {
     const r = section.getBoundingClientRect();
+    // Before layout settles the section can measure no taller than the viewport,
+    // which made this divide by zero and hand setActive a NaN index.
     const scrollable = r.height - window.innerHeight;
+    if (!(scrollable > 0)) return;
     const p = Math.min(1, Math.max(0, -r.top / scrollable));
     bar.style.transform = `scaleX(${p})`;
     if (cue && p > 0.02) cue.classList.add('gone');
-    setActive(Math.min(N - 1, Math.floor(p * N)));
+    setActive(Math.min(N - 1, Math.max(0, Math.floor(p * N))));
   }
 
   setActive(0);

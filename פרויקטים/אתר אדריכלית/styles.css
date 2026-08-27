@@ -528,6 +528,12 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 .foot nav a:hover{color:var(--ink);}
 .foot-note{font-size:11px;color:var(--mut);}
 
+/* ===== GSAP word masks =====
+   Added by motion.js only when GSAP is present, so headings are never
+   clipped or hidden if the library fails to load. */
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.06em;}
+.wi{display:inline-block;will-change:transform;}
+
 /* ===== Reveal =====
    Only armed once JS confirms it can drive the reveal (html.anim), so a
    scripting failure can never leave the page permanently invisible. */
