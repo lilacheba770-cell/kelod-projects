@@ -1,0 +1,5 @@
+# Source clips we edited the site's media from — hundreds of MB that the
+# site never loads. Keep them off the upload.
+*.mov
+magnific_*.mp4
+serve.py
