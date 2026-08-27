@@ -145,12 +145,35 @@ document.documentElement.classList.add('js');
   light(pinned);
 })();
 
+/* ---------- Projects: tap a card to raise its testimonial ----------
+   Hover and focus are handled in CSS; this covers touch, where there is no
+   hover, by toggling one card open at a time. */
+(function initProjectCards() {
+  const track = document.getElementById('projTrack');
+  if (!track) return;
+  track.addEventListener('click', (e) => {
+    const card = e.target.closest('.proj-card');
+    if (!card) return;
+    const wasOpen = card.classList.contains('is-open');
+    track.querySelectorAll('.proj-card.is-open').forEach(c => c.classList.remove('is-open'));
+    if (!wasOpen) card.classList.add('is-open');
+  });
+})();
+
 /* ---------- Projects marquee ---------- */
 (function initMarquee() {
   const track = document.getElementById('projTrack');
   if (!track) return;
-  // duplicate the row so the -50% keyframe loops seamlessly
-  track.innerHTML += track.innerHTML;
+  // The keyframe travels -50%, so the row must hold an even number of identical
+  // copies AND one copy must be wider than the viewport — otherwise the tail of
+  // the row runs out mid-loop and leaves a blank gap on wide screens.
+  const oneCopy = track.innerHTML;
+  track.innerHTML = oneCopy + oneCopy;
+  for (let guard = 0; guard < 4; guard++) {
+    const halfWidth = track.scrollWidth / 2;
+    if (halfWidth >= window.innerWidth * 1.15) break;
+    track.innerHTML += track.innerHTML;   // stays even: 2 -> 4 -> 8
+  }
 
   // Cards drift through view continuously, so lazy-loading makes them pop in
   // blank mid-scroll. Once the section is near, load the whole row up front.
