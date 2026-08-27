@@ -309,49 +309,60 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 
 /* ===== ABOUT — brochure spread, after the ARCHE reference ===== */
 .about{
-  position:relative;
-  min-height:92vh;
+  position:relative;min-height:96vh;
   display:grid;place-items:center;
-  padding:12vh 6vw;
-  overflow:hidden;
-  color:#f6f2ea;
+  padding:11vh 5vw;overflow:hidden;color:#f6f2ea;
 }
 .about-bg{position:absolute;inset:0;}
-.about-bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(.35);}
+.about-bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(.5) contrast(1.05);}
+/* the reference is split: the type side sits in shadow, the photo stays lit.
+   Content is on the right in RTL, so the shadow falls on the right. */
 .about-scrim{
   position:absolute;inset:0;
-  background:linear-gradient(-90deg,rgba(10,9,8,.94) 34%,rgba(10,9,8,.55) 100%);
+  background:linear-gradient(to left,
+    rgba(9,8,6,.93) 0%,
+    rgba(9,8,6,.9) 42%,
+    rgba(9,8,6,.34) 58%,
+    rgba(9,8,6,.12) 100%);
 }
-/* the thin inset rule that frames the whole spread */
 .about-frame{
   position:relative;z-index:2;
-  width:100%;max-width:1180px;
-  border:1px solid rgba(246,242,234,.4);
-  padding:clamp(34px,5vw,68px);
+  width:100%;max-width:1240px;
+  border:1px solid rgba(246,242,234,.45);
+  padding:clamp(30px,4.4vw,60px);
 }
-.about-inner{max-width:640px;}
+.about-inner{max-width:min(52%,620px);}
+
+/* ARCHE lockup: dominant word, small subtitle tucked under its far edge */
+.about-lockup{display:inline-block;}
 .about-title{
-  font-size:clamp(52px,9vw,132px);font-weight:900;line-height:.9;letter-spacing:-.01em;
+  font-size:clamp(62px,10.5vw,168px);
+  font-weight:900;line-height:.86;letter-spacing:-.02em;
+  white-space:nowrap;
 }
-.about-title span{
-  display:block;margin-top:10px;
-  font-size:clamp(17px,2.2vw,30px);font-weight:400;letter-spacing:.02em;
-  color:rgba(246,242,234,.82);
+.about-sub{
+  display:block;text-align:left;   /* opposite edge, mirroring "Brochure" */
+  margin-top:2px;
+  font-size:clamp(16px,2vw,30px);font-weight:400;letter-spacing:.01em;
+  color:rgba(246,242,234,.9);
 }
+
 .about-lede{
-  margin-top:30px;max-width:52ch;
-  font-size:14px;line-height:1.95;color:rgba(246,242,234,.74);
+  margin-top:clamp(22px,3vw,34px);max-width:46ch;
+  font-size:13px;line-height:1.9;color:rgba(246,242,234,.66);
 }
+
+/* small print columns along the bottom, like the reference's address blocks */
 .about-cols{
-  margin-top:clamp(34px,5vw,60px);
-  display:grid;grid-template-columns:repeat(4,auto);gap:clamp(24px,4vw,58px);
-  justify-content:start;
+  margin-top:clamp(30px,4.6vw,56px);
+  display:grid;grid-template-columns:repeat(4,auto);
+  gap:clamp(18px,3vw,44px);justify-content:start;
 }
-.about-cols div{display:flex;flex-direction:column;gap:7px;}
-.about-cols b{font-size:30px;font-weight:900;line-height:1;}
+.about-cols > div{display:flex;flex-direction:column;gap:5px;}
+.about-cols b{font-size:19px;font-weight:900;line-height:1;letter-spacing:-.01em;}
 .about-cols i{font-style:normal;color:var(--gold-lite);}
-.about-cols span{font-size:11.5px;line-height:1.6;color:rgba(246,242,234,.6);}
-.about-contact b{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--gold-lite);}
+.about-cols span{font-size:10.5px;line-height:1.55;color:rgba(246,242,234,.55);}
+.about-contact b{font-size:10px;font-weight:700;letter-spacing:.16em;color:var(--gold-lite);}
 
 /* ===== PROCESS — index page, after the INDICE reference ===== */
 .proc{padding:15vh 6vw;background:var(--bg);}
@@ -624,9 +635,11 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   .svc-num{font-size:clamp(110px,34vw,180px);}
 
   .about{padding:9vh 5vw;min-height:0;}
-  .about-frame{padding:26px 22px;}
-  .about-scrim{background:linear-gradient(0deg,rgba(10,9,8,.95) 45%,rgba(10,9,8,.6) 100%);}
-  .about-cols{grid-template-columns:1fr 1fr;gap:24px 20px;}
+  .about-frame{padding:24px 20px;}
+  .about-inner{max-width:100%;}
+  /* no room for a side-by-side split on a phone: shade from the bottom instead */
+  .about-scrim{background:linear-gradient(0deg,rgba(9,8,6,.95) 42%,rgba(9,8,6,.55) 100%);}
+  .about-cols{grid-template-columns:1fr 1fr;gap:22px 18px;}
 
   .proc{padding:10vh 6vw;}
   .proc-head{margin-bottom:6vh;}
