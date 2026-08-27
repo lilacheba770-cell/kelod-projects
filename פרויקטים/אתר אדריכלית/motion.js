@@ -11,13 +11,15 @@
 
   /* Splitting a heading parks its words outside an overflow:hidden mask, so if
      the tween engine never ticks the text would sit there invisible. Wait for a
-     real ticker frame before touching anything, and give up if none arrives. */
+     real ticker frame before touching anything — until one arrives nothing is
+     split, and the page just renders its headings plainly.
+     No timeout here on purpose: the ticker runs on requestAnimationFrame, which
+     is suspended while the tab is in the background, so a deadline would expire
+     on a page opened in a background tab and kill the motion for good. */
   let started = false;
-  const bail = setTimeout(() => { if (!started) gsap.ticker.remove(begin); }, 800);
   function begin() {
     if (started) return;
     started = true;
-    clearTimeout(bail);
     gsap.ticker.remove(begin);
     run();
   }

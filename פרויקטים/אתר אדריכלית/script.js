@@ -217,6 +217,7 @@ document.documentElement.classList.add('js');
     const body =
       `שם: ${name}\n` +
       `טלפון: ${phone}\n` +
+      `אימייל: ${el.email ? el.email.value.trim() || '—' : '—'}\n` +
       `מתעניין ב: ${el.interest.value}\n` +
       `הערה: ${el.note.value.trim() || '—'}`;
     window.location.href =
