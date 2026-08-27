@@ -440,7 +440,14 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   html.anim .proj-intro.in .proj-title{opacity:1;transform:none;}
 }
 
-.proj-marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);}
+.proj-marquee{
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  /* The row must be anchored to the LEFT for the -50% loop to work. Inside an
+     RTL parent a max-content track pins to the right instead, so translating it
+     left just marched it off-screen and left the strip empty. */
+  direction:ltr;
+}
 .proj-track{display:flex;gap:22px;width:max-content;direction:ltr;animation:marquee 60s linear infinite;}
 .proj:hover .proj-track,.proj:focus-within .proj-track{animation-play-state:paused;}
 @keyframes marquee{to{transform:translateX(-50%);}}
