@@ -118,33 +118,31 @@ document.documentElement.classList.add('js');
   io.observe(clip);
 })();
 
-/* ---------- Services: tab switch + sliding rail ---------- */
+/* ---------- Services: one column lit at a time ----------
+   Hover drives it on a mouse; tap/focus drives it everywhere else, so the
+   photo reveal is reachable on touch and by keyboard too. */
 (function initServices() {
-  const rail = document.getElementById('svcRail');
-  const track = document.getElementById('svcTrack');
-  if (!rail || !track) return;
-  const tabs = [...track.querySelectorAll('button')];
-  const panels = [...document.querySelectorAll('.svc-panel')];
+  const wrap = document.getElementById('svcCols');
+  if (!wrap) return;
+  const cols = [...wrap.querySelectorAll('.svc-col')];
+  if (!cols.length) return;
 
-  // Slide the rail so the active label sits in the middle, like the reference.
-  function centre(i) {
-    const t = tabs[i];
-    const shift = (rail.clientWidth / 2) - (t.offsetLeft + t.offsetWidth / 2);
-    track.style.transform = `translateX(${shift.toFixed(1)}px)`;
-  }
+  let pinned = 0;               // survives when the pointer leaves the row
+  const fine = window.matchMedia('(pointer: fine)').matches;
 
-  function select(i) {
-    tabs.forEach((x, k) => x.classList.toggle('active', k === i));
-    panels.forEach((p, k) => p.classList.toggle('active', k === i));
-    centre(i);
-  }
+  const light = (i) => cols.forEach((c, k) => c.classList.toggle('is-on', k === i));
 
-  tabs.forEach((t, i) => t.addEventListener('click', () => select(i)));
-  select(0);
-  window.addEventListener('resize', () => {
-    const i = tabs.findIndex(t => t.classList.contains('active'));
-    if (i > -1) centre(i);
+  cols.forEach((col, i) => {
+    if (fine) col.addEventListener('mouseenter', () => light(i));
+    col.addEventListener('focus', () => light(i));
+    col.addEventListener('click', () => { pinned = i; light(i); });
+    col.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pinned = i; light(i); }
+    });
   });
+
+  if (fine) wrap.addEventListener('mouseleave', () => light(pinned));
+  light(pinned);
 })();
 
 /* ---------- Projects marquee ---------- */
