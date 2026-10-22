@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Demo site with placeholder content — keep it out of search results. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Project tour | Alto</title>
+<meta name="description" content="A video tour of an Alto project — from the neighbourhood to the rooms of the apartment.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="tour-page">
+
+<header class="nav">
+  <a href="index.html" class="nav-logo">Alto<span class="dot">.</span></a>
+  <nav class="nav-pill">
+    <a href="index.html">Home</a>
+    <a href="tour.html" class="active">Tour</a>
+    <a href="index.html#services">Services</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+  <a href="tel:039876543" class="nav-cta">03-987-6543</a>
+  <button class="nav-burger" id="burger" aria-label="Menu"><span></span><span></span></button>
+</header>
+
+<section class="tour" id="tour">
+  <div class="tour-pin">
+    <div class="tour-stage" id="tourStage">
+      <video class="tour-clip" data-i="0" src="media/tour/aerial.mp4"   poster="media/tour/aerial.jpg"   muted loop playsinline preload="auto"></video>
+      <video class="tour-clip" data-i="1" src="media/tour/exterior.mp4" poster="media/tour/exterior.jpg" muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="2" src="media/tour/entrance.mp4" poster="media/tour/entrance.jpg" muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="3" src="media/tour/lobby.mp4"    poster="media/tour/lobby.jpg"    muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="4" src="media/tour/elevator.mp4" poster="media/tour/elevator.jpg" muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="5" src="media/tour/aptdoor.mp4"  poster="media/tour/aptdoor.jpg"  muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="6" src="media/tour/living.mp4"   poster="media/tour/living.jpg"   muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="7" src="media/tour/kitchen.mp4"  poster="media/tour/kitchen.jpg"  muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="8" src="media/tour/terrace.mp4"  poster="media/tour/terrace.jpg"  muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="9" src="media/tour/bedroom.mp4"  poster="media/tour/bedroom.jpg"  muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="10" src="media/tour/bathroom.mp4" poster="media/tour/bathroom.jpg" muted loop playsinline preload="none"></video>
+      <video class="tour-clip" data-i="11" src="media/tour/kidsroom.mp4" poster="media/tour/kidsroom.jpg" muted loop playsinline preload="none"></video>
+    </div>
+    <div class="tour-scrim"></div>
+
+    <span class="tour-eyebrow">Project tour</span>
+    <h1 class="tour-caption" id="tourCaption">The Alto neighbourhood</h1>
+
+    <div class="tour-rail" id="tourRail">
+      <button class="tour-dot active" data-i="0"><b>01</b><span>The Alto neighbourhood</span></button>
+      <button class="tour-dot" data-i="1"><b>02</b><span>The building facade</span></button>
+      <button class="tour-dot" data-i="2"><b>03</b><span>The entrance</span></button>
+      <button class="tour-dot" data-i="3"><b>04</b><span>The lobby</span></button>
+      <button class="tour-dot" data-i="4"><b>05</b><span>The lift</span></button>
+      <button class="tour-dot" data-i="5"><b>06</b><span>The front door</span></button>
+      <button class="tour-dot" data-i="6"><b>07</b><span>The living room</span></button>
+      <button class="tour-dot" data-i="7"><b>08</b><span>The kitchen</span></button>
+      <button class="tour-dot" data-i="8"><b>09</b><span>The terrace</span></button>
+      <button class="tour-dot" data-i="9"><b>10</b><span>The bedroom</span></button>
+      <button class="tour-dot" data-i="10"><b>11</b><span>The bathroom</span></button>
+      <button class="tour-dot" data-i="11"><b>12</b><span>The children's room</span></button>
+    </div>
+
+    <div class="tour-progress"><i id="tourBar"></i></div>
+    <span class="tour-scrollcue" id="tourCue">Scroll to move through the tour</span>
+  </div>
+</section>
+
+<footer class="foot-slim">
+  <a href="index.html" class="nav-logo">Alto<span class="dot">.</span></a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="index.html#services">Services</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+  <span class="foot-note">Placeholder content and renderings</span>
+</footer>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="tour.js"></script>
+<script src="motion.js"></script>
+</body>
+</html>

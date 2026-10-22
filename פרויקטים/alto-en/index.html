@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Demo site with placeholder content — keep it out of search results. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Alto | Luxury Residential Development</title>
+<meta name="description" content="Alto — developers and builders of luxury residential neighbourhoods. From the first architectural drawing to the day we hand over the keys.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a href="#hero" class="nav-logo">Alto<span class="dot">.</span></a>
+  <nav class="nav-pill" id="navPill">
+    <a href="#hero" class="active">Home</a>
+    <a href="tour.html">Tour</a>
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <a href="tel:039876543" class="nav-cta">03-987-6543</a>
+  <button class="nav-burger" id="burger" aria-label="Menu"><span></span><span></span></button>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-media" id="heroMedia">
+      <video src="media/hero-loop.mp4" poster="media/hero-loop.jpg"
+             autoplay muted loop playsinline preload="auto"
+             aria-label="A luxury villa in the Alto neighbourhood"></video>
+      <div class="hero-scrim"></div>
+    </div>
+
+    <div class="hero-title-wrap">
+      <h1 class="hero-title"><span class="bracket">Alto<span class="dot">.</span></span></h1>
+    </div>
+
+    <p class="hero-lede fade-late">
+      We build residential neighbourhoods worth coming home to — from the first
+      architectural drawing to the day we hand over the keys, to one standard that never bends.
+    </p>
+
+    <div class="hero-widget fade-late">
+      <span class="hero-widget-top">Sample residence</span>
+      <span class="hero-widget-big">320 m²</span>
+      <span class="hero-widget-sub">5 rooms · 3rd floor · 24 m² terrace</span>
+    </div>
+
+    <a href="#contact" class="hero-cta fade-late">Request a quote</a>
+  </section>
+
+  <!-- TOUR TEASER -->
+  <section class="teaser" id="tour">
+    <a class="teaser-card reveal" href="tour.html">
+      <video src="media/tour/living.mp4" poster="media/tour/living.jpg" muted loop playsinline preload="none" id="teaserClip"></video>
+      <div class="teaser-scrim"></div>
+      <div class="teaser-body">
+        <span class="teaser-eyebrow">Project tour</span>
+        <h2 data-split>12 stops<br>from the street to the children's room</h2>
+        <span class="teaser-go">Take the full tour →</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="svc reveal" id="services">
+    <div class="svc-head">
+      <span class="eyebrow">What we do</span>
+      <h2 data-split>Three stages,<br>one team</h2>
+    </div>
+
+    <div class="svc-cols" id="svcCols">
+
+      <article class="svc-col is-on" data-i="0" tabindex="0">
+        <div class="svc-col-media"><img src="images/service-planning.jpg" alt="Architectural planning"></div>
+        <span class="svc-num">1</span>
+        <span class="svc-pill">Architectural planning</span>
+        <div class="svc-col-foot">
+          <p>Detailed drawings<br>Specification choices<br>Renderings</p>
+          <span class="svc-arrow" aria-hidden="true">→</span>
+        </div>
+      </article>
+
+      <article class="svc-col" data-i="1" tabindex="0">
+        <div class="svc-col-media"><img src="images/service-construction.jpg" alt="Construction and supervision" loading="lazy"></div>
+        <span class="svc-num">2</span>
+        <span class="svc-pill">Construction &amp; supervision</span>
+        <div class="svc-col-foot">
+          <p>Project management<br>Monthly reporting<br>Quality control</p>
+          <span class="svc-arrow" aria-hidden="true">→</span>
+        </div>
+      </article>
+
+      <article class="svc-col" data-i="2" tabindex="0">
+        <div class="svc-col-media"><img src="images/service-finishing.jpg" alt="Luxury finishing" loading="lazy"></div>
+        <span class="svc-num">3</span>
+        <span class="svc-pill">Finishing &amp; handover</span>
+        <div class="svc-col-foot">
+          <p>Finish materials<br>Buyer changes<br>Warranty year</p>
+          <span class="svc-arrow" aria-hidden="true">→</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-bg">
+      <img src="images/about-aerial.jpg" alt="Aerial view of a residential neighbourhood" loading="lazy">
+      <div class="about-scrim"></div>
+    </div>
+
+    <div class="about-frame reveal">
+      <div class="about-inner">
+        <div class="about-lockup">
+          <h2 class="about-title" data-split>Alto</h2>
+          <p class="about-sub">Development &amp; construction</p>
+        </div>
+
+        <p class="about-lede" data-rise>
+          Alto was founded on a simple idea: anyone buying a home deserves to know exactly
+          what they are getting and exactly when. We stay with every project from the day the
+          land is bought to the day the key changes hands — same team, same standards,
+          same dates we committed to.
+        </p>
+
+        <div class="about-cols">
+          <div><b data-count="120">0<i>+</i></b><span>Homes delivered</span></div>
+          <div><b data-count="35">0<i>+</i></b><span>Professionals on the team</span></div>
+          <div><b data-count="150">0<i>+</i></b><span>Leading subcontractors</span></div>
+          <div class="about-contact">
+            <b>Office</b>
+            <span>12 Menachem Begin Road<br>Tel Aviv<br>03-987-6543</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="proc" id="process">
+    <div class="proc-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2 data-split>Four stages,<br>no surprises in between</h2>
+    </div>
+
+    <ol class="proc-index stagger">
+      <li>
+        <span class="proc-n">01</span>
+        <div class="proc-body">
+          <h3>Planning</h3>
+          <p>A dedicated architect, detailed drawings and your choice of specification. By the end of this stage you know exactly how the home will look.</p>
+        </div>
+        <span class="proc-when">4–8 weeks</span>
+      </li>
+      <li>
+        <span class="proc-n">02</span>
+        <div class="proc-body">
+          <h3>Approvals</h3>
+          <p>Building permits, legal and banking support, and a contract with a clear payment schedule tied to the pace of construction.</p>
+        </div>
+        <span class="proc-when">3–6 months</span>
+      </li>
+      <li>
+        <span class="proc-n">03</span>
+        <div class="proc-body">
+          <h3>Construction</h3>
+          <p>A progress report every month, scheduled site visits, and one point of contact who stays with you the whole way through.</p>
+        </div>
+        <span class="proc-when">14–24 months</span>
+      </li>
+      <li>
+        <span class="proc-n">04</span>
+        <div class="proc-body">
+          <h3>Handover</h3>
+          <p>An orderly handover with a full protocol, snag repairs and a complete warranty year. We stay reachable long after it ends.</p>
+        </div>
+        <span class="proc-when">Warranty year</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="proj" id="projects">
+
+    <div class="proj-intro reveal" id="projIntro">
+      <div class="proj-intro-media">
+        <img src="images/project2-main.jpg" alt="Sea Towers project" loading="lazy">
+        <div class="proj-intro-scrim"></div>
+      </div>
+      <h2 class="proj-title" data-split><span class="bracket">Our projects</span></h2>
+    </div>
+
+    <div class="proj-marquee reveal">
+      <div class="proj-track" id="projTrack">
+        <article class="proj-card" tabindex="0">
+          <img src="images/project1-main.jpg" alt="Oak Park · Kfar Saba">
+          <span class="proj-cap">Oak Park · Kfar Saba</span>
+          <div class="proj-story"><strong>The Levi family</strong><p>"Close guidance from day one. We moved in on exactly the date we were promised, with no surprises."</p></div>
+        </article>
+        <article class="proj-card" tabindex="0">
+          <img src="images/project1-detail.jpg" alt="Oak Park · Kfar Saba" loading="lazy">
+          <span class="proj-cap">Oak Park · Kfar Saba</span>
+          <div class="proj-story"><strong>The Barak family</strong><p>"The garden and the terrace came out exactly like the rendering. That surprised us more than anything."</p></div>
+        </article>
+        <article class="proj-card" tabindex="0">
+          <img src="images/project2-main.jpg" alt="Sea Towers · Herzliya Pituach" loading="lazy">
+          <span class="proj-cap">Sea Towers · Herzliya Pituach</span>
+          <div class="proj-story"><strong>The Segev family</strong><p>"We chose it for the view and stayed for the service. Every question was answered within a day."</p></div>
+        </article>
+        <article class="proj-card" tabindex="0">
+          <img src="images/project2-detail.jpg" alt="Sea Towers · Herzliya Pituach" loading="lazy">
+          <span class="proj-cap">Sea Towers · Herzliya Pituach</span>
+          <div class="proj-story"><strong>Dana &amp; Itai</strong><p>"Our buyer changes were priced clearly up front — not one surprise on the final bill."</p></div>
+        </article>
+        <article class="proj-card" tabindex="0">
+          <img src="images/project3-main.jpg" alt="Northern Gardens · Ramat HaSharon" loading="lazy">
+          <span class="proj-cap">Northern Gardens · Ramat HaSharon</span>
+          <div class="proj-story"><strong>The Alon family</strong><p>"The warranty year passed without drama. Everything we reported was handled within two weeks."</p></div>
+        </article>
+        <article class="proj-card" tabindex="0">
+          <img src="images/project3-detail.jpg" alt="Northern Gardens · Ramat HaSharon" loading="lazy">
+          <span class="proj-cap">Northern Gardens · Ramat HaSharon</span>
+          <div class="proj-story"><strong>The Naor family</strong><p>"The apartment was handed over spotless and in order, with a full protocol. We felt we were in good hands."</p></div>
+        </article>
+        <article class="proj-card" tabindex="0">
+          <img src="media/tour/exterior.jpg" alt="Ela Street · Ra'anana" loading="lazy">
+          <span class="proj-cap">Ela Street · Ra'anana</span>
+          <div class="proj-story"><strong>The Cohen family</strong><p>"A small building with only eight residents — exactly what we were looking for. All delivered on time."</p></div>
+        </article>
+        <article class="proj-card" tabindex="0">
+          <img src="media/tour/living.jpg" alt="Garden Rise · Hod HaSharon" loading="lazy">
+          <span class="proj-cap">Garden Rise · Hod HaSharon</span>
+          <div class="proj-story"><strong>The Peretz family</strong><p>"The living room turned out more spacious than we expected, and the light comes in just as promised."</p></div>
+        </article>
+        <article class="proj-card" tabindex="0">
+          <img src="media/tour/terrace.jpg" alt="Field Heights · Kfar Saba" loading="lazy">
+          <span class="proj-cap">Field Heights · Kfar Saba</span>
+          <div class="proj-story"><strong>Yael &amp; Oren</strong><p>"The terrace is our second living room. Worth every shekel we added in buyer changes."</p></div>
+        </article>
+        <article class="proj-card" tabindex="0">
+          <img src="media/tour/kitchen.jpg" alt="Oak Grove · Ramat Gan" loading="lazy">
+          <span class="proj-cap">Oak Grove · Ramat Gan</span>
+          <div class="proj-story"><strong>The Mizrahi family</strong><p>"The kitchen was designed with us from scratch. Two years on it still looks like handover day."</p></div>
+        </article>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="faq-head reveal">
+      <span class="eyebrow">Common questions</span>
+      <h2 data-split>What buyers<br>ask us most</h2>
+    </div>
+    <div class="faq-list stagger">
+      <details>
+        <summary>How long does it take from purchase to moving in?</summary>
+        <div class="faq-body"><div><p>On our projects the range is 14–24 months, depending on the size of the project and the stage at which you joined. The date is set in the contract and we commit to it — so far we have met it on every project we have delivered.</p></div></div>
+      </details>
+      <details>
+        <summary>How is the payment schedule structured?</summary>
+        <div class="faq-body"><div><p>Payments follow the actual pace of construction rather than fixed dates: a deposit on signing, then payments at the frame, envelope, finishing and handover stages. Every payment is backed by a sale-law guarantee.</p></div></div>
+      </details>
+      <details>
+        <summary>Can we make changes to the apartment?</summary>
+        <div class="faq-body"><div><p>Yes. Until the end of the frame stage you can change the internal layout, electrical and plumbing points and the finish specification. We price every change clearly in advance, with no surprises on the final bill.</p></div></div>
+      </details>
+      <details>
+        <summary>What happens if defects appear after handover?</summary>
+        <div class="faq-body"><div><p>Every apartment comes with a full warranty year and cover on systems and waterproofing under the sale law. You go to the same point of contact who guided you through the project — not an external call centre.</p></div></div>
+      </details>
+      <details>
+        <summary>Can we visit a completed project?</summary>
+        <div class="faq-body"><div><p>Absolutely, and it is what we recommend most. We will gladly arrange a visit to an occupied project and put you in touch with residents who have lived there for a few years.</p></div></div>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<!-- CONTACT + FOOTER -->
+<footer class="foot" id="contact">
+
+  <aside class="foot-panel">
+    <span class="foot-mark" aria-hidden="true">
+      <svg viewBox="0 0 40 40" fill="none" width="46" height="46">
+        <path d="M20 3 36 12v16L20 37 4 28V12L20 3Z" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M20 3v34M4 12l16 9 16-9M4 28l16-9 16 9" stroke="currentColor" stroke-width="1"/>
+      </svg>
+    </span>
+    <h2 class="foot-brand">Alto<span class="dot">.</span></h2>
+    <p class="foot-tag">Development &amp; construction<br>in luxury neighbourhoods</p>
+    <img class="foot-shot" src="media/tour/exterior.jpg" alt="An Alto residential building" loading="lazy">
+    <div class="foot-social">
+      <a href="tel:039876543" aria-label="Phone">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11 11 0 0 0 3.5.56 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11 11 0 0 0 .56 3.5 1 1 0 0 1-.25 1l-2.2 2.3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="https://wa.me/972398765430" aria-label="WhatsApp" rel="noopener">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none"><path d="M3.5 20.5 5 16.2A8.5 8.5 0 1 1 7.8 19l-4.3 1.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M9.2 8.4c.3 2.6 3.8 6.1 6.4 6.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </a>
+      <a href="mailto:info@alto-example.co.il" aria-label="Email">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="m3.5 6.5 8.5 6 8.5-6" stroke="currentColor" stroke-width="1.4"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <div class="foot-main">
+    <span class="foot-rule" aria-hidden="true"></span>
+    <span class="eyebrow">Want to talk to us?</span>
+    <h2 class="foot-head" data-split>We would love to hear from you</h2>
+
+    <form class="foot-form" id="leadForm" novalidate>
+      <div class="foot-row">
+        <label><span>Full name</span><input type="text" name="name" required autocomplete="name" placeholder="Jane Smith"></label>
+        <label><span>Email</span><input type="email" name="email" autocomplete="email" placeholder="you@example.com"></label>
+      </div>
+      <div class="foot-row">
+        <label><span>Phone</span><input type="tel" name="phone" required autocomplete="tel" inputmode="tel" placeholder="050-0000000"></label>
+        <label><span>What interests you</span>
+          <select name="interest">
+            <option>Garden apartment</option><option>Penthouse</option><option>Villa</option><option>Still looking</option>
+          </select>
+        </label>
+      </div>
+      <label class="foot-msg"><span>How can we help?</span>
+        <textarea name="note" rows="3" placeholder="When would you like to move in? How many rooms?"></textarea>
+      </label>
+
+      <label class="foot-consent">
+        <input type="checkbox" name="consent">
+        <span>I agree that my details may be used to get back to me. They can be removed at any time.</span>
+      </label>
+
+      <div class="foot-send">
+        <p class="cta-note" id="formNote" role="status"></p>
+        <button type="submit">Send details <i aria-hidden="true">↗</i></button>
+      </div>
+    </form>
+  </div>
+
+  <nav class="foot-nav">
+    <span class="foot-nav-title">Quick links</span>
+    <a href="#hero">Home</a>
+    <a href="tour.html">Project tour</a>
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#process">How it works</a>
+    <a href="#faq">Common questions</a>
+    <span class="foot-note">Placeholder content and renderings</span>
+  </nav>
+
+</footer>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="script.js"></script>
+<script src="motion.js"></script>
+</body>
+</html>
