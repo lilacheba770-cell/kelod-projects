@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>אלטו | יזמות ובנייה בשכונות יוקרה</title>
 <meta name="description" content="אלטו — יזמות ובנייה של שכונות מגורים יוקרתיות. מהתכנון האדריכלי ועד מסירת המפתח.">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
 
@@ -29,29 +29,47 @@
 
   <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="hero-media" id="heroMedia">
-      <video src="media/hero-loop.mp4" poster="media/hero-loop.jpg"
-             autoplay muted loop playsinline preload="auto"
-             aria-label="וילת יוקרה בשכונת אלטו"></video>
-      <div class="hero-scrim"></div>
+    <!-- The stage holds the viewport-high picture; the section around it is
+         taller, so the stage stays put while the card forms under the reader. -->
+    <div class="hero-stage">
+      <div class="hero-media" id="heroMedia">
+        <div class="hero-frame">
+          <video src="media/hero-loop.mp4" poster="media/hero-loop.jpg"
+                 autoplay muted loop playsinline preload="auto"
+                 aria-label="וילת יוקרה בשכונת אלטו"></video>
+          <div class="hero-scrim"></div>
+        </div>
+      </div>
+
+      <!-- Everything written over the picture leaves together as it shrinks. -->
+      <div class="hero-overlay">
+        <div class="hero-title-wrap">
+          <h1 class="hero-title"><span class="bracket">אלטו<span class="dot">.</span></span></h1>
+        </div>
+
+        <p class="hero-lede fade-late">
+          אנחנו בונים שכונות מגורים שמעוררות השראה — מהתכנון
+          האדריכלי הראשון ועד מסירת המפתח, בסטנדרט אחד שלא מתפשר.
+        </p>
+
+        <div class="hero-widget fade-late">
+          <span class="hero-widget-top">פרויקט לדוגמה</span>
+          <span class="hero-widget-big">320 מ״ר</span>
+          <span class="hero-widget-sub">5 חדרים · קומה 3 · מרפסת 24 מ״ר</span>
+        </div>
+      </div>
+
+      <!-- …and the name lands again on the paper under the card.
+           aria-hidden: the h1 above is still the page's one heading. -->
+      <div class="hero-caption" aria-hidden="true">
+        <span class="hero-caption-mark">אלטו<span class="dot">.</span></span>
+        <span class="hero-caption-sub">מהתכנון האדריכלי ועד מסירת המפתח</span>
+      </div>
+
+      <span class="hero-rule" aria-hidden="true"></span>
+
+      <a href="#contact" class="hero-cta fade-late">קבלו הצעת מחיר</a>
     </div>
-
-    <div class="hero-title-wrap">
-      <h1 class="hero-title"><span class="bracket">אלטו<span class="dot">.</span></span></h1>
-    </div>
-
-    <p class="hero-lede fade-late">
-      אנחנו בונים שכונות מגורים שמעוררות השראה — מהתכנון
-      האדריכלי הראשון ועד מסירת המפתח, בסטנדרט אחד שלא מתפשר.
-    </p>
-
-    <div class="hero-widget fade-late">
-      <span class="hero-widget-top">פרויקט לדוגמה</span>
-      <span class="hero-widget-big">320 מ״ר</span>
-      <span class="hero-widget-sub">5 חדרים · קומה 3 · מרפסת 24 מ״ר</span>
-    </div>
-
-    <a href="#contact" class="hero-cta fade-late">קבלו הצעת מחיר</a>
   </section>
 
   <!-- TOUR TEASER -->
@@ -361,7 +379,7 @@
 
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
-<script src="script.js"></script>
-<script src="motion.js"></script>
+<script src="script.js?v=2"></script>
+<script src="motion.js?v=2"></script>
 </body>
 </html>

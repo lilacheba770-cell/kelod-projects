@@ -9,12 +9,20 @@
   --bg-2:#ece5d9;
   --ink:#2a211a;
   --mut:#7a6e60;
+  /* One gold, two depths — after the almi reference.
+     --gold is the brand tone: rules, fills on dark, and any gold TEXT that sits
+     on photography or on the dark blocks (6:1 there).
+     --gold-ink is the same hue carried deeper, and is the only gold allowed to
+     be text on the warm paper: #b8892f on #f5f0e8 is 2.78:1, which is the one
+     real flaw in the almi reference. This reads 5.1:1 on --bg, 4.6:1 on --bg-2,
+     and 5.8:1 under white when it is a filled button. */
   --gold:#b8892f;
+  --gold-ink:#7f6036;
+  --gold-ink-dark:#6a4f2c;   /* hover of a filled gold-ink button */
   --line:rgba(42,33,26,.14);
   /* glass used on top of photography/video, where text stays light */
   --glass:rgba(24,19,14,.5);
   --glass-line:rgba(255,255,255,.16);
-  --gold-lite:#d9a94a;   /* gold that still reads on dark media */
   --mut-lite:rgba(246,242,234,.66);
   /* one vertical rhythm and one gutter for every section */
   --sec-y:15vh;
@@ -58,6 +66,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 .nav.solid .nav-logo,.nav.solid .nav-cta{color:var(--ink);text-shadow:none;}
 .nav-logo{font-weight:900;font-size:19px;letter-spacing:.01em;}
 .dot{color:var(--gold);}
+.nav.solid .dot{color:var(--gold-ink);}
 .nav-pill{
   display:flex;gap:4px;padding:5px;
   border-radius:999px;
@@ -71,7 +80,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   transition:color .3s var(--ease),background .3s var(--ease);
 }
 .nav-pill a:hover{color:var(--ink);}
-.nav-pill a.active{background:var(--gold);color:#fff;}
+.nav-pill a.active{background:var(--gold-ink);color:#fff;}
 .nav-cta{font-size:13px;font-weight:600;letter-spacing:.03em;direction:ltr;}
 .nav-burger{display:none;flex-direction:column;gap:5px;width:24px;color:#f6f2ea;}
 .nav.solid .nav-burger{color:var(--ink);}
@@ -79,23 +88,49 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 
 @keyframes fadeIn{to{opacity:1;}}
 
-/* ===== HERO ===== */
+/* ===== HERO =====
+   Full-bleed on arrival; on the way down the picture draws itself in to a
+   rounded card on the warm paper (after avney-haketer), and comes to rest as a
+   framed image with the name set quietly beneath it (after almi).
+   --hp is written by initHero in script.js, 0 → 1 across the scroll below.
+   Without JS it stays 0 and the hero is simply the full-bleed picture it was. */
+:root{--hp:0;}
 .hero{
-  position:relative;height:100vh;overflow:hidden;
+  position:relative;height:100vh;
   background:var(--bg);
+  /* where the card comes to rest */
+  --ct:13%;  --cs:6%;  --cb:24%;  --cr:20px;
 }
+html.js .hero{height:195vh;}
+.hero-stage{position:sticky;top:0;height:100vh;overflow:hidden;}
+
 .hero-media{
   position:absolute;inset:0;
   clip-path:inset(43% 33% 43% 33%);
   animation:heroOpen 1.7s var(--swing) .35s forwards;
 }
+/* a second box, because .hero-media's opening animation owns its clip-path */
+.hero-frame{
+  position:absolute;inset:0;
+  clip-path:inset(
+    calc(var(--hp) * var(--ct)) calc(var(--hp) * var(--cs))
+    calc(var(--hp) * var(--cb)) calc(var(--hp) * var(--cs))
+    round calc(var(--hp) * var(--cr)));
+}
 .hero-media img,.hero-media video{width:100%;height:100%;object-fit:cover;}
 .hero-scrim{
   position:absolute;inset:0;
+  /* the picture lightens as the words leave it */
+  opacity:calc(1 - var(--hp) * .78);
   background:linear-gradient(0deg,rgba(10,9,8,.82) 0%,rgba(10,9,8,.1) 55%,rgba(10,9,8,.5) 100%);
 }
 @keyframes heroOpen{to{clip-path:inset(0% 0% 0% 0%);}}
 
+.hero-overlay{
+  position:absolute;inset:0;z-index:3;pointer-events:none;
+  opacity:clamp(0,calc(1 - var(--hp) * 1.7),1);
+  transform:translateY(calc(var(--hp) * -6vh));
+}
 .hero-title-wrap{
   position:absolute;right:6vw;left:6vw;bottom:11vh;z-index:3;
   display:flex;justify-content:center;
@@ -123,7 +158,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   background:var(--glass);border:1px solid var(--glass-line);
   backdrop-filter:blur(20px);text-align:left;color:#f6f2ea;
 }
-.hero-widget-top{font-size:10px;font-weight:600;letter-spacing:.16em;color:var(--gold-lite);}
+.hero-widget-top{font-size:10px;font-weight:600;letter-spacing:.16em;color:var(--gold);}
 .hero-widget-big{font-size:30px;font-weight:900;line-height:1.1;}
 .hero-widget-sub{font-size:12px;color:var(--mut-lite);}
 
@@ -131,15 +166,47 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   position:absolute;bottom:11vh;left:6vw;z-index:4;
   display:inline-flex;align-items:center;gap:9px;
   padding:15px 30px;border-radius:999px;
-  background:var(--gold);color:#fff;
+  background:var(--gold-ink);color:#fff;
   font-size:13px;font-weight:700;
   transition:transform .3s var(--ease),background .3s var(--ease);
 }
 .hero-cta::after{content:'↖';font-size:14px;}
-.hero-cta:hover{background:#a0761f;transform:translateY(-2px);}
+.hero-cta:hover{background:var(--gold-ink-dark);transform:translateY(-2px);}
+
+/* the resting state: the name on paper under the card, almi-style */
+.hero-caption{
+  position:absolute;right:6vw;bottom:11vh;z-index:4;
+  display:flex;flex-direction:column;align-items:flex-start;gap:7px;
+  opacity:clamp(0,calc((var(--hp) - .58) * 3.2),1);
+  transform:translateY(calc((1 - var(--hp)) * 18px));
+}
+.hero-caption-mark{
+  font-size:clamp(30px,3.4vw,52px);font-weight:900;line-height:1;
+  letter-spacing:-.01em;color:var(--ink);
+}
+.hero-caption .dot{color:var(--gold-ink);}
+.hero-caption-sub{
+  font-size:10.5px;font-weight:600;letter-spacing:.16em;color:var(--mut);
+}
+/* a hairline that draws itself across to close the hero */
+.hero-rule{
+  position:absolute;right:6vw;left:6vw;bottom:4.5vh;z-index:4;
+  height:1px;background:var(--gold);
+  transform:scaleX(clamp(0,calc((var(--hp) - .55) * 2.3),1));
+  transform-origin:right center;
+}
+
+/* Reduced motion: no scroll-linked shrink. The hero simply rests in the state
+   it was heading for — the framed card with the name underneath. */
+@media (prefers-reduced-motion:reduce){
+  :root{--hp:1;}
+  html.js .hero{height:100vh;}
+}
 
 /* ===== TOUR TEASER (home page) ===== */
-.teaser{padding:var(--sec-y) var(--gutter);background:var(--bg);}
+/* The hero already ends on a band of bare paper, so this section opens on half
+   the usual rhythm — a full --sec-y on top of it reads as a hole. */
+.teaser{padding:calc(var(--sec-y) * .5) var(--gutter) var(--sec-y);background:var(--bg);}
 .teaser-card{
   position:relative;display:block;height:62vh;min-height:380px;
   border-radius:16px;overflow:hidden;border:1px solid var(--line);
@@ -153,10 +220,10 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   position:absolute;top:50%;right:5vw;transform:translateY(-50%);
   display:flex;flex-direction:column;gap:16px;align-items:flex-start;
 }
-.teaser-eyebrow{font-size:10px;font-weight:600;letter-spacing:.18em;color:var(--gold-lite);}
+.teaser-eyebrow{font-size:10px;font-weight:600;letter-spacing:.18em;color:var(--gold);}
 .teaser-body h2{font-size:clamp(26px,3.8vw,50px);font-weight:900;line-height:1.15;color:#f6f2ea;}
 .teaser-go{
-  font-size:13px;font-weight:700;color:var(--gold-lite);
+  font-size:13px;font-weight:700;color:var(--gold);
   transition:gap .3s var(--ease);
 }
 .teaser-card:hover .teaser-go{text-decoration:underline;text-underline-offset:5px;}
@@ -167,7 +234,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 .tour-page .nav-pill{background:var(--glass);border-color:var(--glass-line);}
 .tour-page .nav-pill a{color:var(--mut-lite);}
 .tour-page .nav-pill a:hover{color:#fff;}
-.tour-page .nav-pill a.active{background:var(--gold-lite);color:#1a140e;}
+.tour-page .nav-pill a.active{background:var(--gold);color:#1a140e;}
 /* The tour page closes with a slim bar rather than the home page's full
    footer — the tour is the content, and a second lead form would only
    repeat the one visitors already passed on the way in. */
@@ -180,7 +247,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 }
 .foot-slim nav{display:flex;gap:clamp(14px,2vw,30px);flex-wrap:wrap;}
 .foot-slim nav a,.foot-slim .foot-note{font-size:13px;color:var(--mut-lite);transition:color .3s var(--ease);}
-.foot-slim nav a:hover{color:var(--gold-lite);}
+.foot-slim nav a:hover{color:var(--gold);}
 .foot-slim .foot-note{margin:0;padding:0;font-size:10.5px;color:rgba(246,242,234,.38);}
 .tour-page .nav{opacity:1;animation:none;}
 .tour{position:relative;height:1200vh;background:#14100c;}
@@ -197,7 +264,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 }
 .tour-eyebrow{
   position:absolute;top:17vh;right:6vw;z-index:3;
-  font-size:10px;font-weight:600;letter-spacing:.18em;color:var(--gold-lite);
+  font-size:10px;font-weight:600;letter-spacing:.18em;color:var(--gold);
 }
 .tour-caption{
   position:absolute;top:calc(17vh + 24px);right:6vw;z-index:3;
@@ -222,11 +289,11 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 .tour-dot:hover{color:#fff;}
 .tour-dot:hover span{max-width:180px;opacity:1;}
 .tour-dot.active{color:#fff;background:var(--glass);backdrop-filter:blur(14px);}
-.tour-dot.active b{color:var(--gold-lite);opacity:1;}
+.tour-dot.active b{color:var(--gold);opacity:1;}
 .tour-dot.active span{max-width:180px;opacity:1;}
 
 .tour-progress{position:absolute;bottom:0;right:0;left:0;height:2px;background:rgba(246,242,234,.18);z-index:4;}
-.tour-progress i{display:block;height:100%;background:var(--gold-lite);transform:scaleX(0);transform-origin:right;transition:transform .12s linear;}
+.tour-progress i{display:block;height:100%;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .12s linear;}
 .tour-scrollcue{
   position:absolute;bottom:5vh;right:6vw;z-index:3;
   font-size:11px;font-weight:600;color:rgba(246,242,234,.65);
@@ -303,7 +370,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   transition:color .45s var(--ease),border-color .45s var(--ease),background .45s var(--ease),transform .45s var(--ease);
 }
 .svc-col.is-on .svc-arrow{
-  color:#14100c;background:var(--gold-lite);border-color:var(--gold-lite);
+  color:#14100c;background:var(--gold);border-color:var(--gold);
   transform:translateX(-4px);
 }
 
@@ -319,8 +386,10 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 /* ===== Shared section bits ===== */
 .eyebrow{
   display:block;font-size:10px;font-weight:600;letter-spacing:.18em;
-  color:var(--gold);margin-bottom:16px;
+  color:var(--gold-ink);margin-bottom:16px;
 }
+/* the same eyebrow sitting on the dark footer block takes the full gold */
+.foot .eyebrow{color:var(--gold);}
 
 /* ===== ABOUT — brochure spread, after the ARCHE reference ===== */
 .about{
@@ -375,9 +444,9 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 }
 .about-cols > div{display:flex;flex-direction:column;gap:5px;}
 .about-cols b{font-size:19px;font-weight:900;line-height:1;letter-spacing:-.01em;}
-.about-cols i{font-style:normal;color:var(--gold-lite);}
+.about-cols i{font-style:normal;color:var(--gold);}
 .about-cols span{font-size:10.5px;line-height:1.55;color:rgba(246,242,234,.55);}
-.about-contact b{font-size:10px;font-weight:700;letter-spacing:.16em;color:var(--gold-lite);}
+.about-contact b{font-size:10px;font-weight:700;letter-spacing:.16em;color:var(--gold);}
 
 /* ===== PROCESS — index page, after the INDICE reference ===== */
 .proc{padding:var(--sec-y) var(--gutter);background:var(--bg);}
@@ -400,7 +469,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   color:transparent;-webkit-text-stroke:1px var(--ink);
   transition:-webkit-text-stroke-color .4s var(--ease),color .4s var(--ease);
 }
-.proc-index li:hover .proc-n{color:var(--gold);-webkit-text-stroke-color:var(--gold);}
+.proc-index li:hover .proc-n{color:var(--gold-ink);-webkit-text-stroke-color:var(--gold-ink);}
 .proc-body h3{font-size:clamp(19px,2.2vw,26px);font-weight:700;margin-bottom:9px;}
 .proc-body p{font-size:13.5px;line-height:1.8;color:var(--mut);max-width:62ch;}
 .proc-when{
@@ -423,11 +492,11 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 }
 .faq-list summary::-webkit-details-marker{display:none;}
 .faq-list summary::after{
-  content:'+';color:var(--gold);font-size:20px;font-weight:400;
+  content:'+';color:var(--gold-ink);font-size:20px;font-weight:400;
   transition:transform .35s var(--ease);
 }
 .faq-list details[open] summary::after{transform:rotate(45deg);}
-.faq-list summary:hover{color:var(--gold);}
+.faq-list summary:hover{color:var(--gold-ink);}
 .faq-list p{padding:0 0 26px;font-size:13.5px;line-height:1.9;color:var(--mut);max-width:60ch;}
 
 /* ===== PROJECTS ===== */
@@ -503,7 +572,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   transform:translateY(100%);opacity:0;
   transition:transform .5s var(--ease),opacity .4s var(--ease);
 }
-.proj-story strong{display:block;font-size:14px;font-weight:700;color:var(--gold-lite);margin-bottom:9px;}
+.proj-story strong{display:block;font-size:14px;font-weight:700;color:var(--gold);margin-bottom:9px;}
 .proj-story p{font-size:13px;line-height:1.75;color:#e9e3d8;}
 
 .proj-card:hover img,.proj-card:focus img,.proj-card.is-open img{transform:scale(1.06);}
@@ -536,7 +605,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 .foot-mark{
   display:grid;place-items:center;
   width:clamp(74px,7vw,96px);aspect-ratio:1;border-radius:50%;
-  background:#14100c;color:var(--gold-lite);
+  background:#14100c;color:var(--gold);
 }
 .foot-brand{font-size:clamp(28px,2.6vw,38px);font-weight:900;line-height:1;}
 .foot-tag{
@@ -554,7 +623,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   background:#14100c;color:var(--bg);
   transition:background .3s var(--ease),transform .3s var(--ease);
 }
-.foot-social a:hover{background:var(--gold);transform:translateY(-2px);}
+.foot-social a:hover{background:var(--gold);color:#14100c;transform:translateY(-2px);}
 
 /* the form column */
 .foot-main{padding-top:var(--sec-y);}
@@ -578,7 +647,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
 .foot-form textarea{resize:vertical;min-height:70px;}
 .foot-form input::placeholder,.foot-form textarea::placeholder{color:rgba(246,242,234,.32);}
 .foot-form input:focus,.foot-form select:focus,.foot-form textarea:focus{
-  outline:none;border-bottom-color:var(--gold-lite);
+  outline:none;border-bottom-color:var(--gold);
 }
 .foot-form input:user-invalid{border-bottom-color:#d98a68;}
 .foot-form select option{background:#14100c;color:#f6f2ea;}
@@ -602,10 +671,10 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   display:grid;place-items:center;width:30px;height:30px;border-radius:50%;
   background:#14100c;color:var(--bg);font-style:normal;font-size:14px;
 }
-.foot-send button:hover{background:var(--gold-lite);transform:translateY(-2px);}
+.foot-send button:hover{background:var(--gold);transform:translateY(-2px);}
 .foot-send .cta-note{color:rgba(246,242,234,.6);}
 .foot-send .cta-note.err{color:#e6a184;}
-.foot-send .cta-note.ok{color:var(--gold-lite);}
+.foot-send .cta-note.ok{color:var(--gold);}
 
 /* quick links */
 .foot-nav{padding-top:var(--sec-y);display:flex;flex-direction:column;gap:11px;}
@@ -613,7 +682,7 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   font-size:11px;font-weight:700;letter-spacing:.22em;color:#f6f2ea;margin-bottom:6px;
 }
 .foot-nav a{font-size:13px;color:rgba(246,242,234,.6);transition:color .3s var(--ease);}
-.foot-nav a:hover{color:var(--gold-lite);}
+.foot-nav a:hover{color:var(--gold);}
 .foot-note{margin-top:auto;padding-top:26px;font-size:10.5px;color:rgba(246,242,234,.38);}
 
 /* ===== GSAP word masks =====
@@ -678,6 +747,15 @@ button{font-family:var(--font);cursor:pointer;border:none;background:none;color:
   .hero-lede,.hero-widget{display:none;}
   .hero-title-wrap{bottom:16vh;justify-content:flex-start;}
   .hero-cta{left:auto;right:6vw;bottom:7vh;}
+  /* a shorter run and a roomier card: a phone shouldn't scroll a screen and a
+     half to watch one picture settle */
+  html.js .hero{height:155vh;}
+  /* --cs stays 6%: the card's edges have to line up with the 6vw gutter the
+     caption, the button and the hairline below it all sit on */
+  .hero{--ct:9%;--cs:6%;--cb:23%;--cr:14px;}
+  .hero-caption{bottom:14.5vh;}
+  .hero-caption-sub{letter-spacing:.12em;}
+  .hero-rule{bottom:2.6vh;}
 
   :root{--sec-y:10vh;--head-gap:5vh;}
   .teaser-card{height:52vh;}

@@ -6,15 +6,10 @@ document.documentElement.classList.add('js');
   const burger = document.getElementById('burger');
   const links = [...pill.querySelectorAll('a')];
 
-  // The logo/phone ride over the hero video (light) and then over cream (dark),
-  // so flip them once the hero has scrolled past.
-  const nav = document.getElementById('nav');
-  const hero = document.getElementById('hero');
-  if (nav && hero) {
-    const flip = () => nav.classList.toggle('solid', window.scrollY > hero.offsetHeight - 90);
-    flip();
-    window.addEventListener('scroll', flip, { passive: true });
-  }
+  // The logo/phone flip from light to ink once they stop riding over the video.
+  // initHero owns that now: the warm paper appears under the header part-way
+  // through the hero, long before the section itself ends. Pages with no hero
+  // (the tour) style their own header and want no flip at all.
 
   burger.addEventListener('click', () => pill.classList.toggle('open'));
   links.forEach(a => a.addEventListener('click', () => pill.classList.remove('open')));
@@ -35,6 +30,59 @@ document.documentElement.classList.add('js');
     links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + best.id));
   }, { threshold: [0, .25, .5, .75, 1], rootMargin: '-45% 0px -45% 0px' });
   sections.forEach(s => io.observe(s));
+})();
+
+/* ---------- Hero: the picture draws itself in to a card on the paper ----------
+   Scroll position becomes one number, --hp, from 0 to 1. Every piece of the
+   motion — the clip-path, the scrim, the words leaving, the name arriving, the
+   hairline — is plain CSS calc() off that number. Cheap to run, easy to retune.
+
+   The update is written straight from the scroll handler rather than inside
+   requestAnimationFrame: all it does is read scrollY (already cached by the
+   scroll event) and write one custom property, with no layout read after the
+   write, so there is nothing to batch. It also means the hero is never left
+   half-drawn on a page whose rAF is suspended — a backgrounded tab, or a window
+   the compositor has parked. The offsets it needs are measured ahead of time. */
+(function initHero() {
+  const hero = document.getElementById('hero');
+  const nav = document.getElementById('nav');
+  if (!hero) return;
+
+  const root = document.documentElement;
+  // Reduced motion: the stylesheet already parks --hp at 1, so leave it there
+  // and just settle the header, which is over paper from the first pixel.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (nav) nav.classList.add('solid');
+    return;
+  }
+
+  let top = 0, travel = 1, last = -1;
+
+  function measure() {
+    top = hero.offsetTop;
+    travel = Math.max(1, hero.offsetHeight - window.innerHeight);
+  }
+
+  function update() {
+    const p = Math.min(Math.max((window.scrollY - top) / travel, 0), 1);
+    // smoothstep, so the card eases in and settles instead of tracking the
+    // wheel one-to-one
+    const hp = p * p * (3 - 2 * p);
+    if (hp === last) return;
+    last = hp;
+    root.style.setProperty('--hp', hp.toFixed(4));
+    // The header sits on bare paper from about here on, so the light logo and
+    // phone number have to turn to ink before they land on it.
+    if (nav) nav.classList.toggle('solid', hp > 0.45);
+  }
+
+  measure();
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', () => { measure(); update(); }, { passive: true });
+  // The hero holds a video, and a phone's address bar collapses on first scroll:
+  // either can move the numbers measured above.
+  window.addEventListener('load', () => { measure(); update(); });
 })();
 
 /* ---------- Scroll reveal + count-up ----------
