@@ -393,8 +393,8 @@ html.js .hero{height:195vh;}
   height:1px;background:var(--gold);
   transform-origin:right center;
 }
-/* .proj is already positioned; the rest need a containing block for the line */
-.teaser,.svc,.about,.proc,.faq,.foot{position:relative;}
+/* .proj and .foot are already positioned; the rest need a containing block */
+.teaser,.svc,.about,.proc,.faq{position:relative;}
 
 @media (prefers-reduced-motion:no-preference){
   html.anim .sec-rule{transform:scaleX(0);transition:transform 1.15s var(--ease);}
