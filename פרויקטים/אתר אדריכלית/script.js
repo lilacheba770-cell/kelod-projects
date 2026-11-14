@@ -193,55 +193,6 @@ document.documentElement.classList.add('js');
   light(pinned);
 })();
 
-/* ---------- Projects: tap a card to raise its testimonial ----------
-   Hover and focus are handled in CSS; this covers touch, where there is no
-   hover, by toggling one card open at a time. */
-(function initProjectCards() {
-  const track = document.getElementById('projTrack');
-  if (!track) return;
-  track.addEventListener('click', (e) => {
-    const card = e.target.closest('.proj-card');
-    if (!card) return;
-    const wasOpen = card.classList.contains('is-open');
-    track.querySelectorAll('.proj-card.is-open').forEach(c => c.classList.remove('is-open'));
-    if (!wasOpen) card.classList.add('is-open');
-  });
-})();
-
-/* ---------- Projects marquee ---------- */
-(function initMarquee() {
-  const track = document.getElementById('projTrack');
-  if (!track) return;
-  // The keyframe travels -50%, so the row must hold an even number of identical
-  // copies AND one copy must be wider than the viewport — otherwise the tail of
-  // the row runs out mid-loop and leaves a blank gap on wide screens.
-  const oneCopy = track.innerHTML;
-  track.innerHTML = oneCopy + oneCopy;
-  for (let guard = 0; guard < 4; guard++) {
-    const halfWidth = track.scrollWidth / 2;
-    if (halfWidth >= window.innerWidth * 1.15) break;
-    track.innerHTML += track.innerHTML;   // stays even: 2 -> 4 -> 8
-  }
-
-  // Cards drift through view continuously, so lazy-loading makes them pop in
-  // blank mid-scroll. Once the section is near, load the whole row up front.
-  // Plain scroll check rather than IntersectionObserver: the row is a wide,
-  // continuously-transformed element, which makes IO's intersection reporting
-  // unreliable here.
-  const imgs = [...track.querySelectorAll('img')];
-  let loaded = false;
-  function maybeLoad() {
-    if (loaded) return;
-    const top = track.getBoundingClientRect().top;
-    if (top > window.innerHeight + 600) return;
-    loaded = true;
-    imgs.forEach(i => { i.loading = 'eager'; if (!i.complete) i.src = i.src; });
-    window.removeEventListener('scroll', maybeLoad);
-  }
-  maybeLoad();
-  window.addEventListener('scroll', maybeLoad, { passive: true });
-})();
-
 /* ---------- Lead form ----------
    No backend here, so a valid submission hands the details to the visitor's
    mail client. Swap this for a real endpoint (Formspree/Netlify/etc.) before
