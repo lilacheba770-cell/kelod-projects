@@ -85,6 +85,58 @@ document.documentElement.classList.add('js');
   window.addEventListener('load', () => { measure(); update(); });
 })();
 
+/* ---------- Credo: the line lights word by word on the way down ----------
+   Same shape as initHero: one scroll handler writes a single 0 → 1 number,
+   --cp, and the CSS works out each word's opacity from it. The words are split
+   here rather than in the markup so the sentence stays one readable string in
+   index.html and one node for a screen reader. */
+(function initCredo() {
+  const el = document.querySelector('[data-credo]');
+  if (!el) return;
+  const section = el.closest('section');
+
+  let n = 0;
+  const frag = document.createDocumentFragment();
+  el.textContent.trim().split(/(\s+)/).forEach(part => {
+    if (!part.trim()) { frag.appendChild(document.createTextNode(part)); return; }
+    const w = document.createElement('span');
+    w.className = 'cw';
+    w.textContent = part;
+    w.style.setProperty('--i', n++);
+    frag.appendChild(w);
+  });
+  el.textContent = '';
+  el.appendChild(frag);
+  el.style.setProperty('--n', n);
+
+  // Reduced motion: the stylesheet already parks --cp at 1, so the line is
+  // simply read rather than swept.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let from = 0, span = 1, last = -1;
+
+  function measure() {
+    const vh = window.innerHeight || 1;
+    const top = section.getBoundingClientRect().top + window.scrollY;
+    // the sweep runs while the line crosses the upper half of the screen
+    from = top - vh * 0.8;
+    span = Math.max(1, vh * 0.55);
+  }
+
+  function update() {
+    const cp = Math.min(Math.max((window.scrollY - from) / span, 0), 1);
+    if (cp === last) return;
+    last = cp;
+    section.style.setProperty('--cp', cp.toFixed(4));
+  }
+
+  measure();
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', () => { measure(); update(); }, { passive: true });
+  window.addEventListener('load', () => { measure(); update(); });
+})();
+
 /* ---------- Scroll reveal + count-up ----------
    Driven by scroll position rather than IntersectionObserver: IO silently
    never firing would leave every section below the hero stuck at opacity 0.
