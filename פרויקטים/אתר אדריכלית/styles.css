@@ -1,4 +1,5 @@
 /* ===== Fonts ===== */
+@font-face { font-family:'Talent FS'; src:url('fonts/Talent_FS-Thin.woff2') format('woff2'); font-weight:100; font-display:swap; }
 @font-face { font-family:'Talent FS'; src:url('fonts/Talent_FS-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
 @font-face { font-family:'Talent FS'; src:url('fonts/Talent_FS-Demibold.woff2') format('woff2'); font-weight:600; font-display:swap; }
 @font-face { font-family:'Talent FS'; src:url('fonts/Talent_FS-Black.woff2') format('woff2'); font-weight:900; font-display:swap; }
@@ -29,6 +30,11 @@
   --gutter:6vw;
   --head-gap:8vh;
   --font:'Talent FS','Heebo',sans-serif;
+  /* TRIAL, projects section only: the Latin layer in its own face. Talent FS is
+     a Hebrew typeface and its Latin is the weakest thing on the page, which
+     shows now that project names carry an English line. Fahkwang is almi's own
+     face — wide, thin, and built for exactly this job. */
+  --font-latin:'Fahkwang','Talent FS',sans-serif;
   --ease:cubic-bezier(.16,.84,.44,1);
   --swing:cubic-bezier(.7,0,.2,1);
 }
@@ -590,10 +596,14 @@ html.js .hero{height:195vh;}
   position:absolute;inset:0;
   background:linear-gradient(0deg,rgba(10,9,8,.62) 0%,rgba(10,9,8,.18) 50%,rgba(10,9,8,.42) 100%);
 }
+/* TRIAL: thin and bigger rather than black. This is the "סנס דק וענק" the
+   reference genre runs on, and the opposite of what the rest of the page does.
+   The scrim under it is what keeps thin strokes readable over photography. */
 .proj-title{
   position:relative;z-index:2;
-  font-size:clamp(30px,6vw,88px);font-weight:900;line-height:1;
-  color:#f6f2ea;text-shadow:0 2px 30px rgba(0,0,0,.4);
+  font-size:clamp(38px,7.4vw,112px);font-weight:100;line-height:1;
+  letter-spacing:.01em;
+  color:#f6f2ea;text-shadow:0 2px 30px rgba(0,0,0,.45);
   white-space:nowrap;
 }
 @media (prefers-reduced-motion:no-preference){
@@ -626,10 +636,12 @@ html.js .hero{height:195vh;}
   margin-bottom:14px;
 }
 .proj-en{
-  font-size:12.5px;font-weight:600;letter-spacing:.07em;color:var(--mut);
+  font-family:var(--font-latin);
+  font-size:14px;font-weight:300;letter-spacing:.11em;color:var(--mut);
 }
 .proj-num{
-  font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--gold-ink);
+  font-family:var(--font-latin);
+  font-size:13px;font-weight:300;letter-spacing:.2em;color:var(--gold-ink);
 }
 /* square, not almi's portrait: at this column width a 4/5 frame made the grid
    alone 4,000px tall and pushed the page past 10,000 */
@@ -639,7 +651,7 @@ html.js .hero{height:195vh;}
 
 .proj-he{
   display:block;margin-top:17px;
-  font-size:clamp(17px,1.55vw,23px);font-weight:900;line-height:1.2;
+  font-size:clamp(18px,1.7vw,25px);font-weight:600;line-height:1.2;
   color:var(--gold-ink);
 }
 .proj-he i{
